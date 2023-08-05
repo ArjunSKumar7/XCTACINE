@@ -1,11 +1,14 @@
 import axios from "axios";
 
 
-const BaseUrl = "http://localhost:3000/api/";
+const BaseUrl = "http://localhost:3000/api";
 
-const baseURL =axios.create({
-    baseURL: BaseUrl
-})
+    const baseURL =axios.create({
+        baseURL: BaseUrl,
+        headers: {
+            'Content-Type': 'application/json', // Set the content type to JSON
+          },
+    })
 // console.log("baseURL",baseURL)
  
 baseURL.interceptors.request.use(
