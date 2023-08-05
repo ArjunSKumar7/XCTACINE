@@ -2,7 +2,7 @@ import express from 'express'
 import authController from '../controller/authcontroller'
 
 
-const authRoute=()=>{
+
     const router = express.Router()
 
 
@@ -20,5 +20,5 @@ const authRoute=()=>{
 
 
 
-}
-export default authRoute
+
+export default router

@@ -17,7 +17,7 @@ const signup = async (values) => {
   try {
     console.log('valuesuserapi', values);
     const response = await baseURL.post("/auth/signup", values);
-    console.log('res', response);
+    console.log('res', response.data);
     return response?.data;
   } catch (error) {
     // Handle errors here
