@@ -8,7 +8,7 @@ import authController from '../controller/authcontroller'
 
 //user login and signup
     
-    router.post('/user/login',authController.userLogin)
+    router.post('/login',authController.userLogin)
     router.post('/signup',authController.UserSignup)
 //theater login and signup
    

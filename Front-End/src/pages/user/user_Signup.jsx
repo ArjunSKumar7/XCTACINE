@@ -1,5 +1,9 @@
 import { useFormik } from "formik";
-import signup from "../../api/userApi";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setToken } from "../../redux/userReducer";
+// import signup from "../../api/userApi";
+import {signup} from "../../api/apiUtil";
 import styled from "styled-components";
 import * as Yup from "yup";
 import {
@@ -11,6 +15,9 @@ import {
 } from "@material-tailwind/react";
 
 const Signup = () => {
+const dispatch = useDispatch();
+const navigate=useNavigate()
+
   const SignupSchema = Yup.object().shape({
     Name: Yup.string()
       .max(1, "Must be 20 characters or less")
@@ -37,10 +44,18 @@ const Signup = () => {
     },
     validationSchema: SignupSchema,
     onSubmit:async(values) => {
-      const response=await signup(values)
-      console.log('signup jsx page ',response);
+      const response=await signup("/auth/signup", values)
+      // console.log('signup jsx page ',response);
+      dispatch(setToken(response.token))
+      navigate("/")
+
     },
   });
+
+
+
+
+
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
