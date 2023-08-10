@@ -12,10 +12,10 @@ const baseURL = axios.create({
 
 baseURL.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    // console.log("userAxios",token)
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+    const userToken = localStorage.getItem("userToken");
+    console.log("userAxios",userToken)
+    if (userToken) {
+      config.headers["Authorization"] = `Bearer ${userToken}`;
     } else {
       delete config.headers["Authorization"];
     }

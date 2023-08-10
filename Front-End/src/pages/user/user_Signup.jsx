@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../redux/userReducer";
-// import signup from "../../api/userApi";
+
 import {signup} from "../../api/apiUtil";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -44,9 +44,10 @@ const navigate=useNavigate()
     },
     validationSchema: SignupSchema,
     onSubmit:async(values) => {
-      const response=await signup("/auth/signup", values)
-      // console.log('signup jsx page ',response);
+      const response=await signup("/auth/user/signup", values)
+      localStorage.setItem("userToken", response.token);
       dispatch(setToken(response.token))
+      
       navigate("/")
 
     },

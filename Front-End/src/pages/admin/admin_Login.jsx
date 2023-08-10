@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
-
+import { login } from "../../api/apiUtil";
 import {
   Card,
   Input,
@@ -10,7 +10,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-export function SimpleRegistrationForm() {
+
+export function AdminLogin() {
   const SignupSchema = Yup.object().shape({
     Email: Yup.string().email("Invalid email").required("Required"),
     Password: Yup.string()
@@ -27,8 +28,10 @@ export function SimpleRegistrationForm() {
       Password: "",
     },
     validationSchema: SignupSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      console.log(values);
+      const response = await login ("/admin/login", values);
+      console.log("login response", response);
     },
   });
 
@@ -48,9 +51,7 @@ export function SimpleRegistrationForm() {
               size="lg"
               name="Email"
               label="Email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.Email}
+              {...formik.getFieldProps("Email")}
             />
             {formik.errors.Email && formik.touched.Email && (
               <Error>{formik.errors.Email}</Error>
@@ -62,22 +63,13 @@ export function SimpleRegistrationForm() {
               name="Password"
               size="lg"
               label="Password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.Password}
+              {...formik.getFieldProps("Password")}
             />
             {formik.errors.Password && formik.touched.Password && (
               <Error>{formik.errors.Password}</Error>
             )}
           </div>
         </div>
-        
-
-
-
-
-
-
         <Checkbox
           label={
             <Typography
@@ -96,8 +88,8 @@ export function SimpleRegistrationForm() {
           }
           containerProps={{ className: "-ml-2.5" }}
         />
-        <Button className="mt-6" fullWidth>
-          Register
+        <Button type="submit" className="mt-6" fullWidth>
+          Login 
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}

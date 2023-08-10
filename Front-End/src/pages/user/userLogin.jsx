@@ -36,9 +36,11 @@ export function LoginForm() {
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
       console.log(values);
-      const response = await login("/auth/login", values);
+      const response = await login("/auth/user/login", values);
       console.log("login response", response);
       dispatch(setToken(response.token));
+     
+      
       navigate("/");
     },
   });

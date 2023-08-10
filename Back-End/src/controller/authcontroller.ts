@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../model/userSchema";
+import Theatre from "../model/theaterSchema";
 import bcrypt from "bcryptjs";
 
 import { generateJWT, verifyjwt } from "../authService/JwtAuth";
@@ -85,9 +86,46 @@ const authController = {
     }
   },
 
-  TheaterLogin: (req: Request, res: Response) => {},
+  TheatreLogin: (req: Request, res: Response) => {},
 
-  TheaterSignUp: (req: Request, res: Response) => {},
+  TheatreSignUp: async(req: Request, res: Response) => {
+
+    try{
+    const {
+      Email,
+      Name,
+      Password,
+    }: { Email: string; Name: string; Password: string } = req.body;
+
+    let hashedPassword: string = await bcrypt.hash(Password, 10);
+
+    const existingtheatre = await User.findOne({ Email: Email });
+      if (existingtheatre) {
+        return res.json({ theatreExist: true, message: "Theatre already exists" });
+      }
+
+      const newTheatreData: any = await Theatre.create({
+        Email,
+        Name,
+        Password: hashedPassword,
+      });
+      delete newTheatreData._doc.Password;
+
+      const jwt = generateJWT(newTheatreData._id.toString());
+      
+      res.json({
+        user: newTheatreData,
+        created: true,
+        token: jwt,
+        status: "success",
+      });
+    }
+    catch (error) {
+      res.json({ status: "failed", message: "password not matched" });
+    }
+   
+
+  },
 
   adminLogin: (req: Request, res: Response) => {},
 };

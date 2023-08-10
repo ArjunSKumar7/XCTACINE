@@ -1,4 +1,9 @@
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setToken } from "../../redux/userReducer";
+
+import {signup} from "../../api/apiUtil";
 import styled from "styled-components";
 import * as Yup from "yup";
 import {
@@ -9,7 +14,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-const Signup = () => {
+const TheatreSignup = () => {
+const dispatch = useDispatch();
+const navigate=useNavigate()
+
   const SignupSchema = Yup.object().shape({
     Name: Yup.string()
       .max(1, "Must be 20 characters or less")
@@ -35,14 +43,24 @@ const Signup = () => {
       rePassword: "",
     },
     validationSchema: SignupSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit:async(values) => {
+       
+      const response=await signup("/auth/theatre/signup", values)
+     console.log(response,"theatre response")
+      dispatch(setToken(response.token))
+      navigate("/theatre/login")
+
     },
   });
+
+
+
+
+
   return (
     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
-        Theater Sign Up
+        Sign Up
       </Typography>
       <Typography color="gray" className="mt-1 font-normal">
         Enter your details to register.
@@ -57,9 +75,7 @@ const Signup = () => {
     size="lg"
     name="Name"
     label="Name"
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-    value={formik.values.Name}
+    {...formik.getFieldProps('Name')}
   />
   {formik.touched.Name && formik.errors.Name && (
     <Error>{formik.errors.Name}</Error>
@@ -71,9 +87,7 @@ const Signup = () => {
               size="lg"
               name="Email"
               label="Email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.Email}
+              {...formik.getFieldProps('Email')}
             />
             {formik.errors.Email && formik.touched.Email && (
               <Error>{formik.errors.Email}</Error>
@@ -85,9 +99,7 @@ const Signup = () => {
               name="Password"
               size="lg"
               label="Password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.Password}
+              {...formik.getFieldProps('Password')}
             />
             {formik.errors.Password && formik.touched.Password && (
               <Error>{formik.errors.Password}</Error>
@@ -99,9 +111,7 @@ const Signup = () => {
               name="rePassword"
               size="lg"
               label="re-Password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}  
-              value={formik.values.rePassword}
+              {...formik.getFieldProps('rePassword')}
             />
             {formik.errors.rePassword && formik.touched.rePassword && (
               <Error>{formik.errors.rePassword}</Error>
@@ -143,11 +153,11 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default TheatreSignup;
 
 const Error = styled.span`
   font-size: 12px;
   color: red;
   position: absolute;
-  left: 0;
+  left: 0px;
 `;

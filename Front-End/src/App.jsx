@@ -2,31 +2,37 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 // import {useNavigate} from 'react-router-dom';
 import Home from "../src/pages/user/home";
+import {TheatreHome} from "../src/pages/theatre/theatre_Home";
 
 import "./App.css";
-
+import {TheatreLogin} from "../src/pages/theatre/theatre_Login"
+import TheatreSignup from "../src/pages/theatre/theatre_SignUp"
 import { LoginForm } from "./pages/user/userLogin";
+import {AdminLogin} from "./pages/admin/admin_Login";
 import Signup from "./pages/user/user_Signup";
 
 
 function App() {
-  // const navigate =useNavigate()
+  
   const reduxToken = useSelector((state) => state.user.userToken);
-  // localStorage.removeItem("token");
-  // console.log(reduxToken,reduxToken.length)
-  // if(reduxToken){
-  //   navigate("/")
-  // }
+ console.log("reduxToken", reduxToken)
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={reduxToken ? <Home /> : <LoginForm />} />
       </Routes>
       <Routes>
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<Signup/>} />
       </Routes>
       <Routes>
-        <Route path="/theatre/login" element={<Signup />} />
+        <Route path="/theatre/login" element={reduxToken ? <TheatreHome /> :<TheatreLogin/>} />
+      </Routes>
+      <Routes>
+        <Route path="/theatre/signup" element={<TheatreSignup/>} />
+      </Routes>
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin/>} />
       </Routes>
     
     </Router>
