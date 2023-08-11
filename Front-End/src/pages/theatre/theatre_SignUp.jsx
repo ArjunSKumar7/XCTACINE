@@ -1,9 +1,9 @@
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setToken } from "../../redux/userReducer";
+import { setTheatreToken } from "../../redux/theatreReducer";
 
-import {signup} from "../../api/apiUtil";
+import {signup} from "../../api/theater/theaterApi";
 import styled from "styled-components";
 import * as Yup from "yup";
 import {
@@ -44,10 +44,12 @@ const navigate=useNavigate()
     },
     validationSchema: SignupSchema,
     onSubmit:async(values) => {
-       
+       console.log("theatre values",values)
       const response=await signup("/auth/theatre/signup", values)
-     console.log(response,"theatre response")
-      dispatch(setToken(response.token))
+     console.log("theatre response",response)
+      dispatch(setTheatreToken(response.token))
+    
+      localStorage.setItem("theatreToken", response.token);
       navigate("/theatre/login")
 
     },
@@ -150,7 +152,7 @@ const navigate=useNavigate()
         </Typography>
       </form>
     </Card>
-  );
+  ); 
 };
 
 export default TheatreSignup;

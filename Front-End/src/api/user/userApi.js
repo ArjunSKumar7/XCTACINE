@@ -1,8 +1,8 @@
-import baseURL from "./userAxios";
+import user_baseURL from "./userAxios";
 
 export const signup = async (endpoint, values) => {
   try {
-    const response = await baseURL.post(endpoint, values);
+    const response = await user_baseURL.post(endpoint, values);
     return response?.data;
   } catch (error) {
     console.error("Signup error:", error);
@@ -12,7 +12,7 @@ export const signup = async (endpoint, values) => {
 
 export const login = async (endpoint, values) => {
   try {
-    const response = await baseURL.post(endpoint, values);
+    const response = await user_baseURL.post(endpoint, values);
     return response?.data;
   } catch (error) {
     console.error("Signup error:", error);

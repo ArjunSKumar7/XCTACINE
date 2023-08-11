@@ -14,19 +14,21 @@ import Signup from "./pages/user/user_Signup";
 
 function App() {
   
-  const reduxToken = useSelector((state) => state.user.userToken);
- console.log("reduxToken", reduxToken)
+  const userToken = useSelector((state) => state.user.userToken);
+  const theatreToken = useSelector((state) => state.theatre.theatreToken);
+  console.log("app.js theatretoken",theatreToken)
+  // const adminToken = useSelector((state) => state.admin.adminToken);
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={reduxToken ? <Home /> : <LoginForm />} />
+        <Route path="/" element={userToken ? <Home /> : <LoginForm />} />
       </Routes>
       <Routes>
         <Route path="/signup" element={<Signup/>} />
       </Routes>
       <Routes>
-        <Route path="/theatre/login" element={reduxToken ? <TheatreHome /> :<TheatreLogin/>} />
+        <Route path="/theatre/login" element={theatreToken ? <TheatreHome /> :<TheatreLogin/>} />
       </Routes>
       <Routes>
         <Route path="/theatre/signup" element={<TheatreSignup/>} />

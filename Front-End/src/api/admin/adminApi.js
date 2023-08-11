@@ -1,8 +1,8 @@
-import theatre_baseURL  from "./theaterAxios";
+import admin_baseURL  from "./adminAxios";
 
 export const signup = async (endpoint, values) => {
   try {
-    const response = await theatre_baseURL .post(endpoint, values);
+    const response = await admin_baseURL .post(endpoint, values);
     return response?.data;
   } catch (error) {
     console.error("Signup error:", error);
@@ -12,7 +12,7 @@ export const signup = async (endpoint, values) => {
 
 export const login = async (endpoint, values) => {
   try {
-    const response = await theatre_baseURL .post(endpoint, values);
+    const response = await admin_baseURL .post(endpoint, values);
     return response?.data;
   } catch (error) {
     console.error("Signup error:", error);

@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { login } from "../../api/apiUtil";
-import setToken  from "../../redux/userReducer";
+import { login } from "../../api/theater/theaterApi";
+import { setTheatreToken } from "../../redux/theatreReducer";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -38,7 +38,8 @@ export function TheatreLogin() {
       console.log(values);
       const response = await login("/auth/theatre/login", values);
       console.log("login response", response);
-      dispatch(setToken(response.token));
+      dispatch(setTheatreToken(response.token));
+      localStorage.setItem("theatreToken", response.token);
       navigate("/theatre/login");
     },
   });
@@ -46,7 +47,7 @@ export function TheatreLogin() {
   return (
     <Card className="flex flex-col items-center justify-center pt-16 w-100" color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
-        Log In
+        Theatre Log In
       </Typography>
       <Typography color="gray" className="mt-1 font-normal">
         Enter your details to login.

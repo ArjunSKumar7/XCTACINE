@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { login } from "../../api/apiUtil";
+import { login } from "../../api/admin/adminApi";
 import {
   Card,
   Input,

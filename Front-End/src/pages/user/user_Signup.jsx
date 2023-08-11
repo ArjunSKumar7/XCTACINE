@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../redux/userReducer";
 
-import {signup} from "../../api/apiUtil";
+import {signup} from "../../api/user/userApi";
 import styled from "styled-components";
 import * as Yup from "yup";
 import {

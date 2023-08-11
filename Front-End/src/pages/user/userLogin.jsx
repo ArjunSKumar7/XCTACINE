@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { login } from "../../api/apiUtil";
+import { login } from "../../api/user/userApi";
 import { setToken } from "../../redux/userReducer";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ export function LoginForm() {
       const response = await login("/auth/user/login", values);
       console.log("login response", response);
       dispatch(setToken(response.token));
-     
+     localStorage.setItem("userToken", response.token);
       
       navigate("/");
     },

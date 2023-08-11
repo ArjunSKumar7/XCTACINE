@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BaseUrl = "http://localhost:3000/api";
 
-const theatre_baseURL = axios.create({
+const admin_baseURL = axios.create({
   baseURL: BaseUrl,
   headers: {
     "Content-Type": "application/json", // Set the content type to JSON
@@ -10,12 +10,12 @@ const theatre_baseURL = axios.create({
 });
 // console.log("baseURL",baseURL)
 
-theatre_baseURL .interceptors.request.use(
+admin_baseURL.interceptors.request.use(
   (config) => {
-    const theatreToken = localStorage.getItem("theatreToken");
-    console.log("theatreToken",theatreToken)
-    if (theatreToken) {
-      config.headers["Authorization"] = `Bearer ${theatreToken}`;
+    const userToken = localStorage.getItem("userToken");
+    console.log("userAxios",userToken)
+    if (userToken) {
+      config.headers["Authorization"] = `Bearer ${userToken}`;
     } else {
       delete config.headers["Authorization"];
     }
@@ -27,4 +27,4 @@ theatre_baseURL .interceptors.request.use(
   }
 );
 
-export default theatre_baseURL ;
+export default admin_baseURL;

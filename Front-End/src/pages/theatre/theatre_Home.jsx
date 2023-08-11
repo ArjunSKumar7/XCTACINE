@@ -1,7 +1,7 @@
 
 
 import { useDispatch } from "react-redux";
-import {userLogout } from "../../redux/userReducer.js"
+import { theatreLogout } from "../../redux/theatreReducer";
 import React from "react";
 import {
   Navbar,
@@ -79,7 +79,7 @@ export function TheatreHome() {
           Material Tailwind
         </Typography>
         <div className="hidden lg:block">{navList}</div>
-        <Button onClick={()=>{dispatch(userLogout())}} variant="gradient" size="sm" className="hidden lg:inline-block">
+        <Button onClick={()=>{dispatch(theatreLogout())}} variant="gradient" size="sm" className="hidden lg:inline-block">
           <span>LogOut</span>
         </Button>
         <IconButton
@@ -123,7 +123,7 @@ export function TheatreHome() {
       <MobileNav open={openNav}>
         <div className="container mx-auto">
           {navList}
-          <Button onClick={()=>{dispatch(userLogout())}} variant="gradient" size="sm" fullWidth className="mb-2">
+          <Button onClick={()=>{dispatch(theatreLogout())}} variant="gradient" size="sm" fullWidth className="mb-2">
             <span>LogOut</span>
           </Button>
         </div>
