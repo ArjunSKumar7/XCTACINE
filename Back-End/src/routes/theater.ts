@@ -1,7 +1,7 @@
 import express from 'express'
 
 
-const theaterRoute=()=>{
+const theatreRoute=()=>{
     const router = express.Router()
 
 
@@ -9,4 +9,4 @@ const theaterRoute=()=>{
 
 
 }
-export default theaterRoute
+export default theatreRoute

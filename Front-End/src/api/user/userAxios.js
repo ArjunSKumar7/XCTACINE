@@ -8,12 +8,12 @@ const user_baseURL = axios.create({
     "Content-Type": "application/json", // Set the content type to JSON
   },
 });
-// console.log("baseURL",baseURL)
+
 
 user_baseURL.interceptors.request.use(
   (config) => {
     const userToken = localStorage.getItem("userToken");
-    console.log("userAxios",userToken)
+  
     if (userToken) {
       config.headers["Authorization"] = `Bearer ${userToken}`;
     } else {

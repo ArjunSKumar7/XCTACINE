@@ -1,12 +1,12 @@
 import express from 'express'
+import admincontroller from '../controller/adminController'
 
 
-const adminRoute=()=>{
     const router = express.Router()
 
 
-    router.get('/',)
+    router.get("/userlist",admincontroller.userlistfetch)
+    router.get("/theatrelist",admincontroller.theatrelistfetch)
 
 
-}
-export default adminRoute
+export default router

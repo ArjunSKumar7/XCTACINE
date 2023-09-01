@@ -5,15 +5,17 @@ import { login } from "../../api/user/userApi";
 import { setToken } from "../../redux/userReducer";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import {
   Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
   Input,
   Checkbox,
   Button,
-  Typography,
 } from "@material-tailwind/react";
-
+ 
 export function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,9 +37,7 @@ export function LoginForm() {
     },
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
-      console.log(values);
       const response = await login("/auth/user/login", values);
-      console.log("login response", response);
       dispatch(setToken(response.token));
      localStorage.setItem("userToken", response.token);
       
@@ -46,20 +46,22 @@ export function LoginForm() {
   });
 
   return (
-    <Card className="flex flex-col items-center justify-center pt-16 w-100" color="transparent" shadow={false}>
-      <Typography variant="h4" color="blue-gray">
-        Log In
-      </Typography>
-      <Typography color="gray" className="mt-1 font-normal">
-        Enter your details to login.
-      </Typography>
+    <Card className="w-96">
+      <CardHeader
+        variant="gradient"
+        color="gray"
+        className="mb-4 grid h-28 place-items-center"
+      >
+        <Typography variant="h3" color="white">
+          Log In
+        </Typography>
+      </CardHeader>
       <form
         onSubmit={formik.handleSubmit}
         className="mt-2 mb-2 w-80 max-w-screen-lg sm:w-96"
       >
-        <div className="mb-4 flex flex-col gap-6">
-          <div className="position-relative">
-            <Input
+      <CardBody className="flex flex-col gap-4">
+      <Input
               size="lg"
               name="Email"
               label="Email"
@@ -68,9 +70,9 @@ export function LoginForm() {
             {formik.errors.Email && formik.touched.Email && (
               <Error>{formik.errors.Email}</Error>
             )}
-          </div>
-          <div className="position-relative">
-            <Input
+
+       
+        <Input
               type="password"
               name="Password"
               size="lg"
@@ -80,43 +82,33 @@ export function LoginForm() {
             {formik.errors.Password && formik.touched.Password && (
               <Error>{formik.errors.Password}</Error>
             )}
-          </div>
+
+        <div className="-ml-2.5">
+          <Checkbox label="Remember Me" />
         </div>
-        <Checkbox
-          label={
-            <Typography
-              variant="small"
-              color="gray"
-              className="flex items-center font-normal"
-            >
-              I agree the
-              <a
-                href="#"
-                className="font-medium transition-colors hover:text-blue-500"
-              >
-                &nbsp;Terms and Conditions
-              </a>
-            </Typography>
-          }
-          containerProps={{ className: "-ml-2.5" }}
-        />
-        <Button type="submit" className="mt-6" fullWidth>
-          Login
+      </CardBody>
+    
+      <CardFooter className="pt-0">
+        <Button  type="submit" variant="gradient" fullWidth>
+          Log In
         </Button>
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Already have an account?{" "}
-          <a
-            href="#"
-            className="font-medium text-blue-500 transition-colors hover:text-blue-700"
+        <Typography variant="small" className="mt-6 flex justify-center">
+        Already have an account?{" "}
+          <Typography
+            as="a"
+            href="/signup"
+            variant="small"
+            color="blue-gray"
+            className="ml-1 font-bold"
           >
-            Sign In
-          </a>
+            Sign up
+          </Typography>
         </Typography>
+      </CardFooter>
       </form>
     </Card>
   );
 }
-
 const Error = styled.span`
   font-size: 12px;
   color: red;

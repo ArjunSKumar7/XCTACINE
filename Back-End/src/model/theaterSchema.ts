@@ -39,5 +39,5 @@ const theatreSchema = new Schema (
 )
 
 
-const Theater=model('TheatreSchema',theatreSchema)
-export default Theater
+const Theatre=model('TheatreSchema',theatreSchema)
+export default Theatre

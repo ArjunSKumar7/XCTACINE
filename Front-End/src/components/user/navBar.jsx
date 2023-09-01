@@ -32,7 +32,7 @@ export function NavBar() {
         className="p-1 font-normal"
       >
         <a href="#" className="flex items-center">
-          Pages
+          Pages 
         </a>
       </Typography>
       <Typography

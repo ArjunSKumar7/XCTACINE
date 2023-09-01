@@ -1,7 +1,11 @@
 import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { login } from "../../api/admin/adminApi";
+import { login } from "../../api/user/userApi";
+import { setToken } from "../../redux/userReducer";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import {
   Card,
   Input,
@@ -10,8 +14,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+export function LoginForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-export function AdminLogin() {
   const SignupSchema = Yup.object().shape({
     Email: Yup.string().email("Invalid email").required("Required"),
     Password: Yup.string()
@@ -29,25 +35,29 @@ export function AdminLogin() {
     },
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      const response = await login ("/admin/login", values);
-      console.log("login response", response);
+      const response = await login("/auth/user/login", values);
+      dispatch(setToken(response.token));
+     localStorage.setItem("userToken", response.token);
+      
+      navigate("/");
     },
   });
 
   return (
-
-    <Card color="transparent" shadow={false}>
+    <Card className="flex flex-col items-center justify-center pt-16 w-100" color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
-        Admin Login In
+        Log In
       </Typography>
       <Typography color="gray" className="mt-1 font-normal">
         Enter your details to login.
       </Typography>
-      <form  onSubmit={formik.handleSubmit} className="mt-2 mb-2 w-80 max-w-screen-lg sm:w-96">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="mt-2 mb-2 w-80 max-w-screen-lg sm:w-96"
+      >
         <div className="mb-4 flex flex-col gap-6">
-        <div className="position-relative">
-        <Input
+          <div className="position-relative">
+            <Input
               size="lg"
               name="Email"
               label="Email"
@@ -89,7 +99,7 @@ export function AdminLogin() {
           containerProps={{ className: "-ml-2.5" }}
         />
         <Button type="submit" className="mt-6" fullWidth>
-          Login 
+          Login
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
@@ -104,7 +114,6 @@ export function AdminLogin() {
     </Card>
   );
 }
-
 
 const Error = styled.span`
   font-size: 12px;

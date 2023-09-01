@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setTheatreToken } from "../../redux/theatreReducer";
 
-import {signup} from "../../api/theater/theaterApi";
+import { signup } from "../../api/theater/theaterApi";
 import styled from "styled-components";
 import * as Yup from "yup";
 import {
@@ -15,8 +15,8 @@ import {
 } from "@material-tailwind/react";
 
 const TheatreSignup = () => {
-const dispatch = useDispatch();
-const navigate=useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const SignupSchema = Yup.object().shape({
     Name: Yup.string()
@@ -30,7 +30,7 @@ const navigate=useNavigate()
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
-      
+
     rePassword: Yup.string()
       .oneOf([Yup.ref("Password"), ""], "Password not match")
       .required("Required"),
@@ -43,24 +43,18 @@ const navigate=useNavigate()
       rePassword: "",
     },
     validationSchema: SignupSchema,
-    onSubmit:async(values) => {
-       console.log("theatre values",values)
-      const response=await signup("/auth/theatre/signup", values)
-     console.log("theatre response",response)
-      dispatch(setTheatreToken(response.token))
-    
+    onSubmit: async (values) => {
+      console.log("theatre values", values);
+      const response = await signup("/auth/theatre/signup", values);
+      console.log("theatre response", response);
+      dispatch(setTheatreToken(response.token));
       localStorage.setItem("theatreToken", response.token);
-      navigate("/theatre/login")
-
-    },
+      navigate("/theatre/login");
+    }, 
   });
 
-
-
-
-
   return (
-    <Card color="transparent" shadow={false}>
+    <Card color="transparent" className="flex flex-col items-center justify-center pt-16 w-100" shadow={false}>
       <Typography variant="h4" color="blue-gray">
         Sign Up
       </Typography>
@@ -72,24 +66,24 @@ const navigate=useNavigate()
         className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
       >
         <div className="mb-4 flex flex-col gap-6">
-        <div className="position-relative">
-  <Input
-    size="lg"
-    name="Name"
-    label="Name"
-    {...formik.getFieldProps('Name')}
-  />
-  {formik.touched.Name && formik.errors.Name && (
-    <Error>{formik.errors.Name}</Error>
-  )}
-</div>
+          <div className="position-relative">
+            <Input
+              size="lg"
+              name="Name"
+              label="Name"
+              {...formik.getFieldProps("Name")}
+            />
+            {formik.touched.Name && formik.errors.Name && (
+              <Error>{formik.errors.Name}</Error>
+            )}
+          </div>
 
           <div className="position-relative">
             <Input
               size="lg"
               name="Email"
               label="Email"
-              {...formik.getFieldProps('Email')}
+              {...formik.getFieldProps("Email")}
             />
             {formik.errors.Email && formik.touched.Email && (
               <Error>{formik.errors.Email}</Error>
@@ -101,7 +95,7 @@ const navigate=useNavigate()
               name="Password"
               size="lg"
               label="Password"
-              {...formik.getFieldProps('Password')}
+              {...formik.getFieldProps("Password")}
             />
             {formik.errors.Password && formik.touched.Password && (
               <Error>{formik.errors.Password}</Error>
@@ -112,8 +106,8 @@ const navigate=useNavigate()
               type="password"
               name="rePassword"
               size="lg"
-              label="re-Password"
-              {...formik.getFieldProps('rePassword')}
+              label="Re-Password"
+              {...formik.getFieldProps("rePassword")}
             />
             {formik.errors.rePassword && formik.touched.rePassword && (
               <Error>{formik.errors.rePassword}</Error>
@@ -144,7 +138,7 @@ const navigate=useNavigate()
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
           <a
-            href="#"
+            href="/theatre/login"
             className="font-medium text-blue-500 transition-colors hover:text-blue-700"
           >
             Sign In
@@ -152,7 +146,7 @@ const navigate=useNavigate()
         </Typography>
       </form>
     </Card>
-  ); 
+  );
 };
 
 export default TheatreSignup;
@@ -160,6 +154,6 @@ export default TheatreSignup;
 const Error = styled.span`
   font-size: 12px;
   color: red;
-  position: absolute;
-  left: 0px;
+  // position: ;
+  // left: px;
 `;

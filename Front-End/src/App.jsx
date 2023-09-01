@@ -1,23 +1,28 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 // import {useNavigate} from 'react-router-dom';
-import Home from "../src/pages/user/home";
-import {TheatreHome} from "../src/pages/theatre/theatre_Home";
+import Home from "../src/pages/user/Home";
+import TheatreHome from "../src/pages/theatre/TheatreHome";
 
 import "./App.css";
-import {TheatreLogin} from "../src/pages/theatre/theatre_Login"
-import TheatreSignup from "../src/pages/theatre/theatre_SignUp"
-import { LoginForm } from "./pages/user/userLogin";
-import {AdminLogin} from "./pages/admin/admin_Login";
-import Signup from "./pages/user/user_Signup";
+import {TheatreLogin} from "../src/pages/theatre/TheatreLogin"
+import TheatreSignup from "../src/pages/theatre/TheatreSignUp"
+import { LoginForm } from "./pages/user/UserLogin";
+import {AdminLogin} from "./pages/admin/AdminLogin";
+import Signup from "./pages/user/UserSignup";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUserDetails from "./pages/admin/AdminUserDetails";
+import AdminTheatreDetails from "./pages/admin/AdminTheatreDetails";
 
 
 function App() {
   
   const userToken = useSelector((state) => state.user.userToken);
   const theatreToken = useSelector((state) => state.theatre.theatreToken);
-  console.log("app.js theatretoken",theatreToken)
-  // const adminToken = useSelector((state) => state.admin.adminToken);
+
+  const adminToken = useSelector((state) => state.admin.adminToken);
+  const theatredata = useSelector((state) => state.theatre.theatreDetails);
+  console.log("theatredataxxx", theatredata);
 
   return (
     <Router>
@@ -35,6 +40,16 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/admin/login" element={<AdminLogin/>} />
+      </Routes>
+      <Routes>
+        <Route path="/admin/dashboard" element={adminToken? <AdminDashboard/> : <AdminLogin/>} />
+      </Routes>
+      <Routes>
+        <Route path="/admin/userlist" element={adminToken? <AdminUserDetails/> : <AdminLogin/>} />
+      </Routes>
+
+      <Routes>
+        <Route path="/admin/theatrelist" element={adminToken? <AdminTheatreDetails/> : <AdminLogin/>} />
       </Routes>
     
     </Router>

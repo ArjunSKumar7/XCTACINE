@@ -8,12 +8,12 @@ const theatre_baseURL = axios.create({
     "Content-Type": "application/json", // Set the content type to JSON
   },
 });
-// console.log("baseURL",baseURL)
 
-theatre_baseURL .interceptors.request.use(
+
+theatre_baseURL.interceptors.request.use(
   (config) => {
     const theatreToken = localStorage.getItem("theatreToken");
-    console.log("theatreToken",theatreToken)
+   
     if (theatreToken) {
       config.headers["Authorization"] = `Bearer ${theatreToken}`;
     } else {

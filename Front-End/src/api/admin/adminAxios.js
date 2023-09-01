@@ -12,10 +12,10 @@ const admin_baseURL = axios.create({
 
 admin_baseURL.interceptors.request.use(
   (config) => {
-    const userToken = localStorage.getItem("userToken");
-    console.log("userAxios",userToken)
-    if (userToken) {
-      config.headers["Authorization"] = `Bearer ${userToken}`;
+    const adminToken = localStorage.getItem("adminToken");
+    // console.log("adminAxios",adminToken)
+    if (adminToken) {
+      config.headers["Authorization"] = `Bearer ${adminToken}`;
     } else {
       delete config.headers["Authorization"];
     }

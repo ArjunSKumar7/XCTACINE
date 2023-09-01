@@ -1,11 +1,10 @@
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setToken } from "../../redux/userReducer";
-
-import {signup} from "../../api/user/userApi";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { login } from "../../api/admin/adminApi";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setAdminToken } from "../../redux/adminReducer";
 import {
   Card,
   Input,
@@ -14,14 +13,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-const Signup = () => {
-const dispatch = useDispatch();
-const navigate=useNavigate()
+export function AdminLogin() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const SignupSchema = Yup.object().shape({
-    Name: Yup.string()
-      .max(1, "Must be 20 characters or less")
-      .required("Required"),
     Email: Yup.string().email("Invalid email").required("Required"),
     Password: Yup.string()
       .min(1, "Must be 8 characters or more")
@@ -30,64 +26,44 @@ const navigate=useNavigate()
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
-      
-    rePassword: Yup.string()
-      .oneOf([Yup.ref("Password"), ""], "Password not match")
-      .required("Required"),
   });
   const formik = useFormik({
     initialValues: {
-      Name: "",
       Email: "",
       Password: "",
-      rePassword: "",
     },
     validationSchema: SignupSchema,
-    onSubmit:async(values) => {
-      const response=await signup("/auth/user/signup", values)
-      localStorage.setItem("userToken", response.token);
-      dispatch(setToken(response.token))
-      
-      navigate("/")
-
+    onSubmit: async (values) => {
+      const response = await login("/auth/admin/login", values);
+      dispatch(setAdminToken(response.token));
+      localStorage.setItem("adminToken",response.token);
+      navigate("/admin/dashboard");
     },
   });
 
-
-
-
-
   return (
-    <Card color="transparent" shadow={false}>
+    <Card
+      color="transparent"
+      className="flex flex-col items-center justify-center pt-16 w-100"
+      shadow={false}
+    >
       <Typography variant="h4" color="blue-gray">
-        Sign Up
+        Admin Login In
       </Typography>
       <Typography color="gray" className="mt-1 font-normal">
-        Enter your details to register.
+        Enter your details to login.
       </Typography>
       <form
         onSubmit={formik.handleSubmit}
-        className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+        className="mt-2 mb-2 w-80 max-w-screen-lg sm:w-96"
       >
         <div className="mb-4 flex flex-col gap-6">
-        <div className="position-relative">
-  <Input
-    size="lg"
-    name="Name"
-    label="Name"
-    {...formik.getFieldProps('Name')}
-  />
-  {formik.touched.Name && formik.errors.Name && (
-    <Error>{formik.errors.Name}</Error>
-  )}
-</div>
-
           <div className="position-relative">
             <Input
               size="lg"
               name="Email"
               label="Email"
-              {...formik.getFieldProps('Email')}
+              {...formik.getFieldProps("Email")}
             />
             {formik.errors.Email && formik.touched.Email && (
               <Error>{formik.errors.Email}</Error>
@@ -99,22 +75,10 @@ const navigate=useNavigate()
               name="Password"
               size="lg"
               label="Password"
-              {...formik.getFieldProps('Password')}
+              {...formik.getFieldProps("Password")}
             />
             {formik.errors.Password && formik.touched.Password && (
               <Error>{formik.errors.Password}</Error>
-            )}
-          </div>
-          <div className="position-relative">
-            <Input
-              type="password"
-              name="rePassword"
-              size="lg"
-              label="re-Password"
-              {...formik.getFieldProps('rePassword')}
-            />
-            {formik.errors.rePassword && formik.touched.rePassword && (
-              <Error>{formik.errors.rePassword}</Error>
             )}
           </div>
         </div>
@@ -137,7 +101,7 @@ const navigate=useNavigate()
           containerProps={{ className: "-ml-2.5" }}
         />
         <Button type="submit" className="mt-6" fullWidth>
-          Register
+          Login
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
@@ -151,13 +115,12 @@ const navigate=useNavigate()
       </form>
     </Card>
   );
-};
-
-export default Signup;
+}
 
 const Error = styled.span`
   font-size: 12px;
   color: red;
   position: absolute;
-  left: 0px;
+  left: 100px;
+  right: 100px;
 `;

@@ -8,7 +8,7 @@ const checkusertoken = () => {
   }
 };
 const initialState = {
-    adminToken: checkusertoken(),
+  adminToken: checkusertoken(),
 };
 
 const adminSlice = createSlice({
@@ -17,9 +17,8 @@ const adminSlice = createSlice({
   reducers: {
     setAdminToken: (state, action) => {
       state.adminToken = action.payload;
-      console.log("action.payload", action.payload);
+
       localStorage.setItem("adminToken", action.token);
-      // localStorage.removeItem("token")
     },
     adminLogout: (state) => {
       state.adminToken = null;
