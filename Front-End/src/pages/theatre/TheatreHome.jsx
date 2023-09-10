@@ -5,11 +5,14 @@ import {TheatreSideBar} from '../../components/theater/TheatreSideBar'
 
 const TheatreHome = (props) => {
   console.log("props", props);
-  console.log("props", props.data.approvalStatus);
+  console.log("props", props.data.approvalStatus); 
   return (
     <div>
 <TheatreNavBar/>
-<ApprovalBox data={props}/>
+if(props.data.approvalStatus){
+  <ApprovalBox data={props}/>
+}
+
 <TheatreSideBar/>
     </div>
   )

@@ -8,15 +8,18 @@ import {
   } from "@material-tailwind/react";
 
   import {addMovieData} from "../../api/theater/theaterApi"
-   
+   import { useNavigate } from "react-router-dom";
   export function MovieCard(props) {
-
+const navigate = useNavigate();
     const addMovie=props.data  
 
 async function handleAddMovie(addMovie){
       console.log("Add",addMovie)
-      const response = await addMovieData("/theatre/addmovie",addMovie)
+      const response = await addMovieData("/theatre/addmovie",addMovie).then(() => {
+        navigate("/theatre/movielist")
+      })
       console.log("response",response)
+
 
     }
 

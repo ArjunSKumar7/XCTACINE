@@ -6,7 +6,7 @@ import theatrecontoller from '../controller/theatreController'
 
 
     router.post('/addmovie',theatrecontoller.addMovie)
-
+    router.get('/fetchmovielist',theatrecontoller.fetchMovieList)
 
 
 export default router

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {auth,googleProvider} from "../../firebase/googleAuth/config"
 import {signInWithPopup} from 'firebase/auth'
+import {toast} from 'react-toastify';
 import {
   Card,
   CardHeader,
@@ -64,7 +65,21 @@ const handleGLogin=async()=>{
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
       const response = await login("/auth/user/login", values);
-      console.log("login response", response);
+      console.log("login response", response?.status);
+      if(response?.status=='user blocked'){
+        toast.error(response.status, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      
+      }
+      else{
       const userData={
         userToken:response.token,
         userId:response.user._id
@@ -73,8 +88,9 @@ const handleGLogin=async()=>{
      localStorage.setItem("userToken", response.token);
       
       navigate("/");
-    },
+    }}    
   });
+
 
 
 

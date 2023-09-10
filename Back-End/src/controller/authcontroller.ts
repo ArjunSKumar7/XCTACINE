@@ -20,7 +20,15 @@ const authController = {
         });
       }
 
+
+
       if (userData) {
+        if(userData.blockedStatus){
+          return res.json({
+            created: false,
+            status: "user blocked",
+          });
+        }
         if (userData.Password) {
           const validPassword = await bcrypt.compare(
             Password,

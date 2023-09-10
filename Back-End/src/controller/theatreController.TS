@@ -1,12 +1,51 @@
-import {Request,Response} from 'express';
+import { Request, Response } from "express";
+import Movie from "../model/movieSchema";
 
-const theatrecontroller={
+const theatrecontroller = {
+  addMovie: async (req: Request, res: Response) => {
+    try {
+      console.log(req.body);
 
-    addMovie:async (req:Request,res:Response)=>{
-        console.log("Add")
-        console.log("Add",req.body)
+      const  movieExist = await Movie.findOne({movieTitle: req.body.title})
+      if(movieExist){
+        return res.json({message:"movie already exist"})
+      }
+      else{
+      const movieUrl =`https://image.tmdb.org/t/p/w500${req.body?.poster_path}  `
+      const movieObj = new Movie({
+        movieId : req.body.id,
+        movieTitle: req.body.title,
+        movieLanguage: req.body.original_language,
+        movieOverview: req.body.overview,
+        moviePoster: movieUrl,
+        movieReleaseDate: req.body.release_date,
+      });
+      await movieObj.save().then((resposne)=>{
+        res.json({message:"movie added",resposne})
+      })
+      
     }
+      
+    } catch (error) {
+      console.log("addmovie backend error:", error);
+      res.json({ message: "addmovie backend error:", error });
+    }
+  },
 
-}
+
+  fetchMovieList: async (req: Request, res: Response) => {
+      try{
+        const movieListData=await Movie.find()
+      
+        res.json({movieList:movieListData})
+      }
+      catch(err){
+        console.log("fecthMovieList backend error:", err);
+        res.json({message:"fecthMovieList backend error:",err});
+      }
+  }
+
+
+};
 
 export default theatrecontroller;

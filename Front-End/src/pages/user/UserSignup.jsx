@@ -40,6 +40,10 @@ const handleOpen = () => setOpen(!open);
     rePassword: Yup.string()
       .oneOf([Yup.ref("Password"), ""], "Password not match")
       .required("Required"),
+
+      Mobile: Yup.string()
+      .matches(/^[0-9]{10}$/,'Mobile number must be a 10-digit numeric value')
+      .required('Required'),
   });
   const formik = useFormik({
     initialValues: {
@@ -123,14 +127,15 @@ return (
 
           <div className="position-relative">
             <Input
-              type="password"
-              name="rePassword"
+              type="text"
+              name="Mobile"
               size="lg"
-              label="Re-Password"
-              {...formik.getFieldProps('rePassword')}
+           
+              label="Mobile-Number"
+              {...formik.getFieldProps('Mobile')}
             />
-            {formik.errors.rePassword && formik.touched.rePassword && (
-              <Error>{formik.errors.rePassword}</Error>
+            {formik.errors.Mobile && formik.touched.Mobile && (
+              <Error>{formik.errors.Mobile}</Error>
             )}
           </div>
 

@@ -6,7 +6,8 @@ import {
     // Button,
   } from "@material-tailwind/react";
    
-  export function ApprovalBox() {
+  export function ApprovalBox(props) {
+    
     return (
       <Card className="mt-6 w-96">
         <CardBody>

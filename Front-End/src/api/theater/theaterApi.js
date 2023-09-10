@@ -32,3 +32,14 @@ export const addMovieData = async (endpoint, values) => {
   }
 }
 
+
+export const movieListDataFetch= async () => {
+  try{
+    const response =await theatre_baseURL.get("/theatre/fetchmovielist");
+    // console.log("movieListDataFetch api",response.data);
+    return response?.data
+  }catch(error){
+    console.log("movieListDataFetch api error:",error)
+
+  }
+}

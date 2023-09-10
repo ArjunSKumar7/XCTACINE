@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import {useNavigate} from 'react-router-dom';
 import UserHome from "../src/pages/user/UserHome";
 import TheatreHome from "../src/pages/theatre/TheatreHome";
@@ -13,7 +15,7 @@ import Signup from "./pages/user/UserSignup";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUserDetails from "./pages/admin/AdminUserDetails";
 import AdminTheatreDetails from "./pages/admin/AdminTheatreDetails";
-// import TheatreMovieDetails from "./pages/theatre/TheatreMovieDetails";
+import TheatreMovieDetails from "./pages/theatre/TheatreMovieDetails";
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
   console.log("theatredataxxx", theatredata);
 
   return (
+   <>
+    <ToastContainer />
     <Router>
       <Routes>
         <Route path="/" element={userToken ? <UserHome /> : <LoginForm />} />
@@ -53,11 +57,13 @@ function App() {
         <Route path="/admin/theatrelist" element={adminToken? <AdminTheatreDetails/> : <AdminLogin/>} />
       </Routes>
 
-      {/* <Routes>
+      <Routes>
         <Route path="/theatre/movielist" element={theatreToken? <TheatreMovieDetails/> : <TheatreLogin/>} />
-      </Routes> */}
+      </Routes>
     
     </Router>
+
+    </>
   );
 }
 

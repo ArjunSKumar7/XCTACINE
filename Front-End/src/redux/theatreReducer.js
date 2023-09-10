@@ -9,7 +9,8 @@ const checkusertoken = () => {
 };
 const initialState = {
   theatreToken: checkusertoken(),
-  theatreDetails:{}
+  theatreDetails:{},
+  addedMovies:[],
 };
 
 const theatreSlice = createSlice({
@@ -26,6 +27,9 @@ const theatreSlice = createSlice({
       console.log("theatre details", action.payload);
       state.theatreDetails = action.payload;
     },
+    setAddedMovies: (state, action) => {
+      state.addedMovies = action.payload;
+    },
 
     theatreLogout: (state) => {
       state.theatreToken = null;
@@ -34,5 +38,5 @@ const theatreSlice = createSlice({
   },
 });
 
-export const { setTheatreToken, theatreLogout,setTheatreDetails } = theatreSlice.actions;
+export const { setTheatreToken, theatreLogout,setTheatreDetails,setAddedMovies } = theatreSlice.actions;
 export default theatreSlice.reducer;

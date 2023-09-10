@@ -25,6 +25,8 @@ import {
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
+import { useDispatch } from "react-redux";
+import{theatreLogout} from "../../redux/theatreReducer"
  
 // profile menu component
 const profileMenuItems = [
@@ -51,6 +53,12 @@ const profileMenuItems = [
 ];
  
 function ProfileMenu() {
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  const signout = () => {
+    dispatch(theatreLogout());
+  }
+  
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
  
   const closeMenu = () => setIsMenuOpen(false);
@@ -84,7 +92,12 @@ function ProfileMenu() {
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={() => {
+                if (label === "Sign Out") {
+                  signout(); // Call the handleLogout function when "Sign Out" is clicked
+                  closeMenu(); // Close the menu after clicking "Sign Out"
+                }
+              }}
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"

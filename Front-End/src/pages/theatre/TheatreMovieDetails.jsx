@@ -7,7 +7,9 @@ function TheatreMovieDetails() {
     <div>
         <TheatreNavBar/>
         <TheatreSideBar/>
+        <div className='ms-[18.1rem] w-[calc(100vw-18.1rem)] h-[calc(98.9vh-56px)]'>
         <TheatreMovieList/>
+        </div>
     </div>
   )
 }

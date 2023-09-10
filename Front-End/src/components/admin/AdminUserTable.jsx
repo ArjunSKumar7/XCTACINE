@@ -79,8 +79,8 @@ const toggleHandle =async()=>{
         <Chip
           variant="ghost"
           size="sm"
-          value={isSwitchOn ? "Active" : "Inactive"}
-          color={isSwitchOn ? "green" : "red"}
+          value={isSwitchOn ? "Inactive" : "Active"}
+          color={isSwitchOn ? "red" : "green"}
         />
       </div>
     </td>
