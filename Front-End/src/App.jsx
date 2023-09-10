@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 // import {useNavigate} from 'react-router-dom';
-import Home from "../src/pages/user/Home";
+import UserHome from "../src/pages/user/UserHome";
 import TheatreHome from "../src/pages/theatre/TheatreHome";
 
 import "./App.css";
@@ -13,6 +13,7 @@ import Signup from "./pages/user/UserSignup";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUserDetails from "./pages/admin/AdminUserDetails";
 import AdminTheatreDetails from "./pages/admin/AdminTheatreDetails";
+// import TheatreMovieDetails from "./pages/theatre/TheatreMovieDetails";
 
 
 function App() {
@@ -27,13 +28,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={userToken ? <Home /> : <LoginForm />} />
+        <Route path="/" element={userToken ? <UserHome /> : <LoginForm />} />
       </Routes>
       <Routes>
         <Route path="/signup" element={<Signup/>} />
       </Routes>
       <Routes>
-        <Route path="/theatre/login" element={theatreToken ? <TheatreHome /> :<TheatreLogin/>} />
+        <Route path="/theatre/login" element={theatreToken ? <TheatreHome data={theatredata} /> :<TheatreLogin/>} />
       </Routes>
       <Routes>
         <Route path="/theatre/signup" element={<TheatreSignup/>} />
@@ -51,6 +52,10 @@ function App() {
       <Routes>
         <Route path="/admin/theatrelist" element={adminToken? <AdminTheatreDetails/> : <AdminLogin/>} />
       </Routes>
+
+      {/* <Routes>
+        <Route path="/theatre/movielist" element={theatreToken? <TheatreMovieDetails/> : <TheatreLogin/>} />
+      </Routes> */}
     
     </Router>
   );

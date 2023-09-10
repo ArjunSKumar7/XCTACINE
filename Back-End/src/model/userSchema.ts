@@ -21,15 +21,21 @@ const userSchema = new Schema (
            
             minlength:6
         },
-        // ProfilePic:{
-        //     type:Array
-        // },
+        ProfilePic:{
+            type:Array
+        },
 
-        // blockedStatus:{
+        blockedStatus:{
 
-        //     type:Boolean,
-        //     default:false
-        // },
+            type:Boolean,
+            default:false
+        },
+        Mobile:{
+            type:Number,
+            required:true,
+            unique:true
+
+        }
 
       
 

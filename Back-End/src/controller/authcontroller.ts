@@ -8,6 +8,7 @@ import { generateJWT, verifyjwt } from "../authService/JwtAuth";
 
 const authController = {
   userLogin: async (req: Request, res: Response) => {
+   
     try {
       const { Email, Password }: { Email: string; Password: string } = req.body;
 
@@ -212,6 +213,7 @@ const authController = {
   },
 
   usergLogin: async (req: Request, res: Response) => {
+   
     try {
       const { Email, Name }: { Email: string; Name: string } = req.body;
       const userFile = await User.findOne({ Email: Email });
@@ -229,6 +231,7 @@ const authController = {
           Email,
           Name,
         });
+       
         const jwt = generateJWT(newGUserData._id.toString());
         res.json({
           user: newGUserData,
@@ -238,7 +241,7 @@ const authController = {
         });
       }
     } catch (error) {
-      res.json({ error,  token: "",loginStatus: false, message: "login failed" });
+      res.json({ error,loginStatus: false, message: "login failed" });
     }
   },
 };

@@ -45,3 +45,29 @@ export const theatredetailsfetch = async () => {
     }
   }
 
+
+  export const theatreAppoval = async (data) => {
+    console.log("theatreappoval",data)
+    try {
+      const response = await admin_baseURL.put("/admin/theatrelist/approval",data);
+      console.log("theatreappovalresponse",response)
+      return response?.data
+    }catch(err){
+      console.log("theatreAppoval api error:",err)
+    }
+  }
+
+
+  export const userApproval = async (data) => {
+    console.log("userApproval",data)
+    try {
+      const response = await admin_baseURL.put("/admin/userlist/approval",data);
+      console.log("userApprovalresponse",response)
+      return response?.data
+      
+    }catch(err){
+      console.log("userApproval api error:",err)
+    }
+    
+  }
+

@@ -9,7 +9,8 @@ import {
    
   export function UserHomeCard() {
     return (
-      <Card className="w-96">
+     
+      <Card className=" w-96  rounded-none ml-2    ">
         <CardHeader floated={false} className="h-80">
           <img src="/img/team-3.jpg" alt="profile-picture" />
         </CardHeader>
@@ -21,7 +22,7 @@ import {
             CEO / Co-Founder
           </Typography>
         </CardBody>
-        <CardFooter className="flex justify-center gap-7 pt-2">
+        {/* <CardFooter className="flex justify-center gap-7 pt-2">
           <Tooltip content="Like">
             <Typography
               as="a"
@@ -55,7 +56,8 @@ import {
               <i className="fab fa-instagram" />
             </Typography>
           </Tooltip>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
+    
     );
   }

@@ -1,10 +1,16 @@
 import {TheatreNavBar} from "../../components/theater/TheatreNavBar"
+import {ApprovalBox} from "../../components/theater/ApprovalBox"
+import {TheatreSideBar} from '../../components/theater/TheatreSideBar'
 
 
-const TheatreHome = () => {
+const TheatreHome = (props) => {
+  console.log("props", props);
+  console.log("props", props.data.approvalStatus);
   return (
     <div>
 <TheatreNavBar/>
+<ApprovalBox data={props}/>
+<TheatreSideBar/>
     </div>
   )
 }

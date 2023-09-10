@@ -1,12 +1,12 @@
 import express from 'express'
 
+import theatrecontoller from '../controller/theatreController'
 
-const theatreRoute=()=>{
     const router = express.Router()
 
 
-    router.get('/',)
+    router.post('/theatre/addmovie',theatrecontoller.addMovie)
 
 
-}
-export default theatreRoute
+
+export default router

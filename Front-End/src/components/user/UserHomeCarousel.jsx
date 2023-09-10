@@ -2,9 +2,9 @@ import { Carousel } from "@material-tailwind/react";
  
 export function UserHomeCarousel() {
   return (
-    <div className=" h-96 mt-4" >
+    <div className=" h-96 mt-24 " >
     <Carousel
-      className="rounded-xl"
+      className="rounded-none"
       navigation={({ setActiveIndex, activeIndex, length }) => (
         <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
           {new Array(length).fill("").map((_, i) => (

@@ -1,3 +1,4 @@
+import AdminTheatreTable from "./AdminTheatreTable";
 import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
@@ -19,7 +20,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
- 
+ import {ToggleButton} from '../toggle'
 const TABS = [
   {
     label: "All",
@@ -35,55 +36,55 @@ const TABS = [
   },
 ];
  
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ['Theatre',"Status","Action"];
  
-const TABLE_ROWS = [
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    job: "Manager",
-    org: "Organization",
-    online: true,
-    date: "23/04/18",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-    name: "Alexa Liras",
-    email: "alexa@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: false,
-    date: "23/04/18",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-    name: "Laurent Perrier",
-    email: "laurent@creative-tim.com",
-    job: "Executive",
-    org: "Projects",
-    online: false,
-    date: "19/09/17",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-    name: "Michael Levi",
-    email: "michael@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: true,
-    date: "24/12/08",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-    name: "Richard Gran",
-    email: "richard@creative-tim.com",
-    job: "Manager",
-    org: "Executive",
-    online: false,
-    date: "04/10/21",
-  },
-];
+// const TABLE_ROWS = ["Theatre",]
+//   {
+//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
+//     name: "John Michael",
+//     email: "john@creative-tim.com",
+//     job: "Manager",
+//     org: "Organization",
+//     online: true,
+//     date: "23/04/18",
+//   },
+//   {
+//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
+//     name: "Alexa Liras",
+//     email: "alexa@creative-tim.com",
+//     job: "Programator",
+//     org: "Developer",
+//     online: false,
+//     date: "23/04/18",
+//   },
+//   {
+//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
+//     name: "Laurent Perrier",
+//     email: "laurent@creative-tim.com",
+//     job: "Executive",
+//     org: "Projects",
+//     online: false,
+//     date: "19/09/17",
+//   },
+//   {
+//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
+//     name: "Michael Levi",
+//     email: "michael@creative-tim.com",
+//     job: "Programator",
+//     org: "Developer",
+//     online: true,
+//     date: "24/12/08",
+//   },
+//   {
+//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
+//     name: "Richard Gran",
+//     email: "richard@creative-tim.com",
+//     job: "Manager",
+//     org: "Executive",
+//     online: false,
+//     date: "04/10/21",
+//   },
+// ];
  
 export function AdminTheatreList(props) {
   console.log("prps",props.data)
@@ -150,85 +151,21 @@ export function AdminTheatreList(props) {
             </tr>
           </thead>
           <tbody>
-            { console.log("prps",props.data)}
-            {  console.log("Data prop type:", typeof props.data)}
+            { console.log("prps",props?.data)}
+            {  console.log("Data prop type:", typeof props?.data)}
  
             
-            {props.data ? (props.data.map(
-              ({ img, Name, Email, job, org, online, date }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+            {props?.data ? (props?.data.map(
+              
+              ({ _id,Name, Email, approvalStatus }, index) => {
+                console.log("_id:", _id);
+                const isLast = index === props?.data.length- 1;
                 const classes = isLast
                   ? "p-4" 
                   : "p-4 border-b border-blue-gray-50";
  
                 return (
-                  <tr key={Name}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Avatar src={img} alt={name} size="sm" />
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {Name}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {Email}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {job}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {org}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={online ? "online" : "offline"}
-                          color={online ? "green" : "blue-gray"}
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                  </tr>
+                 <AdminTheatreTable key={_id} id={_id} Name={Name} Email={Email}  classes={classes} isLast={isLast} approvalStatus={approvalStatus}/>
                 );
               },
             )):null}

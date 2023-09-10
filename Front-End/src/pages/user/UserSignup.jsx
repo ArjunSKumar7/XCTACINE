@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../redux/userReducer";
-
+import { useState } from "react";
 import {signup} from "../../api/user/userApi";
 import styled from "styled-components";
 import * as Yup from "yup";
@@ -12,15 +12,21 @@ import {
   Checkbox,
   Button,
   Typography,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 
 const Signup = () => {
 const dispatch = useDispatch();
 const navigate=useNavigate()
+const [open, setOpen] = useState(false);
+const handleOpen = () => setOpen(!open);
 
   const SignupSchema = Yup.object().shape({
     Name: Yup.string()
-      .max(1, "Must be 20 characters or less")
+      .max(10, "Must be 20 characters or less")
       .required("Required"),
     Email: Yup.string().email("Invalid email").required("Required"),
     Password: Yup.string()
@@ -114,7 +120,75 @@ return (
               <Error>{formik.errors.rePassword}</Error>
             )}
           </div>
+
+          <div className="position-relative">
+            <Input
+              type="password"
+              name="rePassword"
+              size="lg"
+              label="Re-Password"
+              {...formik.getFieldProps('rePassword')}
+            />
+            {formik.errors.rePassword && formik.touched.rePassword && (
+              <Error>{formik.errors.rePassword}</Error>
+            )}
+          </div>
+
         </div>
+
+
+
+        <Button onClick={handleOpen} className="p-2 rounded-full w-28 ml-auto mr-auto capitalize"  variant="outlined" >Send OTP</Button>
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+      >
+        <DialogHeader>Its a simple dialog.</DialogHeader>
+        <DialogBody className="flex flex-col items-center justify-center p-1">
+                  <h1 className="text-lg text-black font-bold mb-1">OTP Sent</h1>
+                  <div>
+                    <Input type="text" className="" value={"otp"} onChange={"otpHandler"} label="Enter otp"/>
+                  </div>
+                  <p className="text-red-900 text-xs h-4">{"aa"}</p>
+                  <Button className=" m-2 capitalize" size='sm' variant="gradient" color="green" >
+                    Verify
+                  </Button>
+                </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" color="green" onClick={handleOpen}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <Checkbox
           label={
             <Typography
@@ -158,6 +232,5 @@ export default Signup;
 const Error = styled.span`
   font-size: 12px;
   color: red;
-  // position: ;
-  // left: px;
+  position: relative;
 `;

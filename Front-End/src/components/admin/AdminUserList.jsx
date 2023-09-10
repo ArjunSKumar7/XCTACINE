@@ -1,3 +1,5 @@
+import AdminUserTable from '../../components/admin/AdminUserTable'
+import {ToggleButton} from '../toggle'
 import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
@@ -155,80 +157,14 @@ export function AdminUserList(props) {
  
             
             {(props?.data?.map(
-              ({ img, Name, Email, job, org, online, date }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+              ({ _id, Name, Email, online,blockedStatus}, index) => {
+                const isLast = index === props?.data?.length - 1;
                 const classes = isLast
                   ? "p-4" 
                   : "p-4 border-b border-blue-gray-50";
  
                 return (
-                  <tr key={Name}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Avatar src={img} alt={name} size="sm" />
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {Name}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {Email}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {job}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {org}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={online ? "online" : "offline"}
-                          color={online ? "green" : "blue-gray"}
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                  </tr>
+                 <AdminUserTable key={_id} id={_id} Name={Name} Email={Email}  online={online}  classes={classes} blockedStatus={blockedStatus}/>
                 );
               },
             ))}

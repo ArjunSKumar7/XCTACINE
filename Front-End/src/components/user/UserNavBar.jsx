@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { adminLogout } from "../../redux/adminReducer";
+import { userLogout } from "../../redux/userReducer";
 import {
   Navbar,
   MobileNav,
@@ -38,7 +38,7 @@ function ProfileMenu() {
   const dispatch = useDispatch();
   // const navigate = useNavigate();
   const signout = () => {
-    dispatch(adminLogout());
+    dispatch(userLogout());
   }
 
   const profileMenuItems = [
@@ -245,7 +245,7 @@ function NavList() {
   );
 }
  
-export function AdminNavBar() {
+export function UserNavBar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
  
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);

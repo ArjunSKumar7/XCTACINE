@@ -7,6 +7,8 @@ import admincontroller from '../controller/adminController'
 
     router.get("/userlist",admincontroller.userlistfetch)
     router.get("/theatrelist",admincontroller.theatrelistfetch)
+    router.put("/theatrelist/approval",admincontroller.theatreAppoval)
+    router.put("/userlist/approval",admincontroller.userApproval)
 
 
 export default router

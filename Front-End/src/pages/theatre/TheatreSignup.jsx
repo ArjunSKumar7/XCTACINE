@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setTheatreToken } from "../../redux/theatreReducer";
+import { setTheatreToken, setTheatreDetails } from "../../redux/theatreReducer";
 
 import { signup } from "../../api/theater/theaterApi";
 import styled from "styled-components";
@@ -20,7 +20,7 @@ const TheatreSignup = () => {
 
   const SignupSchema = Yup.object().shape({
     Name: Yup.string()
-      .max(1, "Must be 20 characters or less")
+      .max(15, "Must be 20 characters or less")
       .required("Required"),
     Email: Yup.string().email("Invalid email").required("Required"),
     Password: Yup.string()
@@ -47,6 +47,7 @@ const TheatreSignup = () => {
       console.log("theatre values", values);
       const response = await signup("/auth/theatre/signup", values);
       console.log("theatre response", response);
+      dispatch(setTheatreDetails(response.theatre))
       dispatch(setTheatreToken(response.token));
       localStorage.setItem("theatreToken", response.token);
       navigate("/theatre/login");
@@ -154,6 +155,5 @@ export default TheatreSignup;
 const Error = styled.span`
   font-size: 12px;
   color: red;
-  // position: ;
-  // left: px;
-`;
+  position: relative;
+  `

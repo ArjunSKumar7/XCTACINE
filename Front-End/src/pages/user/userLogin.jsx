@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { login } from "../../api/user/userApi";
+import { login,googleLogIn } from "../../api/user/userApi";
 import { setToken } from "../../redux/userReducer";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {auth,googleProvider} from "../../firebase/googleAuth/config"
+import {signInWithPopup} from 'firebase/auth'
 import {
   Card,
   CardHeader,
@@ -19,6 +21,30 @@ import {
 export function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
+const handleGLogin=async()=>{
+  signInWithPopup(auth,googleProvider).then(async(data)=>{
+    const gData = {Name:data.user.displayName,
+      Email:data.user.email}
+      const response = await googleLogIn(gData)
+      if (response?.user) {
+        const userData={
+          userToken:response.token,
+          userId:response.user._id
+        }
+      console.log("sigin jsx google page ", response.token  );
+      localStorage.setItem("userToken", userData.userToken);
+      console.log("sigin jsx google page ", userData  );
+      dispatch(setToken(userData));
+        }
+
+  })
+ 
+  
+}
+
+
 
   const SignupSchema = Yup.object().shape({
     Email: Yup.string().email("Invalid email").required("Required"),
@@ -38,15 +64,29 @@ export function LoginForm() {
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
       const response = await login("/auth/user/login", values);
-      dispatch(setToken(response.token));
+      console.log("login response", response);
+      const userData={
+        userToken:response.token,
+        userId:response.user._id
+      }
+      dispatch(setToken(userData));
      localStorage.setItem("userToken", response.token);
       
       navigate("/");
     },
   });
 
+
+
+  // flex flex-col items-center justify-center pt-16 w-100
   return (
-    <Card className="w-96">
+    <div style={{
+    display: 'flex',
+    justifyContent: 'center', // Center horizontally
+    alignItems: 'center', // Center vertically
+    minHeight: '100vh', // Make the container at least the height of the viewport
+  }}>
+   <Card className="  ">
       <CardHeader
         variant="gradient"
         color="gray"
@@ -106,12 +146,24 @@ export function LoginForm() {
         </Typography>
       </CardFooter>
       </form>
-    </Card>
+      <div className="flex justify-center mb-4 " >
+      <Button
+        onClick={handleGLogin}
+        size="sm"
+        variant="outlined"
+        color="blue-gray"
+        className=" mb-4 place-items-center justify-center flex gap-1"
+      >
+        <img src="https://img.icons8.com/office/40/google-logo.png" alt="googleicon" className="h-6 w-6" />
+        Continue with Google
+      </Button>
+      </div>
+    </Card> 
+    </div>
   );
 }
 const Error = styled.span`
   font-size: 12px;
   color: red;
-  position: absolute;
-  left: 0;
+  position: relative;
 `;

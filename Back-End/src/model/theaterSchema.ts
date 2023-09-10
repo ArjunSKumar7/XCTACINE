@@ -21,15 +21,19 @@ const theatreSchema = new Schema (
             required:true,
             minlength:6
         },
-        // ProfilePic:{
-        //     type:Array
-        // },
+        ProfilePic:{
+            type:Array
+        },
 
-        // blockedStatus:{
+        blockedStatus:{
 
-        //     type:Boolean,
-        //     default:false
-        // },
+            type:Boolean,
+            default:false
+        },
+        approvalStatus:{
+            type:Boolean,
+            default:false
+        }
 
       
 

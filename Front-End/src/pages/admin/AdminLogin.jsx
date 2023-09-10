@@ -120,7 +120,5 @@ export function AdminLogin() {
 const Error = styled.span`
   font-size: 12px;
   color: red;
-  position: absolute;
-  left: 100px;
-  right: 100px;
+  position: relative;
 `;
