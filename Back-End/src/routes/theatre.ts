@@ -5,7 +5,7 @@ import theatrecontoller from '../controller/theatreController'
     const router = express.Router()
 
 
-    router.post('/theatre/addmovie',theatrecontoller.addMovie)
+    router.post('/addmovie',theatrecontoller.addMovie)
 
 
 

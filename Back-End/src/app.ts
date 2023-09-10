@@ -9,7 +9,7 @@ import { configKeys } from "./config/keys";
 import userRoute from "./routes/user";
 import authRoute from "./routes/auth";
 import adminRoute from "./routes/admin";
-import theaterRoute from "./routes/theater";
+import theatreRoute from "./routes/theatre";
 import serverConfig from "./config/serverConfig";
 
 const app: Application = express();
@@ -35,7 +35,7 @@ db.connect();
 //routes
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
-app.use("/api/theater", theaterRoute);
+app.use("/api/theatre", theatreRoute);
 app.use("/api/admin", adminRoute);
 
 serverConfig(server);
