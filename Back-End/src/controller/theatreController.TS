@@ -43,7 +43,21 @@ const theatrecontroller = {
         console.log("fecthMovieList backend error:", err);
         res.json({message:"fecthMovieList backend error:",err});
       }
+  },
+
+  deleteMovie: async (req: Request, res: Response) => {
+    try{
+      const id = req.params.id
+      const movieData = await Movie.deleteOne({movieId:id});
+      res.json({message:"movie deleted",movieData})
+    }
+    catch(err){
+      res.json({message:"fecthUserMovieList backend error:",err});
+    }
   }
+
+
+
 
 
 };

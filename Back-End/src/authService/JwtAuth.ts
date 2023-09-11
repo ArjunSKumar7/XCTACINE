@@ -20,7 +20,9 @@ export const generateJWT = (id:string) => {
 
 export const verifyjwt = (token:string)=>{
     if(configKeys.JWT_SECRET_KEY){
-        return jwt.verify(token,configKeys.JWT_SECRET_KEY)
+     const verifyjwtaaaa =   jwt.verify(token,configKeys.JWT_SECRET_KEY)
+     console.log("verifyjwtaaaa",verifyjwtaaaa)
+     return verifyjwtaaaa
     }
 }
 

@@ -43,3 +43,14 @@ export const movieListDataFetch= async () => {
 
   }
 }
+
+
+export const deleteTheatreMovie = async (movieId) => {
+  try{
+    const response =await theatre_baseURL.delete(`/theatre/deletemovie/${movieId}`);
+    // console.log("movieListDataFetch api",response.data);
+    return response?.data
+  }catch(error){
+    console.log("deleteTheatreMovie api error:",error)
+}
+}

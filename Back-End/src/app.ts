@@ -11,6 +11,7 @@ import authRoute from "./routes/auth";
 import adminRoute from "./routes/admin";
 import theatreRoute from "./routes/theatre";
 import serverConfig from "./config/serverConfig";
+import authMiddlewares from "./middlewares/authMiddlewares";
 
 const app: Application = express();
 const server = http.createServer(app);
@@ -33,9 +34,10 @@ app.use(cookieParser());
 db.connect();
 
 //routes
+
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/theatre", theatreRoute);
-app.use("/api/admin", adminRoute);
+app.use("/api/admin",authMiddlewares.tokenCheckMiddleware, adminRoute);
 
 serverConfig(server);

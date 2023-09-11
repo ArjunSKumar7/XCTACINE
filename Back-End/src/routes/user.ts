@@ -1,12 +1,13 @@
 import express from 'express'
+import userController from '../controller/userController'
 
 
-const userRoute=()=>{
+
     const router = express.Router()
 
 
-    router.get('/',)
+    router.get('/usermovielist',userController.moviesFetchUser)
 
 
-}
-export default userRoute
+
+export default router

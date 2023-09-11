@@ -11,6 +11,7 @@ const initialState = {
   theatreToken: checkusertoken(),
   theatreDetails:{},
   addedMovies:[],
+  movieToList:[],
 };
 
 const theatreSlice = createSlice({
@@ -35,8 +36,12 @@ const theatreSlice = createSlice({
       state.theatreToken = null;
       localStorage.removeItem("theatreToken");
     },
+    setMovieToList: (state, action) => {
+      console.log("setMovieToList", action.payload);
+      state.movieToList = action.payload;
+    }
   },
 });
 
-export const { setTheatreToken, theatreLogout,setTheatreDetails,setAddedMovies } = theatreSlice.actions;
+export const { setTheatreToken, theatreLogout,setTheatreDetails,setAddedMovies,setMovieToList } = theatreSlice.actions;
 export default theatreSlice.reducer;

@@ -10,6 +10,7 @@ const checkusertoken = () => {
 const initialState = {
   userToken: checkusertoken(),
   userId: "",
+  movieHomeData:[],
 };
 
 const userSlice = createSlice({
@@ -30,8 +31,12 @@ const userSlice = createSlice({
       localStorage.removeItem("userId");
       localStorage.removeItem("userToken");
     },
+
+    setMovieHomeData: (state, action) => {
+      state.movieHomeData = action.payload;
+    }
   },
 });
 
-export const { setToken, userLogout } = userSlice.actions;
+export const { setToken, userLogout, setMovieHomeData } = userSlice.actions;
 export default userSlice.reducer;

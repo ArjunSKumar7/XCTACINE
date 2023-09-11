@@ -103,7 +103,7 @@ const handleGLogin=async()=>{
     minHeight: '100vh', // Make the container at least the height of the viewport
   }}>
    <Card className="  ">
-      <CardHeader
+      {/* <CardHeader
         variant="gradient"
         color="gray"
         className="mb-4 grid h-28 place-items-center"
@@ -111,7 +111,18 @@ const handleGLogin=async()=>{
         <Typography variant="h3" color="white">
           Log In
         </Typography>
-      </CardHeader>
+      </CardHeader> */}
+      <CardHeader
+  variant="gradient"
+ 
+  className="mb-0 grid h-28 place-items-center bg-black"
+>
+  <img
+    src="https://res.cloudinary.com/dbsgcwkhd/image/upload/v1694432315/android-chrome-512x512_kj47v1.png"
+    alt="Cloudinary Image"
+    className="h-28 w-44" // You can adjust the width and height as needed
+  />
+</CardHeader>
       <form
         onSubmit={formik.handleSubmit}
         className="mt-2 mb-2 w-80 max-w-screen-lg sm:w-96"
@@ -136,7 +147,8 @@ const handleGLogin=async()=>{
               {...formik.getFieldProps("Password")}
             />
             {formik.errors.Password && formik.touched.Password && (
-              <Error>{formik.errors.Password}</Error>
+              <Error >{formik.errors.Password}</Error>
+              
             )}
 
         <div className="-ml-2.5">
@@ -145,9 +157,15 @@ const handleGLogin=async()=>{
       </CardBody>
     
       <CardFooter className="pt-0">
-        <Button  type="submit" variant="gradient" fullWidth>
-          Log In
-        </Button>
+      <Button color="blue-gray" type="submit" variant="gradient" fullWidth>
+  <span className="text-black">Log In</span>
+</Button>
+
+
+
+
+
+
         <Typography variant="small" className="mt-6 flex justify-center">
         Already have an account?{" "}
           <Typography
@@ -182,4 +200,7 @@ const Error = styled.span`
   font-size: 12px;
   color: red;
   position: relative;
-`;
+  top: -10px;
+height: 0;
+ 
+  `;

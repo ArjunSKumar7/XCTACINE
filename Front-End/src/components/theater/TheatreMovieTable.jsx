@@ -2,14 +2,34 @@
 import {
 
     Typography,
-    
+    IconButton,
+    Tooltip,
     Avatar,
    
   } from "@material-tailwind/react";
-  
+  import {  TrashIcon } from "@heroicons/react/24/solid";
+import { AlertBox } from "../../components/AlertBox"
+import { useState } from "react";
+import{deleteTheatreMovie} from "../../api/theater/theaterApi"
+
   
   
   function TheatreMovieTable(props) {
+    console.log("props", props);
+    const [open, setOpen] = useState(false);
+
+   const theatreMovieListDelete = async() => {
+    try{
+    const resposne=await deleteTheatreMovie(props.movieId)
+    console.log(resposne);
+    return resposne;
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+    const handleOpen = () => setOpen(!open);
+
       console.log("props", props);
     return (
       <tr key={props.movieId}>
@@ -106,16 +126,21 @@ import {
           {date}
         </Typography>
       </td> */}
-      {/* <td className={classes}>
-        <Tooltip content="Edit User">
+      <td className={props.classes}>
+        <Tooltip content="Delete Movie">
           <IconButton variant="text">
-            <PencilIcon className="h-4 w-4" />
+            
+          <TrashIcon class="h-6 w-6 text-gray-900 "
+          onClick={handleOpen} />
+          <AlertBox open={open} handleOpen={handleOpen} message={"Are you sure you want to delete this movie"} theatreMovieListDelete={theatreMovieListDelete}/>
           </IconButton>
         </Tooltip>
-      </td> */}
+      </td>
+
     </tr>
   
     )
   }
+
   
   export default TheatreMovieTable

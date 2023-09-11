@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import {  UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -20,6 +20,9 @@ import {
 import TheatreMovieTable from "./TheatreMovieTable";
  import { useEffect,useState} from "react";
  import {movieListDataFetch} from "../../api/theater/theaterApi"
+ import { useDispatch } from "react-redux";
+ import {setMovieToList} from "../../redux/theatreReducer"
+import{ useSelector } from "react-redux";
 
 
 const TABS = [
@@ -37,7 +40,7 @@ const TABS = [
   },
 ];
  
-const TABLE_HEAD = ["Title", "Release Date", "Language", "Overview"];
+const TABLE_HEAD = ["Title", "Release Date", "Language", "Overview","Action"];
  
 const TABLE_ROWS = [
   {
@@ -90,7 +93,8 @@ const TABLE_ROWS = [
 
  
 export function TheatreMovieList() {
-    const [MovieToList, setMovieToList] = useState("");
+  const dispatch = useDispatch()
+    // const [MovieToList, setMovieToList] = useState("");
     useEffect(()=>{
         async function fetchData (){
             const response = await movieListDataFetch();
@@ -100,11 +104,13 @@ export function TheatreMovieList() {
 
         fetchData().then((data)=>{
           console.log("data",data)
-            setMovieToList(data?.movieList)
-
+            
+            dispatch(setMovieToList(data?.movieList))
         })
     },[])
    
+    const theatremovieslist = useSelector((store)=>store.theatre.movieToList)
+    console.log("theatremovieslist",theatremovieslist)
   
   return (
     <Card className="h-full mt-16 rounded-none ">
@@ -166,10 +172,10 @@ export function TheatreMovieList() {
             </tr>
           </thead>
           <tbody>
-            {console.log("MovieToList",MovieToList)}
-            {MovieToList?(MovieToList.map(
+            {console.log("MovieToList",theatremovieslist)}
+            {theatremovieslist?(theatremovieslist.map(
               ({movieId,movieLanguage,movieOverview,moviePoster,movieReleaseDate,movieTitle }, index) => {
-                const isLast = index === MovieToList.length - 1;
+                const isLast = index === theatremovieslist.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";

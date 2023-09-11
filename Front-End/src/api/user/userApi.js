@@ -30,3 +30,13 @@ export const googleLogIn = async (values) => {
   }
 }
 
+export const moviesFetchUser = async () => {
+  try {
+    const response = await user_baseURL.get("/user/usermovielist");
+    return response?.data;
+  } catch (error) {
+    console.error("users movie data fetch api error:", error);
+    throw error;
+  }
+}
+

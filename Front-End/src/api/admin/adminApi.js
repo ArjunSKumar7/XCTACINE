@@ -33,7 +33,7 @@ try {
   }
 }
 
-export const theatredetailsfetch = async () => {
+export const  theatredetailsfetch = async () => {
   try {
       console.log("adminapi") 
       const response = await admin_baseURL.get("/admin/theatrelist");
