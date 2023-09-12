@@ -11,6 +11,7 @@ import {
 import { AlertBox } from "../../components/AlertBox"
 import { useState } from "react";
 import{deleteTheatreMovie} from "../../api/theater/theaterApi"
+// import { UseSelector, useDispatch } from "react-redux";
 
   
   
@@ -21,6 +22,7 @@ import{deleteTheatreMovie} from "../../api/theater/theaterApi"
    const theatreMovieListDelete = async() => {
     try{
     const resposne=await deleteTheatreMovie(props.movieId)
+
     console.log(resposne);
     return resposne;
     }catch(err){

@@ -1,76 +1,93 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 export function UserHomeCard(props) {
-  console.log("props",props)
-  return (
-    <div className="px-2 md:w-full w-60 hover:shadow-2xl py-2 border flex flex-col bg-white hover:border-2 hover:bg-gray-200 border-gray-200 cursor-pointer rounded-md shadow-md">
-      <div className="flex justify-center items-center">
-        <img src={props.data.moviePoster} alt="" className="w-full h-full rounded-md"/>
-      </div>
-      <div className="h-full gap-1 md:gap-2 px-2 py-1 flex flex-col justify-between">
-        <div className="flex justify-between items-center gap-2">
-          <h4 className="font-medium">{props.data.movieTitle}</h4>
-          <span className="uppercase text-sm font-semibold"> {props.data.movieLanguage}</span>
-        </div>
-        <div className="">
-          <button className="uppercase w-full bg-purple-800 py-2 border-2  border-purple-800 hover:text-purple-800 hover:bg-white font-semibold rounded-md text-gray-50 transition duration-500">book now</button>
-        </div>
-      </div>
-      {/* <div className="flex justify-between items-center">
-        <p color="blue-gray" className="font-medium">
-          {props.data.movieName}
-        </p>
-        <p color="blue-gray" className="font-medium">
-          {props.data.language}
-        </p>
-      </div> */}
-      {/* <div>
-      <Button
-          ripple={false}
-          fullWidth={true}
-          className="bg-deep-purple-600 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
-        >
-          Book Now
-        </Button>
-      </div> */}
-    </div>
-    // <Card className="flex flex-col justify-between">
-    //   <div >
-    //   <CardHeader shadow={false} floated={false} className="h-96">
-    //     <img
-    //       src={props.data.poster}
-    //       alt="card-image"
-    //       className="w-52 h-48 object-cover"
-    //     />
-    //   </CardHeader>
-    //   <CardBody className="mt-0">
-    //     <div className=" flex items-center justify-between">
-    //       <Typography color="blue-gray" className="font-medium">
-    //       {props.data.movieName}
-    //       </Typography>
-    //       <Typography color="blue-gray" className="font-medium">
-    //         {props.data.language}
-    //       </Typography>
-    //     </div>
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
-    //   </CardBody>
-    //   </div>
-    //   <CardFooter className="pt-0">
-    //     <Button
-    //       ripple={false}
-    //       fullWidth={true}
-    //       className="bg-deep-purple-600 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
-    //     >
-    //       Book Now
-    //     </Button>
-    //   </CardFooter>
-    // </Card>
+  const handleCardClick = (index) => {
+    setExpandedIndex(index === expandedIndex ? -1 : index);
+  };
+
+  const cardvariants = {
+    expanded: {
+      width: "400px",
+    },
+    collapsed: {
+      width: "200px",
+    },
+  };
+
+  const movieImages = [props.data.moviePoster];
+  // const movieDescriptions = [props.data.movieOverview];
+  const movieTitle=[props.data.movieTitle];
+  // const movieLanguage=[props.data.movieLanguage];
+  const movieReleaseDate=[props.data.movieReleaseDate];
+
+
+  return (
+    <section className="px-2 md:w-full w-60 hover:shadow-2xl py-2 border flex flex-col bg-white hover:border-2 hover:bg-gray-200 border-gray-200 cursor-pointer rounded-md shadow-md">
+    {/* // <section className="px-2 py-2 md:grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4"> */}
+      <div className="flex justify-center items-center relative">
+        {/* Blurred background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center filter blur-md"
+          style={{ backgroundImage: `url(${movieImages[0]})` }}
+        ></div>
+
+        {movieImages.map((image, index) => (
+          <motion.div
+            key={props.data.movieId}
+            className={`card cursor-pointer h-[500px] bg-cover bg-center rounded-[20px] ${
+              index === expandedIndex ? "expanded" : ""
+            }`}
+            variants={cardvariants}
+            initial="collapsed"
+            animate={index === expandedIndex ? "expanded" : "collapsed"}
+            transition={{ duration: 0.5 }}
+            onClick={() => handleCardClick(index)}
+            style={{
+              // Background image is the same as the blurred background image
+              backgroundImage: `url(${movieImages[0]})`,
+              // Add opacity to the image to make it visible but blurred
+              opacity: 0.8,
+            }}
+          >
+            <div className="card-content h-full flex flex-col justify-end">
+              <div className="card-footer rounded-b-[20px] bg-gray-800 bg-opacity-75 min-h-[100px] flex flex-col items-center justify-center">
+           <button className="bg-gray-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded">
+                  Book Now
+                </button>
+
+
+                {/* <button className="relative bg-transparent text-white font-extrabold py-2 px-4 rounded border-y-2">
+                  Book Now
+                  <span
+                    className="absolute inset-0 bg-cover bg-center filter blur-md"
+                    style={{ backgroundImage: `url(${cardImages[0]})` }}
+                  ></span>
+                </button> */}
+
+
+
+                {index === expandedIndex && (
+                  <>
+                  <h2 className="mt-2 text-gray-300 text-center font-extrabold ">
+                    {movieTitle[index]}
+                  </h2>
+                  <p className="mt-2 text-gray-300 text-center front-semibold" >
+                  {movieReleaseDate[index]}
+                  </p>
+                  </>
+                )}
+
+
+                
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 }
+

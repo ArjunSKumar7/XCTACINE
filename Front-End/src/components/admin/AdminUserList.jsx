@@ -37,7 +37,7 @@ const TABS = [
   },
 ];
  
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ["Member",  "Status",  "Action"];
  
 const TABLE_ROWS = [
   {
@@ -95,30 +95,30 @@ export function AdminUserList(props) {
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Members list
+              Registered User List
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              See information about all members
+              Block/Unblock User Login
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+          {/* <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
             <Button variant="outlined" size="sm">
               view all
             </Button>
             <Button className="flex items-center gap-3" size="sm">
               <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
+            {/* <TabsHeader>
               {TABS.map(({ label, value }) => (
                 <Tab key={value} value={value}>
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
-            </TabsHeader>
+            </TabsHeader> */}
           </Tabs>
           <div className="w-full md:w-72">
             <Input

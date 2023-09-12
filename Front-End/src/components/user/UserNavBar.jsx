@@ -29,17 +29,14 @@ import {
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 
-
- 
 // profile menu component
 
- 
 function ProfileMenu() {
   const dispatch = useDispatch();
   // const navigate = useNavigate();
   const signout = () => {
     dispatch(userLogout());
-  }
+  };
 
   const profileMenuItems = [
     {
@@ -62,14 +59,13 @@ function ProfileMenu() {
       label: "Sign Out",
       icon: PowerIcon,
       onClick: signout,
-  
     },
   ];
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
- 
+
   const closeMenu = () => setIsMenuOpen(false);
- 
+
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
@@ -130,7 +126,7 @@ function ProfileMenu() {
     </Menu>
   );
 }
- 
+
 // nav list menu
 const navListMenuItems = [
   {
@@ -149,10 +145,10 @@ const navListMenuItems = [
       "A complete set of UI Elements for building faster websites in less time.",
   },
 ];
- 
+
 function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
- 
+
   const renderItems = navListMenuItems.map(({ title, description }) => (
     <a href="#" key={title}>
       <MenuItem>
@@ -165,7 +161,7 @@ function NavListMenu() {
       </MenuItem>
     </a>
   ));
- 
+
   return (
     <React.Fragment>
       <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
@@ -205,7 +201,7 @@ function NavListMenu() {
     </React.Fragment>
   );
 }
- 
+
 // nav list component
 const navListItems = [
   {
@@ -221,7 +217,7 @@ const navListItems = [
     icon: CodeBracketSquareIcon,
   },
 ];
- 
+
 function NavList() {
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
@@ -244,19 +240,19 @@ function NavList() {
     </ul>
   );
 }
- 
+
 export function UserNavBar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
- 
+
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
- 
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
-      () => window.innerWidth >= 960 && setIsNavOpen(false),
+      () => window.innerWidth >= 960 && setIsNavOpen(false)
     );
   }, []);
- 
+
   return (
     <Navbar className="mx-auto fixed max-w-full p-3 top-0 rounded-none z-50   ">
       <div className="relative mx-auto flex items-center text-blue-gray-900">
@@ -267,6 +263,11 @@ export function UserNavBar() {
         >
           Xctacine
         </Typography>
+        <img
+          src="https://res.cloudinary.com/dbsgcwkhd/image/upload/v1694432315/android-chrome-512x512_kj47v1.png"
+          alt="Your Logo"
+          className="  mr-4 ml-2 cursor-pointer py-1.5 lg:w-2 xl:w-2 sm:w-9  h-9"
+        />
         <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
           <NavList />
         </div>

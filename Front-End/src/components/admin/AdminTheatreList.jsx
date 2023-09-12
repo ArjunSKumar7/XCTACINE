@@ -91,26 +91,26 @@ export function AdminTheatreList(props) {
   return (
     <Card className="h-full mt-16 rounded-none ">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-8 flex items-center justify-between gap-8">
+        <div className="mb-8 flex items-center   ">
           <div>
-            <Typography variant="h5" color="blue-gray">
-              Members list
+            <Typography variant="h5" color="blue-gray  ">
+              Registered Theatre List
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              See information about all members
+             Approve/Dissapprove
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+          {/* <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
             <Button variant="outlined" size="sm">
               view all
             </Button>
             <Button className="flex items-center gap-3" size="sm">
               <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Tabs value="all" className="w-full md:w-max">
+          {/* <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
               {TABS.map(({ label, value }) => (
                 <Tab key={value} value={value}>
@@ -118,8 +118,8 @@ export function AdminTheatreList(props) {
                 </Tab>
               ))}
             </TabsHeader>
-          </Tabs>
-          <div className="w-full md:w-72">
+          </Tabs> */}
+          <div className=" mb-8 w-full md:w-72 ml-auto">
             <Input
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
