@@ -24,9 +24,13 @@ function App() {
   const theatreToken = useSelector((state) => state.theatre.theatreToken);
 
   const adminToken = useSelector((state) => state.admin.adminToken);
-  const theatredata = useSelector((state) => state.theatre.theatreDetails);
+  const theatredata = {
+    theatreId: localStorage.getItem("theatreId"),
+    theatreApprovalStatus: localStorage.getItem("theatreApprovalStatus"),
+  };
+  
   console.log("theatredataxxx", theatredata);
-
+ 
   return (
    <>
     <ToastContainer />

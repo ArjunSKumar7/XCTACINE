@@ -11,16 +11,23 @@ import {
 import { AlertBox } from "../../components/AlertBox"
 import { useState } from "react";
 import{deleteTheatreMovie} from "../../api/theater/theaterApi"
-// import { UseSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {setMovieToList} from "../../redux/theatreReducer"
 
   
   
   function TheatreMovieTable(props) {
+    const dispatch = useDispatch()
+
+    const theatreMoviesList = useSelector((store)=>store.theatre.movieToList)
+
     console.log("props", props);
     const [open, setOpen] = useState(false);
 
    const theatreMovieListDelete = async() => {
     try{
+      const updatedMovieList = theatreMoviesList.filter((movie)=>movie.movieId!==props.movieId)
+      dispatch(setMovieToList(updatedMovieList))
     const resposne=await deleteTheatreMovie(props.movieId)
 
     console.log(resposne);

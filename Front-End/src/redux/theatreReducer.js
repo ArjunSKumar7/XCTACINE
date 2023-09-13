@@ -20,12 +20,14 @@ const theatreSlice = createSlice({
   reducers: {
     setTheatreToken: (state, action) => {
       state.theatreToken = action.payload;
-
+console.log("theatreToken", action.payload);
       localStorage.setItem("theatreToken", action.token);
     },
     
     setTheatreDetails: (state, action) => {
       console.log("theatre details", action.payload);
+     localStorage.setItem("theatreId",action.payload._id );
+     localStorage.setItem("theatreApprovalStatus",action.payload.approvalStatus );
       state.theatreDetails = action.payload;
     },
     setAddedMovies: (state, action) => {

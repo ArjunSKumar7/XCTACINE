@@ -9,6 +9,7 @@ import {setMovieHomeData} from "../../redux/userReducer";
 import {moviesFetchUser} from "../../api/user/userApi";
 const Home = () => {
   const movies = useSelector((store)=>store.user.movieHomeData)
+  const [page, setPage] = useState(1);
 
   // const [banners, setBanners] = useState([]);
   const dispatch = useDispatch()
@@ -16,8 +17,8 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchAllMovies() {
-      const movieResponse = await moviesFetchUser();
-     
+      const movieResponse = await moviesFetchUser(page, 8);
+      console.log(movieResponse)
       return movieResponse;
     }
     // async function fetchAllBanners() {
@@ -33,7 +34,7 @@ const Home = () => {
 
 
   return (
-    <>
+    <>    
 <UserNavBar/>
 <Body/>
 <div className="grid md:grid-cols-4 grid-flow-col md:grid-flow-row md:h-full overflow-y-auto  gap-3">

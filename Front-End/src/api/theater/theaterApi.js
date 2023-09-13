@@ -25,6 +25,7 @@ export const addMovieData = async (endpoint, values) => {
   console.log("api called")
   try {
     const response = await theatre_baseURL.post(endpoint, values);
+   console.log("responseeeeee",response)
     return response?.data;
   } catch (error) {
     console.error("Theatre add movie to list error:", error);

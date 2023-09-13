@@ -19,14 +19,14 @@ export function UserHomeCard(props) {
 
   const movieImages = [props.data.moviePoster];
   // const movieDescriptions = [props.data.movieOverview];
-  const movieTitle=[props.data.movieTitle];
+  const movieTitle = [props.data.movieTitle];
   // const movieLanguage=[props.data.movieLanguage];
-  const movieReleaseDate=[props.data.movieReleaseDate];
-
+  const movieReleaseDate = [props.data.movieReleaseDate];
 
   return (
-    <section className="px-2 md:w-full w-60 hover:shadow-2xl py-2 border flex flex-col bg-white hover:border-2 hover:bg-gray-200 border-gray-200 cursor-pointer rounded-md shadow-md">
-    {/* // <section className="px-2 py-2 md:grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4"> */}
+    
+    <section className="px-2 md:w-full    hover:shadow-2xl py-2 border flex flex-col bg-white hover:border-2 hover:bg-gray-200 border-gray-200 cursor-pointer rounded-md shadow-md ">
+      {/* // <section className="px-2 py-2 md:grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4"> */}
       <div className="flex justify-center items-center relative">
         {/* Blurred background image */}
         <div
@@ -54,10 +54,9 @@ export function UserHomeCard(props) {
           >
             <div className="card-content h-full flex flex-col justify-end">
               <div className="card-footer rounded-b-[20px] bg-gray-800 bg-opacity-75 min-h-[100px] flex flex-col items-center justify-center">
-           <button className="bg-gray-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded">
+                <button className="bg-gray-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded">
                   Book Now
                 </button>
-
 
                 {/* <button className="relative bg-transparent text-white font-extrabold py-2 px-4 rounded border-y-2">
                   Book Now
@@ -67,21 +66,16 @@ export function UserHomeCard(props) {
                   ></span>
                 </button> */}
 
-
-
                 {index === expandedIndex && (
                   <>
-                  <h2 className="mt-2 text-gray-300 text-center font-extrabold ">
-                    {movieTitle[index]}
-                  </h2>
-                  <p className="mt-2 text-gray-300 text-center front-semibold" >
-                  {movieReleaseDate[index]}
-                  </p>
+                    <h2 className="mt-2 text-gray-300 text-center font-extrabold ">
+                      {movieTitle[index]}
+                    </h2>
+                    <p className="mt-2 text-gray-300 text-center front-semibold">
+                      {movieReleaseDate[index]}
+                    </p>
                   </>
                 )}
-
-
-                
               </div>
             </div>
           </motion.div>
@@ -90,4 +84,3 @@ export function UserHomeCard(props) {
     </section>
   );
 }
-

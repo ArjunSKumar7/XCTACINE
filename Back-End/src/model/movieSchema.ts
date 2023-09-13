@@ -17,7 +17,7 @@ const movieSchema = new Schema({
     type: String,
   },
   movieReleaseDate: {
-    type: String,
+    type: Date,
   },
 });
 

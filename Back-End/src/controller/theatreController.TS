@@ -8,7 +8,7 @@ const theatrecontroller = {
 
       const  movieExist = await Movie.findOne({movieTitle: req.body.title})
       if(movieExist){
-        return res.json({message:"movie already exist"})
+        res.json({message:"movie already exist"})
       }
       else{
       const movieUrl =`https://image.tmdb.org/t/p/w500${req.body?.poster_path}  `
@@ -21,14 +21,15 @@ const theatrecontroller = {
         movieReleaseDate: req.body.release_date,
       });
       await movieObj.save().then((resposne)=>{
-        res.json({message:"movie added",resposne})
+       
+       res.json({message:"movie added successfully!",resposne})
       })
       
     }
       
     } catch (error) {
       console.log("addmovie backend error:", error);
-      res.json({ message: "addmovie backend error:", error });
+     return res.json({ message: "addmovie backend error:", error });
     }
   },
 
@@ -41,7 +42,7 @@ const theatrecontroller = {
       }
       catch(err){
         console.log("fecthMovieList backend error:", err);
-        res.json({message:"fecthMovieList backend error:",err});
+      res.json({message:"fecthMovieList backend error:",err});
       }
   },
 

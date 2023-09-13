@@ -7,11 +7,12 @@ import {
   } from "@material-tailwind/react";
    
   export function ApprovalBox(props) {
+    console.log("props",props)
     
     return (
-      <Card className="mt-6 w-96">
+      <Card className="mt-6 w-96 bg-gray-300 ">
         <CardBody>
-          <Typography variant="h5" color="blue-gray" className="mb-2">
+          <Typography variant="h5" color="red" className="mb-2">
             Message
           </Typography>
           <Typography>

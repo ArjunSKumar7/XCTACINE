@@ -6,7 +6,7 @@ import {
     Typography,
     Button,
   } from "@material-tailwind/react";
-
+import {toast} from "react-toastify";
   import {addMovieData} from "../../api/theater/theaterApi"
    import { useNavigate } from "react-router-dom";
   export function MovieCard(props) {
@@ -15,10 +15,34 @@ const navigate = useNavigate();
 
 async function handleAddMovie(addMovie){
       console.log("Add",addMovie)
-      const response = await addMovieData("/theatre/addmovie",addMovie).then(() => {
+      const response = await addMovieData("/theatre/addmovie",addMovie)
+      if(response?.message==='movie added successfully!'){
+        toast.success(`${response?.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         navigate("/theatre/movielist")
-      })
-      console.log("response",response)
+      }
+      else {
+        toast.error(`${response?.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+     
+      console.log("response",response) 
 
 
     }
@@ -29,11 +53,11 @@ async function handleAddMovie(addMovie){
     return (
       <Card className="w-60 h-80 m-2 ">
         <CardHeader shadow={false} floated={false} className="h-96">
-        <div className="w-full h-full">
+        <div className="w-full h-full ">
           <img
             src={moviepath}
             alt="card-image"
-            className="w-300 h-300 object-fill"
+            className="w-full h-full "
            
           />
             </div>
