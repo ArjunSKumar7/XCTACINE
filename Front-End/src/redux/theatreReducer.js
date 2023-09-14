@@ -7,9 +7,21 @@ const checkusertoken = () => {
     return "";
   }
 };
+const checkTheatreData =()=>{
+  const theatreDetails = JSON.parse(localStorage.getItem("theatreDetails")); //CHANGED TOKEN TO USERTOKEN
+  console.log("theatreDetails", theatreDetails);
+  if (theatreDetails) {
+    return {theatreName:theatreDetails.Name, theatreId:theatreDetails._id,};
+  } else {
+    return "";
+  }
+}
+
+
+
 const initialState = {
   theatreToken: checkusertoken(),
-  theatreDetails:{},
+  theatreDetails:checkTheatreData(),
   addedMovies:[],
   movieToList:[],
 };
@@ -28,6 +40,7 @@ console.log("theatreToken", action.payload);
       console.log("theatre details", action.payload);
      localStorage.setItem("theatreId",action.payload._id );
      localStorage.setItem("theatreApprovalStatus",action.payload.approvalStatus );
+     localStorage.setItem("theatreDetails",JSON.stringify(action.payload));
       state.theatreDetails = action.payload;
     },
     setAddedMovies: (state, action) => {
@@ -36,7 +49,11 @@ console.log("theatreToken", action.payload);
 
     theatreLogout: (state) => {
       state.theatreToken = null;
+      
       localStorage.removeItem("theatreToken");
+      localStorage.removeItem("theatreId");
+      localStorage.removeItem("theatreApprovalStatus" );
+      localStorage.removeItem("theatreDetails");
     },
     setMovieToList: (state, action) => {
       console.log("setMovieToList", action.payload);

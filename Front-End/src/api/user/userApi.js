@@ -1,3 +1,4 @@
+import { theatreAppoval } from "../admin/adminApi";
 import user_baseURL from "./userAxios";
 
 export const signup = async (endpoint, values) => {
@@ -33,6 +34,7 @@ export const googleLogIn = async (values) => {
 export const moviesFetchUser = async (page, limit) => {
   try {
     const response = await user_baseURL.get(`/user/usermovielist?page=${page}&limit=${limit}`);
+    console.log("moviesFetchUser api",response?.data);
     return response?.data;
   } catch (error) {
     console.error("users movie data fetch api error:", error);

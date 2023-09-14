@@ -1,10 +1,14 @@
 import { Request, Response } from "express";
 import Movie from "../model/movieSchema";
 
+
+
 const theatrecontroller = {
+
   addMovie: async (req: Request, res: Response) => {
     try {
-      console.log(req.body);
+
+      console.log("addMovie",req.body);
 
       const  movieExist = await Movie.findOne({movieTitle: req.body.title})
       if(movieExist){
@@ -19,6 +23,8 @@ const theatrecontroller = {
         movieOverview: req.body.overview,
         moviePoster: movieUrl,
         movieReleaseDate: req.body.release_date,
+        theatreId: req.body.theatreId,
+        theatreName: req.body.theatreName
       });
       await movieObj.save().then((resposne)=>{
        

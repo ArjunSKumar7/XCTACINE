@@ -28,6 +28,9 @@ function App() {
     theatreId: localStorage.getItem("theatreId"),
     theatreApprovalStatus: localStorage.getItem("theatreApprovalStatus"),
   };
+
+
+
   
   console.log("theatredataxxx", theatredata);
  

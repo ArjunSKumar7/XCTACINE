@@ -21,10 +21,11 @@ export const login = async (endpoint, values) => {
 };
 
 
-export const addMovieData = async (endpoint, values) => {
-  console.log("api called")
+export const addMovieData = async (endpoint, values, theatre) => {
+  console.log("add movie api called",theatre)
   try {
-    const response = await theatre_baseURL.post(endpoint, values);
+    const value={...values,theatreId:theatre._id,theatreName:theatre.Name}
+    const response = await theatre_baseURL.post(endpoint, value);
    console.log("responseeeeee",response)
     return response?.data;
   } catch (error) {

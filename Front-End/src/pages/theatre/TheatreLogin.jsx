@@ -37,10 +37,11 @@ export function TheatreLogin() {
     onSubmit: async (values) => {
       console.log(values);
       const response = await login("/auth/theatre/login", values);
-      console.log("login response", response);
+      console.log("login response", response.theatre);
       dispatch(setTheatreDetails(response.theatre))   
       dispatch(setTheatreToken(response.token));
-      localStorage.setItem("theatreToken", response.token);    
+      localStorage.setItem("theatreToken", response.token);  
+  
       navigate("/theatre/login");
     },
   });
