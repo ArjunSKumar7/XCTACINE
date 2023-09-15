@@ -95,8 +95,9 @@ const TABLE_ROWS = [
 export function TheatreMovieList() {
 
   //for getting theatreId from added movies
-const theatreId= useSelector((store)=>store.theatre.theatreDetails)
-console.log("theatreId",theatreId)
+const theatreData= useSelector((store)=>store.theatre.theatreDetails)
+console.log("theatreId",theatreData)
+
 
 
 
@@ -105,8 +106,8 @@ console.log("theatreId",theatreId)
     useEffect(()=>{  
      
         async function fetchData (){
-          
-            const response = await movieListDataFetch();
+         
+            const response = await movieListDataFetch(theatreData?.theatreId);
            console.log("response",response)
             return response;
         }

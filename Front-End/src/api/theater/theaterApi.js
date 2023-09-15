@@ -21,10 +21,10 @@ export const login = async (endpoint, values) => {
 };
 
 
-export const addMovieData = async (endpoint, values, theatre) => {
-  console.log("add movie api called",theatre)
+export const addMovieData = async (endpoint, movieData, theatreData) => {
+  console.log("add movie api called",movieData)
   try {
-    const value={...values,theatreId:theatre._id,theatreName:theatre.Name}
+    const value={movieData:movieData,theatreData:theatreData}
     const response = await theatre_baseURL.post(endpoint, value);
    console.log("responseeeeee",response)
     return response?.data;
@@ -35,9 +35,10 @@ export const addMovieData = async (endpoint, values, theatre) => {
 }
 
 
-export const movieListDataFetch= async () => {
+export const movieListDataFetch= async (theatreId) => {
   try{
-    const response =await theatre_baseURL.get("/theatre/fetchmovielist");
+    console.log("theatreId",theatreId)
+    const response =await theatre_baseURL.get(`/theatre/fetchmovielist/${theatreId}`,);
     // console.log("movieListDataFetch api",response.data);
     return response?.data
   }catch(error){

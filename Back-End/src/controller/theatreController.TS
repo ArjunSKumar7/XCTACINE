@@ -10,21 +10,21 @@ const theatrecontroller = {
 
       console.log("addMovie",req.body);
 
-      const  movieExist = await Movie.findOne({movieTitle: req.body.title})
+      const  movieExist = await Movie.findOne({movieTitle: req.body?.movieData?.title})
       if(movieExist){
         res.json({message:"movie already exist"})
       }
       else{
-      const movieUrl =`https://image.tmdb.org/t/p/w500${req.body?.poster_path}  `
+      const movieUrl =`https://image.tmdb.org/t/p/w500${req.body?.movieData?.poster_path}  `
       const movieObj = new Movie({
-        movieId : req.body.id,
-        movieTitle: req.body.title,
-        movieLanguage: req.body.original_language,
-        movieOverview: req.body.overview,
+        movieId : req.body?.movieData?.id,
+        movieTitle: req.body?.movieData?.title,
+        movieLanguage: req.body?.movieData?. original_language,
+        movieOverview: req.body.movieData?.overview,
         moviePoster: movieUrl,
-        movieReleaseDate: req.body.release_date,
-        theatreId: req.body.theatreId,
-        theatreName: req.body.theatreName
+        movieReleaseDate: req.body.movieData?.release_date,
+        theatreId: req.body?.theatreData?.theatreId,
+        theatreName: req.body.theatreData?.theatreName
       });
       await movieObj.save().then((resposne)=>{
        
@@ -42,7 +42,9 @@ const theatrecontroller = {
 
   fetchMovieList: async (req: Request, res: Response) => {
       try{
-        const movieListData=await Movie.find()
+       const theatreId=req.params.id
+      console.log("theatreId",theatreId)
+        const movieListData=await Movie.find({theatreId:theatreId})
       
         res.json({movieList:movieListData})
       }

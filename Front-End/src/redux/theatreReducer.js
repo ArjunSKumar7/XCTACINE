@@ -11,9 +11,9 @@ const checkTheatreData =()=>{
   const theatreDetails = JSON.parse(localStorage.getItem("theatreDetails")); //CHANGED TOKEN TO USERTOKEN
   console.log("theatreDetails", theatreDetails);
   if (theatreDetails) {
-    return {theatreName:theatreDetails.Name, theatreId:theatreDetails._id,};
+    return {theatreName:theatreDetails.theatreName, theatreId:theatreDetails.theatreId,theatreApprovalStatus:theatreDetails.theatreApprovalStatus};
   } else {
-    return "";
+    return {theatreName:"",theatreId:"",theatreApprovalStatus:""};
   }
 }
 
@@ -38,9 +38,9 @@ console.log("theatreToken", action.payload);
     
     setTheatreDetails: (state, action) => {
       console.log("theatre details", action.payload);
-     localStorage.setItem("theatreId",action.payload._id );
-     localStorage.setItem("theatreApprovalStatus",action.payload.approvalStatus );
-     localStorage.setItem("theatreDetails",JSON.stringify(action.payload));
+    //  localStorage.setItem("theatreId",action.payload._id );
+    
+     
       state.theatreDetails = action.payload;
     },
     setAddedMovies: (state, action) => {
@@ -51,8 +51,7 @@ console.log("theatreToken", action.payload);
       state.theatreToken = null;
       
       localStorage.removeItem("theatreToken");
-      localStorage.removeItem("theatreId");
-      localStorage.removeItem("theatreApprovalStatus" );
+  
       localStorage.removeItem("theatreDetails");
     },
     setMovieToList: (state, action) => {

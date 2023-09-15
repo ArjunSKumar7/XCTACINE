@@ -38,9 +38,16 @@ export function TheatreLogin() {
       console.log(values);
       const response = await login("/auth/theatre/login", values);
       console.log("login response", response.theatre);
+      const theatreDetails={
+        theatreName:response.theatre.Name,
+        theatreId:response.theatre._id,
+        theatreApprovalStatus:response.theatre.approvalStatus
+
+      }
       dispatch(setTheatreDetails(response.theatre))   
       dispatch(setTheatreToken(response.token));
       localStorage.setItem("theatreToken", response.token);  
+      localStorage.setItem("theatreDetails",JSON.stringify(theatreDetails));
   
       navigate("/theatre/login");
     },

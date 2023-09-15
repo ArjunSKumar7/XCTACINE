@@ -19,14 +19,14 @@ import { useSelector } from "react-redux";
 export function MovieCard(props) {
   const navigate = useNavigate();
   const addMovie = props.data;  
-  const theatreDataObj = useSelector((store) => store.theatre.theatreDetails);
-  console.log("theatreDataObj",(theatreDataObj));
+  const theatreData = useSelector((store) => store.theatre.theatreDetails);
+  console.log("theatreDataObj",(theatreData));
   async function handleAddMovie(addMovie) {
 
 
     console.log("Add", addMovie);
     
-    const response = await addMovieData("/theatre/addmovie", addMovie,theatreDataObj);
+    const response = await addMovieData("/theatre/addmovie", addMovie,theatreData);
     if (response?.message === "movie added successfully!") {
       toast.success(`${response?.message}`, {
         position: "top-right",

@@ -24,11 +24,8 @@ function App() {
   const theatreToken = useSelector((state) => state.theatre.theatreToken);
 
   const adminToken = useSelector((state) => state.admin.adminToken);
-  const theatredata = {
-    theatreId: localStorage.getItem("theatreId"),
-    theatreApprovalStatus: localStorage.getItem("theatreApprovalStatus"),
-  };
-
+  const theatredata = useSelector((state) => state.theatre.theatreDetails);
+console.log("theatredata", theatredata);
 
 
   
