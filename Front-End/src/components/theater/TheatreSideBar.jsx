@@ -1,4 +1,5 @@
-import React from "react";
+
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -26,14 +27,20 @@ import {
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import {AddMovieForm} from "../../components/theater/AddMovieForm"
+import { AddScreenForm } from "./AddScreenForm";
  
 export function TheatreSideBar() {
-  const [open, setOpen] = React.useState(0);
+  const [open, setOpen] = useState(0);
  
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
-  const [addMivieOpen, setaddMivieOpen] = React.useState(false);
+  const [addMivieOpen, setaddMivieOpen] = useState(false);
+  const [addScreenOpen, setaddScreenOpen] =useState(false);
+
+  const handleAddScreenOpen = () => {
+    console.log("openscreen")
+    setaddScreenOpen(!addScreenOpen);}
  
   const handleMovieAddOpen = () => setaddMivieOpen(!addMivieOpen);
 
@@ -147,17 +154,17 @@ export function TheatreSideBar() {
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0">
-              <ListItem onClick={()=>{navigate("#")}}>
+              <ListItem onClick={handleAddScreenOpen}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
                 Add Screens
               </ListItem>
-              <ListItem>
+              <ListItem onClick={()=>{navigate("/theatre/screenlist")}}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Approvals
+                Screen List
               </ListItem>
               {/* <ListItem>
                 <ListItemPrefix>
@@ -224,7 +231,7 @@ export function TheatreSideBar() {
         <DialogHeader >Add Movie</DialogHeader>
         
         <DialogBody>
-            <AddMovieForm/>
+            <AddMovieForm />
           
 
         </DialogBody>
@@ -243,6 +250,31 @@ export function TheatreSideBar() {
           </Button>
         </DialogFooter> */}
       </Dialog>
+
+
+
+
+      <Dialog
+        open={addScreenOpen}
+        handler={handleAddScreenOpen}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className=" sm:w-96 md:w-1/2 lg:w-3/5 xl:w-2/3 top-0"
+        size="lg"
+      >
+        <DialogHeader >Add Screen</DialogHeader>
+        
+        <DialogBody>
+            <AddScreenForm handleAddScreenOpen={handleAddScreenOpen}/>
+          
+
+        </DialogBody>
+        
+        
+      </Dialog>
+
 
 
 

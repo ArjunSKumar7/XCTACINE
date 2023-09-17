@@ -57,3 +57,14 @@ export const deleteTheatreMovie = async (movieId) => {
     console.log("deleteTheatreMovie api error:",error)
 }
 }
+
+
+export const addScreen= async (values) => {
+  try{
+    const response =await theatre_baseURL.post(`/theatre/addscreen`,values);
+    console.log("addScreen api",response.data);
+    return response?.data
+  }catch(error){
+    console.log("addScreen api error:",error)
+}
+}

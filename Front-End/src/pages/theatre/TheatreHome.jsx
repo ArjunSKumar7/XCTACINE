@@ -12,7 +12,7 @@ const TheatreHome = (props) => {
 
  <div className="flex  justify-center items-center h-screen">
   
-  {props.data.theatreApprovalStatus ? null : <ApprovalBox/>}
+  {props.data.approvalStatus ? null : <ApprovalBox/>}
   </div>
   
 

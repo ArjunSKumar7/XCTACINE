@@ -5,6 +5,8 @@ import { setToken } from "../../redux/userReducer";
 import { useState } from "react";
 import {signup} from "../../api/user/userApi";
 import styled from "styled-components";
+import {app} from "../../firebase/googleAuth/config"
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import * as Yup from "yup";
 import {
   Card,
@@ -17,7 +19,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-
+const auth = getAuth(app);
 const Signup = () => {
 const dispatch = useDispatch();
 const navigate=useNavigate()
@@ -51,6 +53,7 @@ const handleOpen = () => setOpen(!open);
       Email: "",
       Password: "",
       rePassword: "",
+      Mobile:"",
     },
     validationSchema: SignupSchema,
     onSubmit:async(values) => {
@@ -63,6 +66,37 @@ const handleOpen = () => setOpen(!open);
     },
   });
 
+
+
+  const onCaptchaVerify=()=>{
+   
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'normal',
+      'callback': (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        // ...
+      },
+      'expired-callback': () => {
+        // Response expired. Ask user to solve reCAPTCHA again.
+        // ...
+      }
+    });
+  }
+
+  const onSignupSubmit=()=>{
+    const phoneNumber = `+91${formik?.values?.Mobile}`;
+const appVerifier = window.recaptchaVerifier;
+    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+      window.confirmationResult = confirmationResult;
+      // ...
+    }).catch((error) => {
+      // Error; SMS not sent
+      // ...
+    });
+  }
 
 return (
     <Card color="transparent" className="flex flex-col items-center justify-center pt-16 w-100" shadow={false}>
@@ -143,6 +177,12 @@ return (
 
 
 
+
+
+
+
+
+
         <Button onClick={handleOpen} className="p-2 rounded-full w-28 ml-auto mr-auto capitalize"  variant="outlined" >Send OTP</Button>
       <Dialog
         open={open}
@@ -180,7 +220,9 @@ return (
 
 
 
+<div id="recaptcha-container">
 
+</div>
 
 
 

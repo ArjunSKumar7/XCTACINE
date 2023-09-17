@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Movie from "../model/movieSchema";
+import Screen from "../model/screenSchema"
 
 
 
@@ -62,6 +63,35 @@ const theatrecontroller = {
     }
     catch(err){
       res.json({message:"fecthUserMovieList backend error:",err});
+    }
+  },
+
+  addScreen: async (req: Request, res: Response) => {
+    try{
+console.log("addScreen",req.body)
+const screenExist = await Screen.findOne({screenName:req.body?.screenName})
+if(screenExist){
+  res.json({message:"screen already exist"})
+}
+else{
+  const screenObj = new Screen({
+    screenName: req.body?.screenName,
+    rows: req.body?.Rows,
+    columns: req.body?.Columns,
+    shows: req.body?.shows,
+    theatreId: req.body?.theatreId,
+    theatreName: req.body?.theatreName
+  });
+  await screenObj.save().then((resposne)=>{
+   
+   res.json({message:"screen added successfully!",resposne})
+  })
+}
+
+    }
+    catch(error){
+      console.log("addScreen backend error:",error)
+      res.json({message:"fecthUserMovieList backend error:",error});
     }
   }
 

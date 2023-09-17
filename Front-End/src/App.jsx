@@ -16,6 +16,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUserDetails from "./pages/admin/AdminUserDetails";
 import AdminTheatreDetails from "./pages/admin/AdminTheatreDetails";
 import TheatreMovieDetails from "./pages/theatre/TheatreMovieDetails";
+import TheatreScreenDetails from "./pages/theatre/TheatreScreenDetails";
 
 
 function App() {
@@ -64,6 +65,11 @@ console.log("theatredata", theatredata);
       <Routes>
         <Route path="/theatre/movielist" element={theatreToken? <TheatreMovieDetails/> : <TheatreLogin/>} />
       </Routes>
+
+      <Routes>
+        <Route path="/theatre/screenlist" element={theatreToken? <TheatreScreenDetails/> : <TheatreLogin/>} />
+      </Routes>
+
     
     </Router>
 
