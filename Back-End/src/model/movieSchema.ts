@@ -20,11 +20,9 @@ const movieSchema = new Schema({
     type: Date,
   },
   theatreId: {
-    type: String,
+    type: Array,
   },
-  theatreName: {
-    type: String, 
-  }
+
 });
 
 const Movie = model("MovieSchema", movieSchema);

@@ -71,3 +71,13 @@ export const  theatredetailsfetch = async () => {
     
   }
 
+export const addLocation = async (data) => {
+  console.log("addLocation",data)
+  try {
+    const response = await admin_baseURL.post("/admin/addlocation",data);
+    console.log("addLocationresponse",response)
+    return response?.data
+  }catch(err){
+    console.log("addLocation api error:",err)
+  }
+}

@@ -18,11 +18,11 @@ export function UserHomeCard(props) {
     },
   };
 
-  const movieImages = [props.data.moviePoster];
+  const movieImages = [props?.data?.moviePoster];
   // const movieDescriptions = [props.data.movieOverview];
-  const movieTitle = [props.data.movieTitle];
+  const movieTitle = [props?.data?.movieTitle];
   // const movieLanguage=[props.data.movieLanguage];
-  const movieReleaseDate = [props.data.movieReleaseDate];
+  const movieReleaseDate = [props?.data?.movieReleaseDate];
 
   return (
     
@@ -35,9 +35,9 @@ export function UserHomeCard(props) {
           style={{ backgroundImage: `url(${movieImages[0]})` }}
         ></div>
 
-        {movieImages.map((image, index) => (
+        {movieImages?.map((image, index) => (
           <motion.div
-            key={props.data.movieId}
+            key={props?.data?.movieId}
             className={`card cursor-pointer h-[500px] bg-cover bg-center rounded-[20px] ${
               index === expandedIndex ? "expanded" : ""
             }`}

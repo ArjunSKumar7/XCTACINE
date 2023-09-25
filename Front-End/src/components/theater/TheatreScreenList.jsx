@@ -19,9 +19,9 @@ import {
 } from "@material-tailwind/react";
 import TheatreScreenTable from "./TheatreScreenTable";
  import { useEffect,useState} from "react";
- import {movieListDataFetch} from "../../api/theater/theaterApi"
+ import {ScreenListDataFetch} from "../../api/theater/theaterApi"
  import { useDispatch } from "react-redux";
- import {setMovieToList} from "../../redux/theatreReducer"
+ import {setScreenToList} from "../../redux/theatreReducer"
 import{ useSelector } from "react-redux";
 
 
@@ -107,7 +107,7 @@ console.log("theatreId",theatreData)
      
         async function fetchData (){
          
-            const response = await movieListDataFetch(theatreData?.theatreId);
+            const response = await ScreenListDataFetch(theatreData?.theatreId);
            console.log("response",response)
             return response;
         }
@@ -115,12 +115,12 @@ console.log("theatreId",theatreData)
         fetchData().then((data)=>{
           console.log("data",data)
             
-            dispatch(setMovieToList(data?.movieList))
+            dispatch(setScreenToList(data?.screenList))
         })
     },[])
    
-    const theatremovieslist = useSelector((store)=>store.theatre.movieToList)
-    console.log("theatremovieslist",theatremovieslist)
+    const theatreScreenList= useSelector((store)=>store.theatre.screenToList)
+    console.log("theatremovieslist",theatreScreenList)
   
   return (
     <Card className="h-full mt-16 rounded-none ">
@@ -128,10 +128,10 @@ console.log("theatreId",theatreData)
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Available Movie List
+              Available Screen List
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              Select The Movies
+              
             </Typography>
           </div>
           {/* <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -182,16 +182,16 @@ console.log("theatreId",theatreData)
             </tr>
           </thead>
           <tbody>
-            {console.log("MovieToList",theatremovieslist)}
-            {theatremovieslist?(theatremovieslist.map(
-              ({movieId,movieLanguage,movieOverview,moviePoster,movieReleaseDate,movieTitle }, index) => {
-                const isLast = index === theatremovieslist.length - 1;
+            {console.log("MovieToList",theatreScreenList)}
+            {theatreScreenList?(theatreScreenList.map(
+              ({_id,screenName,rows,columns,shows,}, index) => {
+                const isLast = index === theatreScreenList.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
  
                 return (
-                 <TheatreScreenTable key={movieId} movieId={movieId} movieLanguage={movieLanguage} movieOverview={movieOverview} moviePoster={moviePoster} movieReleaseDate={movieReleaseDate} movieTitle={movieTitle} classes={classes}/>
+                 <TheatreScreenTable key={_id} screenId={_id} screenName={screenName} screenrows={rows}  screencolumns={columns} screenshows={shows} classes={classes}/>
                 );
               },
             )):null}

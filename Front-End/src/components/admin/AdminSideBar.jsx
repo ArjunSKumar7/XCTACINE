@@ -145,11 +145,11 @@ export function AdminSideBar() {
                 </ListItemPrefix>
                 Theater list
               </ListItem>
-              <ListItem>
+              <ListItem onClick={()=>{navigate("/admin/addlocation")}}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Approvals
+                Locations
               </ListItem>
               {/* <ListItem>
                 <ListItemPrefix>

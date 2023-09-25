@@ -7,6 +7,8 @@ import userController from '../controller/userController'
 
 
     router.get('/usermovielist',userController.moviesFetchUser)
+    router.get("/findNumber",userController.findNumber)
+    router.get("/moviename-search",userController.getMoviesBySearch)
 
 
 

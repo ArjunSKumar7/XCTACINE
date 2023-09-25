@@ -17,6 +17,7 @@ import {setMovieToList} from "../../redux/theatreReducer"
   
   
   function TheatreScreenTable(props) {
+    console.log("props", props);
     const dispatch = useDispatch()
 
     const theatreMoviesList = useSelector((store)=>store.theatre.movieToList)
@@ -72,13 +73,16 @@ import {setMovieToList} from "../../redux/theatreReducer"
           >
             {props.movieLanguage}
           </Typography> */}
-          <Typography
+          {/* <Typography
             variant="small"
             color="blue-gray"
             className="font-normal opacity-70"
           >
             {props.movieReleaseDate}
-          </Typography>
+          </Typography> */}
+          <div className="w-16 h-8  border-2 bg-green-500 border-green-900 rounded-full">
+            {}
+            </div>
         </div>
       </td>
   

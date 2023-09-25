@@ -40,11 +40,6 @@ export function AddMovieForm() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [movieData,setMovieData]=useState([])
 
-  console.log("searchKeyword", searchKeyword);
-  console.log(
-    "import.meta.env.VITE_TMDB_API_KEY",
-    import.meta.env.VITE_TMDB_API_KEY
-  );
 
   const searchHandle = () => {
     axios

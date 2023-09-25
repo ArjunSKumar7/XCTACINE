@@ -48,9 +48,10 @@ export const movieListDataFetch= async (theatreId) => {
 }
 
 
-export const deleteTheatreMovie = async (movieId) => {
+export const deleteTheatreMovie = async (movieId,theatreId) => {
+  console.log("theatreIdaaaaaaaaaaaaaaaaaaapi",theatreId)
   try{
-    const response =await theatre_baseURL.delete(`/theatre/deletemovie/${movieId}`);
+    const response =await theatre_baseURL.delete(`/theatre/deletemovie?movieId=${movieId}&theatreId=${theatreId}`);
     // console.log("movieListDataFetch api",response.data);
     return response?.data
   }catch(error){
@@ -67,4 +68,25 @@ export const addScreen= async (values) => {
   }catch(error){
     console.log("addScreen api error:",error)
 }
+}
+
+export const ScreenListDataFetch= async (theatreId) => {
+  try{
+    console.log("theatreId",theatreId)
+    const response =await theatre_baseURL.get(`/theatre/fetchscreenlist/${theatreId}`,);
+    console.log("ScreenListDataFetch api",response.data);
+    return response?.data
+  }catch(error){
+    console.log("ScreenListDataFetch api error:",error)
+}
+}
+
+export const fetchLocation=async()=>{
+  try {
+    const response =await theatre_baseURL.get(`/theatre/fetchlocation`);
+    return response?.data
+    
+  } catch (error) {
+    console.log("fetchLocation api error:",error)
+  }
 }

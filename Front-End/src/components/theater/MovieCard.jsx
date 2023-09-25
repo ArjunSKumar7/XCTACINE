@@ -9,25 +9,40 @@ import {
 import { toast } from "react-toastify";
 import { addMovieData } from "../../api/theater/theaterApi";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
-
-
-
-
+import { useSelector, useDispatch } from "react-redux";
+import { setMovieToList } from "../../redux/theatreReducer";
 
 export function MovieCard(props) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const addMovie = props.data;  
+  const addMovie = props?.data;
+  const existingMovieList = useSelector((store) => store.theatre.movieToList);
+  console.log("existingMovieList", existingMovieList);
   const theatreData = useSelector((store) => store.theatre.theatreDetails);
-  console.log("theatreDataObj",(theatreData));
+  console.log("theatreDataObj", theatreData);
   async function handleAddMovie(addMovie) {
+    const response = await addMovieData(
+      "/theatre/addmovie",
+      addMovie,
+      theatreData
+    );
+    console.log("response", response);
 
+    // if (response?.message === "Movie already exists for this theatre.") {
+    //   toast.success(`${response?.message}`, {
+    //     position: "top-right",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
 
-    console.log("Add", addMovie);
-    
-    const response = await addMovieData("/theatre/addmovie", addMovie,theatreData);
-    if (response?.message === "movie added successfully!") {
+    //   navigate("/theatre/movielist");
+    // }
+     if (response?.message === "movie added successfully!" || response?.message === "Movie updated with new theatreId.") {
       toast.success(`${response?.message}`, {
         position: "top-right",
         autoClose: 5000,
@@ -38,6 +53,9 @@ export function MovieCard(props) {
         progress: undefined,
         theme: "light",
       });
+      const updatedMovieList = [...existingMovieList, response?.response];
+      dispatch(setMovieToList(updatedMovieList));
+
       navigate("/theatre/movielist");
     } else {
       toast.error(`${response?.message}`, {
@@ -50,6 +68,7 @@ export function MovieCard(props) {
         progress: undefined,
         theme: "light",
       });
+      navigate("/theatre/movielist");
     }
 
     console.log("response", response);

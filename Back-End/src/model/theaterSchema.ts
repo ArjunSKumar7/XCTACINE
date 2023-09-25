@@ -21,6 +21,10 @@ const theatreSchema = new Schema (
             required:true,
             minlength:6
         },
+        Location:{
+            type:String,
+            required:true,
+        },
         ProfilePic:{
             type:Array
         },

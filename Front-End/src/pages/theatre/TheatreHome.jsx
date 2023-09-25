@@ -4,7 +4,7 @@ import {TheatreSideBar} from '../../components/theater/TheatreSideBar'
 
 
 const TheatreHome = (props) => {
-  console.log("props", props);
+  console.log("props", props?.data?.theatreApprovalStatus);
 
   return (
     <div>
@@ -12,7 +12,7 @@ const TheatreHome = (props) => {
 
  <div className="flex  justify-center items-center h-screen">
   
-  {props.data.approvalStatus ? null : <ApprovalBox/>}
+  {props?.data?.theatreApprovalStatus?null:<ApprovalBox/>}
   </div>
   
 

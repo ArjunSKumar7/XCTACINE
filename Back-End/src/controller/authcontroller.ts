@@ -14,7 +14,7 @@ const authController = {
 
       const userData = await User.findOne({ Email: Email });
       if (!userData) {
-        return res.json({
+        res.json({
           created: false,
           status: "user not found/exist",
         });
@@ -24,7 +24,7 @@ const authController = {
 
       if (userData) {
         if(userData.blockedStatus){
-          return res.json({
+          res.json({
             created: false,
             status: "user blocked",
           });
@@ -52,7 +52,7 @@ const authController = {
         }
       }
     } catch (err: any) {
-      return res.json({
+      res.json({
         status: "failed",
         token: "",
         message: err.message,
@@ -66,20 +66,23 @@ const authController = {
         Email,
         Name,
         Password,
-      }: { Email: string; Name: string; Password: string } = req.body;
+        Mobile,
+      }: { Email: string; Name: string; Password: string,Mobile:string } = req.body;
 
       let hashedPassword: string = await bcrypt.hash(Password, 10);
 
       const existingUser = await User.findOne({ Email: Email });
       if (existingUser) {
-        return res.json({ userExist: true, message: "User already exists" });
+        return res.json({ userExist: true,token: "", message: "User already exists" });
       }
+      else{
 
       // Creating a new user
       const newUserData: any = await User.create({
         Email,
         Name,
         Password: hashedPassword,
+        Mobile,
       });
       delete newUserData._doc.Password;
 
@@ -91,8 +94,8 @@ const authController = {
         token: jwt,
         status: "success",
       });
-    } catch (error) {
-      res.json({ status: "failed", token: "", message: "password not matched" });
+    } }catch (error) {
+      res.json({ user:"",status: "failed",token: "", message: "something went wrong   : ", error });
     }
   },
 
@@ -141,12 +144,14 @@ const authController = {
   },
 
   TheatreSignUp: async (req: Request, res: Response) => {
+    console.log("req", req.body);
     try {
       const {
         Email,
         Name,
+        Location,
         Password,
-      }: { Email: string; Name: string; Password: string } = req.body;
+      }: { Email: string; Name: string; Location: string; Password: string } = req.body;
 
       let hashedPassword: string = await bcrypt.hash(Password, 10);
 
@@ -157,10 +162,12 @@ const authController = {
           message: "Theatre already exists",
         });
       }
+      else{
 
       const newTheatreData: any = await Theatre.create({
         Email,
         Name,
+        Location,
         Password: hashedPassword,
       });
       delete newTheatreData._doc.Password;
@@ -173,7 +180,7 @@ const authController = {
         token: jwt,
         status: "success",
       });
-    } catch (error) {
+    } }catch (error) {
       res.json({ status: "failed", token: "", message: "password not matched" });
     }
   },

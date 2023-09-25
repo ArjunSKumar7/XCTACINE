@@ -10,7 +10,8 @@ const checkusertoken = () => {
 const initialState = {
   userToken: checkusertoken(),
   userId: "",
-  movieHomeData:[],
+  movieHomeData: [],
+  searchedMovieData: [],
 };
 
 const userSlice = createSlice({
@@ -19,8 +20,8 @@ const userSlice = createSlice({
   reducers: {
     setToken: (state, action) => {
       console.log("setToken", action.payload);
-      state.userToken = action?.payload.userToken; 
-      state.userId = action?.payload.userId;  
+      state.userToken = action?.payload.userToken;
+      state.userId = action?.payload.userId;
       localStorage.setItem("userToken", action.payload.userToken);
       localStorage.setItem("userId", action.payload.userId);
       // localStorage.removeItem("token")
@@ -34,9 +35,18 @@ const userSlice = createSlice({
 
     setMovieHomeData: (state, action) => {
       state.movieHomeData = action.payload;
-    }
+    },
+    setSearchedMovie: (state, action) => {
+      state.searchedMovieData = action.payload;
+    },
+
+
+
+
+
+
   },
 });
 
-export const { setToken, userLogout, setMovieHomeData } = userSlice.actions;
+export const { setToken, userLogout, setMovieHomeData, setSearchedMovie } = userSlice.actions;
 export default userSlice.reducer;

@@ -2,16 +2,22 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../redux/userReducer";
-import { useState } from "react";
-import {signup} from "../../api/user/userApi";
+import { useEffect, useState } from "react";
+import { signup } from "../../api/user/userApi";
+import { toast } from "react-toastify";
 import styled from "styled-components";
-import {app} from "../../firebase/googleAuth/config"
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { app } from "../../firebase/googleAuth/config";
+import {
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
 import * as Yup from "yup";
+import { findNumber } from "../../api/user/userApi";
 import {
   Card,
   Input,
-  Checkbox,
+  // Checkbox,
   Button,
   Typography,
   Dialog,
@@ -21,10 +27,143 @@ import {
 } from "@material-tailwind/react";
 const auth = getAuth(app);
 const Signup = () => {
-const dispatch = useDispatch();
-const navigate=useNavigate()
-const [open, setOpen] = useState(false);
-const handleOpen = () => setOpen(!open);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [sendOtpView, setSendOtpView] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpError, setOtpError] = useState(false);
+  const [ifVerified, setIfVerified] = useState(false);
+  // const [time,setTime] = useState(60)
+  // const [resend,setResend] = useState(false)
+  const handleOpen = () => setOpen(!open);
+  // const [recaptchaInstance, setRecaptchaInstance] = useState<RecaptchaVerifier | null>(null)
+  useEffect(() => {
+    // window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+    //   'size': 'invisible',
+    //   'callback': (response) => {
+    //     // reCAPTCHA solved, allow signInWithPhoneNumber.
+    //     onSignUpSubmit()
+    //     console.log("onCaptchaVerify response",response)
+    //   },
+    //   'expired-callback': () => {
+
+    //     // Response expired. Ask user to solve reCAPTCHA again.
+
+    //     // ...
+    //   }
+    // });
+    recaptchaRender();
+  }, []);
+
+  const mobileNumberHandle = (e) => {
+    const mobileValue = e.target.value.replace(/[^0-9]/g, "").slice(0, 10);
+    formik.setFieldValue("Mobile", mobileValue);
+    if (mobileValue.length === 10) {
+      setSendOtpView(true);
+    } else {
+      setSendOtpView(false);
+    }
+  };
+
+  const otpHandler = (e) => {
+    const otpNumber = e.target.value.replace(/[^0-9]/g, "").slice(0, 6);
+    setOtp(otpNumber);
+  };
+
+  const recaptchaRender = async () => {
+    try {
+      auth.useDeviceLanguage();
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "captchaContainer",
+        {
+          size: "invisible",
+          callback: () => {},
+        }
+      );
+      // setRecaptchaInstance(window.recaptchaVerifier)
+    } catch (error) {
+      console.log("Error in captcha", error);
+    }
+  };
+
+  // const startTimer = ()=>{
+  //   if (!recaptchaInstance){
+  //     recaptchaRender()
+  //   }
+  //   const timerHandle = setInterval(()=>{
+  //     setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : prevTime))
+
+  //   },1000)
+  //   setTimeout(()=>{
+  //     clearInterval(timerHandle)
+  //     setResend(true)
+  //     recaptchaInstance?.render().then(() => {
+  //       console.log("ReCAPTCHA re-rendered")
+  //     })
+  //   },60000)
+  // }
+
+  const onSignUpSubmit = async () => {
+    // setTime(60)
+    // startTimer()
+    // setResend(false)
+    setOtpError(false);
+
+    // onCaptchaVerify()
+    const phoneNumber = `+91${formik?.values?.Mobile}`;
+    console.log("onSignUpSubmit", phoneNumber);
+    const numberValidation = await findNumber(phoneNumber);
+    console.log("numberValidation", numberValidation);
+    if (numberValidation?.message === "User already exists") {
+      setOpen(false);
+      toast.error(`${numberValidation?.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      setOpen(true);
+      const appVerifier = window.recaptchaVerifier;
+      signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+        .then((confirmationResult) => {
+          // SMS sent. Prompt user to type the code from the message, then sign the
+          // user in with confirmationResult.confirm(code).
+          window.confirmationResult = confirmationResult;
+          console.log("onSignUpSubmit confirmationResult", confirmationResult);
+          // ...
+          alert("OTP sented");
+        })
+        .catch((error) => {
+          // Error; SMS not sent
+          // ...
+          console.log("onSignUpSubmit error", error);
+        });
+    }
+  };
+
+  const verifyOtp = () => {
+    if (otp.length === 6) {
+      window.confirmationResult
+        .confirm(otp)
+        .then((res) => {
+          console.log("res-user :", res.user, "res :", res);
+          setIfVerified(true);
+          setTimeout(() => {
+            setOpen(false);
+          }, 2000);
+        })
+        .catch(() => {
+          setOtpError(true);
+        });
+    }
+  };
 
   const SignupSchema = Yup.object().shape({
     Name: Yup.string()
@@ -38,14 +177,14 @@ const handleOpen = () => setOpen(!open);
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
-      
+
     rePassword: Yup.string()
       .oneOf([Yup.ref("Password"), ""], "Password not match")
       .required("Required"),
 
-      Mobile: Yup.string()
-      .matches(/^[0-9]{10}$/,'Mobile number must be a 10-digit numeric value')
-      .required('Required'),
+    Mobile: Yup.string()
+      .matches(/^[0-9]{10}$/, "Mobile number must be a 10-digit numeric value")
+      .required("Required"),
   });
   const formik = useFormik({
     initialValues: {
@@ -53,53 +192,30 @@ const handleOpen = () => setOpen(!open);
       Email: "",
       Password: "",
       rePassword: "",
-      Mobile:"",
+      Mobile: "",
     },
     validationSchema: SignupSchema,
-    onSubmit:async(values) => {
-      const response=await signup("/auth/user/signup", values)
-      localStorage.setItem("userToken", response.token);
-      dispatch(setToken(response.token))
-      
-      navigate("/")
+    onSubmit: async (values) => {
+      console.log("signup values", values);
+      try {
+        const response = await signup("/auth/user/signup", values);
+        console.log("signup response", response);
+        localStorage.setItem("userToken", response.token);
+        dispatch(setToken(response)); 
 
+        navigate("/");
+      } catch (error) {
+        console.log("error");
+      }
     },
   });
 
-
-
-  const onCaptchaVerify=()=>{
-   
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      'size': 'normal',
-      'callback': (response) => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        // ...
-      },
-      'expired-callback': () => {
-        // Response expired. Ask user to solve reCAPTCHA again.
-        // ...
-      }
-    });
-  }
-
-  const onSignupSubmit=()=>{
-    const phoneNumber = `+91${formik?.values?.Mobile}`;
-const appVerifier = window.recaptchaVerifier;
-    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-    .then((confirmationResult) => {
-      // SMS sent. Prompt user to type the code from the message, then sign the
-      // user in with confirmationResult.confirm(code).
-      window.confirmationResult = confirmationResult;
-      // ...
-    }).catch((error) => {
-      // Error; SMS not sent
-      // ...
-    });
-  }
-
-return (
-    <Card color="transparent" className="flex flex-col items-center justify-center pt-16 w-100" shadow={false}>
+  return (
+    <Card
+      color="transparent"
+      className="flex flex-col items-center justify-center pt-16 w-100"
+      shadow={false}
+    >
       <Typography variant="h4" color="blue-gray">
         Sign Up
       </Typography>
@@ -111,24 +227,24 @@ return (
         className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
       >
         <div className="mb-4 flex flex-col gap-6">
-        <div className="position-relative">
-  <Input
-    size="lg"
-    name="Name"
-    label="Name"
-    {...formik.getFieldProps('Name')}
-  />
-  {formik.touched.Name && formik.errors.Name && (
-    <Error>{formik.errors.Name}</Error>
-  )}
-</div>
+          <div className="position-relative">
+            <Input
+              size="lg"
+              name="Name"
+              label="Name"
+              {...formik.getFieldProps("Name")}
+            />
+            {formik.touched.Name && formik.errors.Name && (
+              <Error>{formik.errors.Name}</Error>
+            )}
+          </div>
 
           <div className="position-relative">
             <Input
               size="lg"
               name="Email"
               label="Email"
-              {...formik.getFieldProps('Email')}
+              {...formik.getFieldProps("Email")}
             />
             {formik.errors.Email && formik.touched.Email && (
               <Error>{formik.errors.Email}</Error>
@@ -140,7 +256,7 @@ return (
               name="Password"
               size="lg"
               label="Password"
-              {...formik.getFieldProps('Password')}
+              {...formik.getFieldProps("Password")}
             />
             {formik.errors.Password && formik.touched.Password && (
               <Error>{formik.errors.Password}</Error>
@@ -152,7 +268,7 @@ return (
               name="rePassword"
               size="lg"
               label="Re-Password"
-              {...formik.getFieldProps('rePassword')}
+              {...formik.getFieldProps("rePassword")}
             />
             {formik.errors.rePassword && formik.touched.rePassword && (
               <Error>{formik.errors.rePassword}</Error>
@@ -164,79 +280,83 @@ return (
               type="text"
               name="Mobile"
               size="lg"
-           
               label="Mobile-Number"
-              {...formik.getFieldProps('Mobile')}
+              value={formik.values.Mobile}
+              onChange={mobileNumberHandle}
+              disabled={ifVerified}
+              // {...formik.getFieldProps('Mobile')}
             />
             {formik.errors.Mobile && formik.touched.Mobile && (
               <Error>{formik.errors.Mobile}</Error>
             )}
           </div>
-
+          <div id="captchaContainer"></div>
+          {sendOtpView ? (
+            <Button
+              onClick={onSignUpSubmit}
+              className=" rounded-full w-28 ml-auto mr-auto capitalize"
+              variant="outlined"
+            >
+              Send OTP
+            </Button>
+          ) : (
+            <></>
+          )}
         </div>
 
+        <Dialog
+          open={open}
+          handler={handleOpen}
+          animate={{
+            mount: { scale: 1, y: 0 },
+            unmount: { scale: 0.9, y: -100 },
+          }}
+        >
+          <DialogHeader>Its a simple dialog.</DialogHeader>
+          <DialogBody className="flex flex-col items-center justify-center p-1">
+            <h1 className="text-lg text-black font-bold mb-1">OTP Sent</h1>
+            <div>
+              <Input
+                type="text"
+                className=""
+                value={otp}
+                onChange={otpHandler}
+                label="Enter otp"
+              />
+              {/* <p className="text-center h-4 mt-1 text-black">{!resend ? (`Remaining time 0:${time}`) : null}</p> */}
+            </div>
+            <p className="text-red-900 mt-1 text-xs h-4">
+              {otpError ? "Invalid OTP" : ""}
+            </p>
 
+            <Button
+              className="w-28 m-2 capitalize"
+              size="sm"
+              variant="gradient"
+              color="green"
+              onClick={verifyOtp}
+            >
+              Verify
+            </Button>
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1"
+            >
+              <span>Cancel</span>
+            </Button>
+            <Button variant="gradient" color="green" onClick={handleOpen}>
+              <span>Confirm</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
 
+        {/* <div id="recaptcha-container"></div> */}
 
-
-
-
-
-
-        <Button onClick={handleOpen} className="p-2 rounded-full w-28 ml-auto mr-auto capitalize"  variant="outlined" >Send OTP</Button>
-      <Dialog
-        open={open}
-        handler={handleOpen}
-        animate={{
-          mount: { scale: 1, y: 0 },
-          unmount: { scale: 0.9, y: -100 },
-        }}
-      >
-        <DialogHeader>Its a simple dialog.</DialogHeader>
-        <DialogBody className="flex flex-col items-center justify-center p-1">
-                  <h1 className="text-lg text-black font-bold mb-1">OTP Sent</h1>
-                  <div>
-                    <Input type="text" className="" value={"otp"} onChange={"otpHandler"} label="Enter otp"/>
-                  </div>
-                  <p className="text-red-900 text-xs h-4">{"aa"}</p>
-                  <Button className=" m-2 capitalize" size='sm' variant="gradient" color="green" >
-                    Verify
-                  </Button>
-                </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
-
-
-
-<div id="recaptcha-container">
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <Checkbox
+        {/* <Checkbox
           label={
             <Typography
               variant="small"
@@ -253,10 +373,11 @@ return (
             </Typography>
           }
           containerProps={{ className: "-ml-2.5" }}
-        />
-        <Button type="submit" className="mt-6" fullWidth>
-          Register
-        </Button>
+        /> */}
+    {ifVerified?<Button type="submit" className="mt-6" fullWidth>
+      Register
+    </Button>:<p className="text-center font-normal  ">Verify your number to register</p>}
+        </form>
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
           <a
@@ -266,10 +387,7 @@ return (
             Sign In
           </a>
         </Typography>
-      </form>
-    
-
-
+     
     </Card>
   );
 };

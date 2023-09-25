@@ -39,14 +39,15 @@ export function TheatreLogin() {
       const response = await login("/auth/theatre/login", values);
       console.log("login response", response.theatre);
       const theatreDetails={
-        theatreName:response.theatre.Name,
-        theatreId:response.theatre._id,
-        theatreApprovalStatus:response.theatre.approvalStatus
+        theatreName:response?.theatre?.Name,
+        theatreId:response?.theatre?._id,
+        theatreApprovalStatus:response?.theatre?.approvalStatus,
+        theatreLocation:response?.theatre?.Location
 
       }
-      dispatch(setTheatreDetails(response.theatre))   
-      dispatch(setTheatreToken(response.token));
-      localStorage.setItem("theatreToken", response.token);  
+      dispatch(setTheatreDetails(theatreDetails))   
+      dispatch(setTheatreToken(response?.token));
+      localStorage.setItem("theatreToken", response?.token);  
       localStorage.setItem("theatreDetails",JSON.stringify(theatreDetails));
   
       navigate("/theatre/login");

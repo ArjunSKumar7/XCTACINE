@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-import {  UserPlusIcon } from "@heroicons/react/24/solid";
+import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -18,12 +18,11 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 import TheatreMovieTable from "./TheatreMovieTable";
- import { useEffect,useState} from "react";
- import {movieListDataFetch} from "../../api/theater/theaterApi"
- import { useDispatch } from "react-redux";
- import {setMovieToList} from "../../redux/theatreReducer"
-import{ useSelector } from "react-redux";
-
+import { useEffect, useState } from "react";
+import { movieListDataFetch } from "../../api/theater/theaterApi";
+import { useDispatch } from "react-redux";
+import { setMovieToList } from "../../redux/theatreReducer";
+import { useSelector } from "react-redux";
 
 const TABS = [
   {
@@ -39,9 +38,9 @@ const TABS = [
     value: "unmonitored",
   },
 ];
- 
-const TABLE_HEAD = ["Title", "Release Date", "Language", "Overview","Action"];
- 
+
+const TABLE_HEAD = ["Title", "Release Date", "Language", "Overview", "Action"];
+
 const TABLE_ROWS = [
   {
     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
@@ -90,38 +89,30 @@ const TABLE_ROWS = [
   },
 ];
 
-
- 
 export function TheatreMovieList() {
-
   //for getting theatreId from added movies
-const theatreData= useSelector((store)=>store.theatre.theatreDetails)
-console.log("theatreId",theatreData)
+  const theatreData = useSelector((store) => store.theatre.theatreDetails);
+  console.log("theatreId", theatreData);
 
+  const dispatch = useDispatch();
+  // const [MovieToList, setMovieToList] = useState("");
+  useEffect(() => {
+    async function fetchData() {
+      const response = await movieListDataFetch(theatreData?.theatreId);
+      console.log("response", response);
+      return response;
+    }
 
+    fetchData().then((data) => {
+      console.log("data", data);
 
+      dispatch(setMovieToList(data?.movieList));
+    });
+  }, []);
 
-  const dispatch = useDispatch()
-    // const [MovieToList, setMovieToList] = useState("");
-    useEffect(()=>{  
-     
-        async function fetchData (){
-         
-            const response = await movieListDataFetch(theatreData?.theatreId);
-           console.log("response",response)
-            return response;
-        }
+  const theatremovieslist = useSelector((store) => store.theatre.movieToList);
+  console.log("theatremovieslist", theatremovieslist);
 
-        fetchData().then((data)=>{
-          console.log("data",data)
-            
-            dispatch(setMovieToList(data?.movieList))
-        })
-    },[])
-   
-    const theatremovieslist = useSelector((store)=>store.theatre.movieToList)
-    console.log("theatremovieslist",theatremovieslist)
-  
   return (
     <Card className="h-full mt-16 rounded-none ">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -145,7 +136,7 @@ console.log("theatreId",theatreData)
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <Tabs value="all" className="w-full md:w-max">
-              {/* <TabsHeader>
+            {/* <TabsHeader>
                 {TABS.map(({ label, value }) => (
                   <Tab key={value} value={value}>
                     &nbsp;&nbsp;{label}&nbsp;&nbsp;
@@ -182,19 +173,41 @@ console.log("theatreId",theatreData)
             </tr>
           </thead>
           <tbody>
-            {console.log("MovieToList",theatremovieslist)}
-            {theatremovieslist?(theatremovieslist.map(
-              ({movieId,movieLanguage,movieOverview,moviePoster,movieReleaseDate,movieTitle }, index) => {
-                const isLast = index === theatremovieslist.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
- 
-                return (
-                 <TheatreMovieTable key={movieId} movieId={movieId} movieLanguage={movieLanguage} movieOverview={movieOverview} moviePoster={moviePoster} movieReleaseDate={movieReleaseDate} movieTitle={movieTitle} classes={classes}/>
-                );
-              },
-            )):null}
+            {console.log("MovieToList", theatremovieslist)}
+            {theatremovieslist
+              ? theatremovieslist.map(
+                  (
+                    {
+                      _id,
+                      movieId,
+                      movieLanguage,
+                      movieOverview,
+                      moviePoster,
+                      movieReleaseDate,
+                      movieTitle,
+                    },
+                    index
+                  ) => {
+                    const isLast = index === theatremovieslist.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
+
+                    return (
+                      <TheatreMovieTable
+                        key={_id}
+                        movieId={movieId}
+                        movieLanguage={movieLanguage}
+                        movieOverview={movieOverview}
+                        moviePoster={moviePoster}
+                        movieReleaseDate={movieReleaseDate}
+                        movieTitle={movieTitle}
+                        classes={classes}
+                      />
+                    );
+                  }
+                )
+              : null}
           </tbody>
         </table>
       </CardBody>

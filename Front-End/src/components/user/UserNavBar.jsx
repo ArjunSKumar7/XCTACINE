@@ -1,7 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { userLogout } from "../../redux/userReducer";
+import {useState, useEffect} from "react";
+import { userLogout,setSearchedMovie } from "../../redux/userReducer";
+import {getMoviesBySearch} from "../../api/user/userApi"
 import {
   Navbar,
   MobileNav,
@@ -14,6 +16,9 @@ import {
   Avatar,
   Card,
   IconButton,
+  Input,
+  Option,
+  Select
 } from "@material-tailwind/react";
 import {
   CubeTransparentIcon,
@@ -63,8 +68,10 @@ function ProfileMenu() {
   ];
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+ 
 
   const closeMenu = () => setIsMenuOpen(false);
+  
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -126,6 +133,7 @@ function ProfileMenu() {
     </Menu>
   );
 }
+
 
 // nav list menu
 const navListMenuItems = [
@@ -218,7 +226,23 @@ const navListItems = [
   },
 ];
 
+
+
+
+
+
 function NavList() {
+  const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState("");
+
+const searchUserMovies = async(e) => {
+  const newValue = e.target.value;
+   setSearchText(newValue);
+   const movieDataBySearch = await getMoviesBySearch(e.target.value)
+  dispatch(setSearchedMovie(movieDataBySearch?.movieList))
+  
+  }
+
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
       <NavListMenu />
@@ -235,8 +259,45 @@ function NavList() {
             {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
             {label}
           </MenuItem>
+         
         </Typography>
+        
       ))}
+      {/********************************searchbar *************************************************/}
+       <div className="relative flex w-full gap-2 md:w-max">
+          {/* <Input
+            type="search"
+            label="Type here..."
+            className="pr-20"
+            containerProps={{
+              className: "min-w-[288px]",
+            }}
+          />
+          <Button size="sm" className="!absolute right-1 top-1 rounded" onChange={searchUserMovies} value={searchText}>
+            Search
+          </Button> */}
+           <input className='bg-gray-300 focus:outline-none p-1 px-4 w-100 rounded text-black' onChange={searchUserMovies} value={searchText} type="text" maxLength={20} placeholder='Search' />
+        </div>
+        {/********************************searchbar *************************************************/}
+
+
+ {/********************************LOCATION LIST *************************************************/}
+        <div className="relative flex w-full gap-4 md:w-max">
+      <Select
+      className='bg-gray-300 focus:outline-none    rounded text-black'
+        label="Select Location"
+        animate={{
+          mount: { y: 0 },
+          unmount: { y: 25 },
+        }}
+      >
+        <Option>Material Tailwind HTML</Option>
+     
+      </Select>
+    </div>
+ {/********************************LOCATION LIST *************************************************/}
+
+
     </ul>
   );
 }
@@ -266,7 +327,7 @@ export function UserNavBar() {
         <img
           src="https://res.cloudinary.com/dbsgcwkhd/image/upload/v1694432315/android-chrome-512x512_kj47v1.png"
           alt="Your Logo"
-          className="  mr-4 ml-2 cursor-pointer py-1.5 lg:w-2 xl:w-2 sm:w-9  h-9"
+          className="  mr-4 ml-2 cursor-pointer py-1.5 lg:w-12 lg:h-16  xl:w-12 xl:h-22 sm:w-9  h-9"
         />
         <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
           <NavList />

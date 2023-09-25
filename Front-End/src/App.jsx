@@ -17,6 +17,7 @@ import AdminUserDetails from "./pages/admin/AdminUserDetails";
 import AdminTheatreDetails from "./pages/admin/AdminTheatreDetails";
 import TheatreMovieDetails from "./pages/theatre/TheatreMovieDetails";
 import TheatreScreenDetails from "./pages/theatre/TheatreScreenDetails";
+import AdminAddLocation from "./pages/admin/AdminAddLocation";
 
 
 function App() {
@@ -68,6 +69,10 @@ console.log("theatredata", theatredata);
 
       <Routes>
         <Route path="/theatre/screenlist" element={theatreToken? <TheatreScreenDetails/> : <TheatreLogin/>} />
+      </Routes>
+
+      <Routes>
+        <Route path="/admin/addlocation" element={adminToken? <AdminAddLocation/> : <AdminLogin/>} />
       </Routes>
 
     

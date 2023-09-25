@@ -7,8 +7,10 @@ import theatrecontoller from '../controller/theatreController'
 
     router.post('/addmovie',theatrecontoller.addMovie)
     router.get('/fetchmovielist/:id',theatrecontoller.fetchMovieList)
-    router.delete("/deletemovie/:id",theatrecontoller.deleteMovie)
+    router.delete("/deletemovie",theatrecontoller.deleteMovie)
     router.post("/addscreen",theatrecontoller.addScreen)
+    router.get("/fetchscreenlist/:id",theatrecontoller.fetchScreenList)
+    router.get ("/fetchlocation",theatrecontoller.fetchLocation)
 
 
 export default router

@@ -17,6 +17,8 @@ import {setMovieToList} from "../../redux/theatreReducer"
   
   
   function TheatreMovieTable(props) {
+    const theatreId = useSelector((store) => store.theatre.theatreDetails?.theatreId);
+    console.log("theatreDataObj", theatreId);
     const dispatch = useDispatch()
 
     const theatreMoviesList = useSelector((store)=>store.theatre.movieToList)
@@ -28,7 +30,8 @@ import {setMovieToList} from "../../redux/theatreReducer"
     try{
       const updatedMovieList = theatreMoviesList.filter((movie)=>movie.movieId!==props.movieId)
       dispatch(setMovieToList(updatedMovieList))
-    const resposne=await deleteTheatreMovie(props.movieId)
+      
+    const resposne=await deleteTheatreMovie(props.movieId,theatreId)
 
     console.log(resposne);
     return resposne;

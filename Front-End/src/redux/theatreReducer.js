@@ -7,70 +7,72 @@ const checkusertoken = () => {
     return "";
   }
 };
-const checkTheatreData =()=>{
+const checkTheatreData = () => {
   const theatreDetails = JSON.parse(localStorage.getItem("theatreDetails")); //CHANGED TOKEN TO USERTOKEN
   console.log("theatreDetails", theatreDetails);
   if (theatreDetails) {
-    return {theatreName:theatreDetails.theatreName, theatreId:theatreDetails.theatreId,theatreApprovalStatus:theatreDetails.theatreApprovalStatus};
+    return {
+      theatreName: theatreDetails.theatreName,
+      theatreId: theatreDetails.theatreId,
+      theatreApprovalStatus: theatreDetails.theatreApprovalStatus,
+    };
   } else {
-    return {theatreName:"",theatreId:"",theatreApprovalStatus:""};
+    return { theatreName: "", theatreId: "", theatreApprovalStatus: "" };
   }
-}
-
-
+};
 
 const initialState = {
   theatreToken: checkusertoken(),
-  theatreDetails:checkTheatreData(),
-  addedMovies:[],
-  movieToList:[],
-  addedScreens:[],
+  theatreDetails: checkTheatreData(),
+  addedMovies: [],
+  movieToList: [],
+  screenToList: [],
+  locationList: [],
 };
 
 const theatreSlice = createSlice({
   name: "theatre",
   initialState,
   reducers: {
-    setTheatreToken: (state, action) => {
+      setTheatreToken: (state, action) => {
       state.theatreToken = action.payload;
-console.log("theatreToken", action.payload);
       localStorage.setItem("theatreToken", action.token);
     },
-    
-    setTheatreDetails: (state, action) => {
-      console.log("theatre details", action.payload);
-    //  localStorage.setItem("theatreId",action.payload._id );
-    
-     
+
+      setTheatreDetails: (state, action) => {
+        console.log("setTheatreDetails", action.payload);
       state.theatreDetails = action.payload;
     },
-    setAddedMovies: (state, action) => {
+      setAddedMovies: (state, action) => {
       state.addedMovies = action.payload;
     },
 
-    theatreLogout: (state) => {
+      theatreLogout: (state) => {
       state.theatreToken = null;
-      
       localStorage.removeItem("theatreToken");
-  
       localStorage.removeItem("theatreDetails");
     },
     setMovieToList: (state, action) => {
-      console.log("setMovieToList", action.payload);
       state.movieToList = action.payload;
     },
+    setScreenToList: (state, action) => {
+      state.screenToList = action.payload;
+    },
 
-    setAddedScreens: (state, action) => {
-      console.log("setAddedScreens", action.payload);
-      state.addedScreens = action.payload;
-    }
-
-
-
-
-
+    setLocationList: (state, action) => {
+      console.log("setLocationList", action.payload);
+      state.locationList = action.payload;
+    },
   },
 });
 
-export const { setTheatreToken, theatreLogout,setTheatreDetails,setAddedMovies,setMovieToList,setAddedScreens } = theatreSlice.actions;
+export const {
+  setTheatreToken,
+  theatreLogout,
+  setTheatreDetails,
+  setAddedMovies,
+  setMovieToList,
+  setScreenToList,
+  setLocationList,
+} = theatreSlice.actions;
 export default theatreSlice.reducer;

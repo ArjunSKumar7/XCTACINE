@@ -1,9 +1,13 @@
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setTheatreToken, setTheatreDetails } from "../../redux/theatreReducer";
+import {
+  setTheatreToken,
+  setTheatreDetails,
+  setLocationList,
+} from "../../redux/theatreReducer";
 
-import { signup } from "../../api/theater/theaterApi";
+import { signup, fetchLocation } from "../../api/theater/theaterApi";
 import styled from "styled-components";
 import * as Yup from "yup";
 import {
@@ -12,12 +16,16 @@ import {
   Checkbox,
   Button,
   Typography,
+  Select,
+  Option,
 } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
 
 const TheatreSignup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [LocationData, setLocationData] = useState([]);
+  // const [selectLocation, setSelectLocation] = useState("");
   const SignupSchema = Yup.object().shape({
     Name: Yup.string()
       .max(15, "Must be 20 characters or less")
@@ -39,23 +47,50 @@ const TheatreSignup = () => {
     initialValues: {
       Name: "",
       Email: "",
+      Location: "",
       Password: "",
       rePassword: "",
     },
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
+      formik.setField;
       console.log("theatre values", values);
       const response = await signup("/auth/theatre/signup", values);
       console.log("theatre response", response);
-      dispatch(setTheatreDetails(response.theatre))
-      dispatch(setTheatreToken(response.token));
-      localStorage.setItem("theatreToken", response.token);
+      const theatreDetails = {
+        theatreName: response?.theatre?.Name,
+        theatreId: response?.theatre?._id,
+        theatreApprovalStatus: response?.theatre?.approvalStatus,
+        theatreLocation: response?.theatre?.Location,
+      };
+      dispatch(setTheatreDetails(theatreDetails));
+      dispatch(setTheatreToken(response?.token));
+      localStorage.setItem("theatreDetails", JSON.stringify(theatreDetails));
+      localStorage.setItem("theatreToken", response?.token);
       navigate("/theatre/login");
-    }, 
+    },
   });
 
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetchLocation();
+      console.log("theatre response", response);
+      return response;
+    }
+
+    fetchData().then((data) => {
+      console.log("data", data?.locationList);
+      dispatch(setLocationList(data?.locationList));
+      setLocationData(data?.locationList);
+    });
+  }, []);
+
   return (
-    <Card color="transparent" className="flex flex-col items-center justify-center pt-16 w-100" shadow={false}>
+    <Card
+      color="transparent"
+      className="flex flex-col items-center justify-center pt-16 w-100"
+      shadow={false}
+    >
       <Typography variant="h4" color="blue-gray">
         Sign Up
       </Typography>
@@ -90,6 +125,48 @@ const TheatreSignup = () => {
               <Error>{formik.errors.Email}</Error>
             )}
           </div>
+
+          <div className="position-relative">
+            <Select
+              label="Select Location"
+              animate={{
+                mount: { y: 0 },
+                unmount: { y: 25 },
+              }}
+            >
+              {LocationData?.map((location, index) => (
+                <Option
+                  key={index}
+                  name="Location"
+                  value={location}
+                  onClick={() => {
+                    formik.setFieldValue("Location", location);
+                  }}
+                >
+                  {location}
+                </Option>
+              ))}
+            </Select>
+
+            {/* <Select
+  label="Select Location"
+  name="Location"
+  value={location} // Access the field value from values.Location
+  onChange={formik.handleChange} // Handle change
+  onBlur={formik.handleBlur} // Handle blur
+  animate={{
+    mount: { y: 0 },
+    unmount: { y: 25 },
+  }}
+>
+  {LocationData?.map((location, index) => (
+    <Option key={index} value={location}>
+      {location}
+    </Option>
+  ))}
+</Select> */}
+          </div>
+
           <div className="position-relative">
             <Input
               type="password"
@@ -156,4 +233,4 @@ const Error = styled.span`
   font-size: 12px;
   color: red;
   position: relative;
-  `
+`;

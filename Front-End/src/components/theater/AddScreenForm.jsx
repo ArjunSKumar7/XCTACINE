@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import  {addScreen } from "../../api/theater/theaterApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setAddedScreens } from "../../redux/theatreReducer";
+
 
 export function AddScreenForm(props) {
   const dispatch = useDispatch();
@@ -110,7 +110,8 @@ export function AddScreenForm(props) {
       //   ...screenListForUpdation,
       //   response?.addedScreenObj,
       // ];
-      dispatch(setAddedScreens());//updatedScrnList
+      dispatch(setAddedScreens(values));//updatedScrnList
+      
 
       console.log(" page ", response);
       if (response?.status === "success") {
