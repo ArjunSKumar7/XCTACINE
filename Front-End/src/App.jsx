@@ -9,6 +9,7 @@ import UserHome from "../src/pages/user/UserHome";
 import { LoginForm } from "./pages/user/UserLogin";
 import Signup from "./pages/user/UserSignup";
 import UserSeatBooking from "./pages/user/UserSeatBooking";
+import UserBookNowMovie from "./pages/user/UserBookNowMovie";
 
 //*******************************Theatre Pages*******************************/
 import TheatreHome from "../src/pages/theatre/TheatreHome";
@@ -50,6 +51,13 @@ function App() {
           <Route
             path="/seatbooking"
             element={userToken ? <UserSeatBooking /> : <LoginForm />}
+          />
+        </Routes>
+
+        <Routes>
+          <Route
+            path="/movietobook"
+            element={userToken ? <UserBookNowMovie /> : <LoginForm />}
           />
         </Routes>
 

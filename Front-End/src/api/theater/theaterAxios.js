@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BaseUrl = "http://localhost:3000/api";
+const BaseUrl = "https://xctacine.online/api";
 
 const theatre_baseURL = axios.create({
   baseURL: BaseUrl,
