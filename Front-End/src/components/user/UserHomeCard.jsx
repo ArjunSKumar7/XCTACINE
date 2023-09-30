@@ -18,11 +18,29 @@ export function UserHomeCard(props) {
     },
   };
 
-  const movieImages = [props?.data?.moviePoster];
+  let movieImages;
   // const movieDescriptions = [props.data.movieOverview];
-  const movieTitle = [props?.data?.movieTitle];
+  let movieTitle ;
   // const movieLanguage=[props.data.movieLanguage];
-  const movieReleaseDate = [props?.data?.movieReleaseDate];
+  let movieReleaseDate ;
+
+  // if(props?.data?.locationBasedMovieList){
+  //    movieImages = [props?.data?.locationBasedMovieList?.moviePoster];
+  //   // const movieDescriptions = [props.data.movieOverview];
+  //  movieTitle = [props?.data?.locationBasedMovieList?.movieTitle];
+  //   // const movieLanguage=[props.data.movieLanguage];
+  //   movieReleaseDate = [props?.data?.locationBasedMovieList?.movieReleaseDate];
+  // }
+
+    movieImages = [props?.data?.moviePoster];
+    // const movieDescriptions = [props.data.movieOverview];
+    movieTitle = [props?.data?.movieTitle];
+    // const movieLanguage=[props.data.movieLanguage];
+    movieReleaseDate = [props?.data?.movieReleaseDate];
+  
+
+  
+
 
   return (
     

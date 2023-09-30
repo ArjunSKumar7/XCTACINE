@@ -31,9 +31,9 @@ export const googleLogIn = async (values) => {
   }
 }
 
-export const moviesFetchUser = async (page, limit) => {
+export const moviesFetchUser = async (locationValue,page, limit) => {
   try {
-    const response = await user_baseURL.get(`/user/usermovielist?page=${page}&limit=${limit}`);
+    const response = await user_baseURL.get(`/user/usermovielist?page=${page}&limit=${limit}&locationValue=${locationValue}`);
     console.log("moviesFetchUser api",response?.data);
     return response?.data;
   } catch (error) {
@@ -63,5 +63,24 @@ export const getMoviesBySearch = async (search) => {
   } catch (error) {
     console.error("getMoviesBySearch api error:", error);
     throw error;
+  }
+}
+
+
+export const getLocation=async()=>{
+  try {
+    const response =await user_baseURL.get(`/user/fetchtheatrelocation`);
+    return response?.data
+  } catch (error) {
+    console.log("fetchLocation api error:",error)
+  }
+}
+
+export const columnsAndRowsFetch=async()=>{
+  try {
+    const response =await user_baseURL.get(`/user/fetchcolumnsandrows`);
+    return response?.data
+  }catch(error){
+    console.log("columnsAndRowsFetch api error:",error)
   }
 }

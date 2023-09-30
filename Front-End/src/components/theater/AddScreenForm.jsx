@@ -29,6 +29,7 @@ export function AddScreenForm(props) {
   const formik = useFormik({
     initialValues: {
       screenName: "",
+      ticketPrice:0,
       Rows: 0,
       Columns: 0,
       shows:[],
@@ -44,7 +45,12 @@ export function AddScreenForm(props) {
 
         .max(25, "Must be 25 characters or less")
         .required("Required"),
-      Rows: Yup.number().required("Required"),
+      ticketPrice: 
+        Yup.number()
+        .required("Required"),
+      Rows: 
+      Yup.number()
+      .required("Required"),
       Columns:
         Yup.number()
         .required("Required"),
@@ -102,6 +108,7 @@ export function AddScreenForm(props) {
       };
       values.theatreId = theatreInfo.theatreId;
       values.theatreName = theatreInfo.theatreName;
+
       values.shows = [enabledShowFields];
       console.log("screenvalues",values);
       const response = await addScreen(values);
@@ -110,7 +117,7 @@ export function AddScreenForm(props) {
       //   ...screenListForUpdation,
       //   response?.addedScreenObj,
       // ];
-      dispatch(setAddedScreens(values));//updatedScrnList
+      // dispatch(setAddedScreens(values));//updatedScrnList
       
 
       console.log(" page ", response);
@@ -156,6 +163,24 @@ const handleshowEnabled = (index) => {
                 : null}
             </p>
           </div>
+
+          <div className="w-80">
+            <Typography color="black">Ticket Price</Typography>
+            <Input
+              color="teal"
+              label="ticketPrice"
+              type="number"
+              {...formik.getFieldProps("ticketPrice")}
+            />
+            <p className=" text-xs ml-2 text-red-800">
+              {formik.touched.ticketPrice && formik.errors.ticketPrice
+                ? formik.errors.ticketPrice
+                : null}
+            </p>
+          </div>
+
+
+
           <div className="flex space-x-4">
             <div className="w-80">
               <Typography color="black">Rows</Typography>

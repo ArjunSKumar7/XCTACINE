@@ -7,11 +7,22 @@ const checkusertoken = () => {
     return "";
   }
 };
+
+const checklocationselected = () => {
+  const locationSelected = localStorage.getItem("selectedLocation");
+  if (locationSelected) {
+    return locationSelected;
+  } else {
+    return "No selection";
+  }
+}
+
 const initialState = {
   userToken: checkusertoken(),
   userId: "",
   movieHomeData: [],
   searchedMovieData: [],
+  locationSelected: checklocationselected(),
 };
 
 const userSlice = createSlice({
@@ -31,6 +42,7 @@ const userSlice = createSlice({
       state.userId = null;
       localStorage.removeItem("userId");
       localStorage.removeItem("userToken");
+      localStorage.removeItem("selectedLocation");
     },
 
     setMovieHomeData: (state, action) => {
@@ -40,6 +52,9 @@ const userSlice = createSlice({
       state.searchedMovieData = action.payload;
     },
 
+    setLocationSelected: (state, action) => {
+      state.locationSelected = action.payload;
+    }
 
 
 
@@ -48,5 +63,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setToken, userLogout, setMovieHomeData, setSearchedMovie } = userSlice.actions;
+export const { setToken, userLogout, setMovieHomeData, setSearchedMovie, setLocationSelected } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,9 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import {useState, useEffect} from "react";
-import { userLogout,setSearchedMovie } from "../../redux/userReducer";
-import {getMoviesBySearch} from "../../api/user/userApi"
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import {
+  userLogout,
+  setSearchedMovie,
+  setLocationSelected,
+} from "../../redux/userReducer";
+import { getMoviesBySearch, getLocation } from "../../api/user/userApi";
 import {
   Navbar,
   MobileNav,
@@ -18,7 +22,7 @@ import {
   IconButton,
   Input,
   Option,
-  Select
+  Select,
 } from "@material-tailwind/react";
 import {
   CubeTransparentIcon,
@@ -68,10 +72,8 @@ function ProfileMenu() {
   ];
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
- 
 
   const closeMenu = () => setIsMenuOpen(false);
-  
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -133,7 +135,6 @@ function ProfileMenu() {
     </Menu>
   );
 }
-
 
 // nav list menu
 const navListMenuItems = [
@@ -226,22 +227,34 @@ const navListItems = [
   },
 ];
 
-
-
-
-
-
 function NavList() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
+  const [TheatreLocation, setTheatreLocation] = useState("");
 
-const searchUserMovies = async(e) => {
-  const newValue = e.target.value;
-   setSearchText(newValue);
-   const movieDataBySearch = await getMoviesBySearch(e.target.value)
-  dispatch(setSearchedMovie(movieDataBySearch?.movieList))
-  
-  }
+  const storedLocation = useSelector((store) => store.user.locationSelected);
+
+  const searchUserMovies = async (e) => {
+    const newValue = e.target.value;
+    setSearchText(newValue);
+    const movieDataBySearch = await getMoviesBySearch(e.target.value);
+    dispatch(setSearchedMovie(movieDataBySearch?.movieList));
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getLocation();
+      console.log("theatre response", response);
+      return response;
+    }
+
+    fetchData().then((data) => {
+      console.log("data", data?.locationList);
+      data?.locationList?.push("No Location Selected");
+      console.log("theatreLocatonarr", data?.locationList);
+      setTheatreLocation(data?.locationList);
+    });
+  }, []);
 
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
@@ -259,13 +272,11 @@ const searchUserMovies = async(e) => {
             {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
             {label}
           </MenuItem>
-         
         </Typography>
-        
       ))}
       {/********************************searchbar *************************************************/}
-       <div className="relative flex w-full gap-2 md:w-max">
-          {/* <Input
+      <div className="relative flex w-full gap-2 md:w-max">
+        {/* <Input
             type="search"
             label="Type here..."
             className="pr-20"
@@ -276,28 +287,58 @@ const searchUserMovies = async(e) => {
           <Button size="sm" className="!absolute right-1 top-1 rounded" onChange={searchUserMovies} value={searchText}>
             Search
           </Button> */}
-           <input className='bg-gray-300 focus:outline-none p-1 px-4 w-100 rounded text-black' onChange={searchUserMovies} value={searchText} type="text" maxLength={20} placeholder='Search' />
-        </div>
-        {/********************************searchbar *************************************************/}
+        <input
+          className="bg-gray-300 focus:outline-none p-1 px-4 w-100 rounded text-black"
+          onChange={searchUserMovies}
+          value={searchText}
+          type="text"
+          maxLength={20}
+          placeholder="Search"
+        />
+      </div>
+      {/********************************searchbar *************************************************/}
 
+      {/********************************LOCATION LIST *************************************************/}
+      <div className="relative flex w-full gap-4 md:w-max">
+        <Select
+          className="bg-gray-300 focus:outline-none    rounded text-black"
+          label="Select Location"
+          value={storedLocation}
+          animate={{
+            mount: { y: 0 },
+            unmount: { y: 25 },
+          }}
+        >
+          {/* <Option
+            value={"SELECT"}
+            onClick={() => {
+              setSelectedLocation("");
+              dispatch(setLocationSelected(""));
+              localStorage.setItem("selectedLocation", "");
+            }}
+          >
+            No Selection
+          </Option> */}
+          {TheatreLocation ? (
+            TheatreLocation.map((location, Index) => (
+              <Option
+                key={Index}
+                value={storedLocation}
+                onClick={() => {
+                  localStorage.setItem("selectedLocation", location);
 
- {/********************************LOCATION LIST *************************************************/}
-        <div className="relative flex w-full gap-4 md:w-max">
-      <Select
-      className='bg-gray-300 focus:outline-none    rounded text-black'
-        label="Select Location"
-        animate={{
-          mount: { y: 0 },
-          unmount: { y: 25 },
-        }}
-      >
-        <Option>Material Tailwind HTML</Option>
-     
-      </Select>
-    </div>
- {/********************************LOCATION LIST *************************************************/}
-
-
+                  dispatch(setLocationSelected(location));
+                }}
+              >
+                {location}
+              </Option>
+            ))
+          ) : (
+            <Option value="default">No data available</Option>
+          )}
+        </Select>
+      </div>
+      {/********************************LOCATION LIST *************************************************/}
     </ul>
   );
 }
@@ -315,7 +356,7 @@ export function UserNavBar() {
   }, []);
 
   return (
-    <Navbar className="mx-auto fixed max-w-full p-3 top-0 rounded-none z-50   ">
+    <Navbar className=" fixed max-w-full p-3  rounded-none z-50    ">
       <div className="relative mx-auto flex items-center text-blue-gray-900">
         <Typography
           as="a"

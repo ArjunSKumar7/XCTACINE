@@ -148,23 +148,6 @@ const TheatreSignup = () => {
               ))}
             </Select>
 
-            {/* <Select
-  label="Select Location"
-  name="Location"
-  value={location} // Access the field value from values.Location
-  onChange={formik.handleChange} // Handle change
-  onBlur={formik.handleBlur} // Handle blur
-  animate={{
-    mount: { y: 0 },
-    unmount: { y: 25 },
-  }}
->
-  {LocationData?.map((location, index) => (
-    <Option key={index} value={location}>
-      {location}
-    </Option>
-  ))}
-</Select> */}
           </div>
 
           <div className="position-relative">

@@ -11,7 +11,8 @@ import { CircularPagination } from "../../components/CircularPagination";
 const Home = () => {
   const searchedMovies = useSelector((store) => store.user.searchedMovieData);
   const wholeMovieList = useSelector((store) => store.user.movieHomeData);
-  console.log("searchedMovies", searchedMovies);
+const selectedLocation = useSelector((store) => store.user.locationSelected);
+console.log("selectedLocation", selectedLocation);
   let movies = "";
   if (searchedMovies.length > 0) movies = searchedMovies; else movies = wholeMovieList;
   
@@ -29,20 +30,27 @@ const Home = () => {
     setPage(page);
     localStorage.setItem("activePage", page.toString()); // Save the active page to localStorage
   };
-
-  useEffect(() => {
-    async function fetchAllMovies() {
-      const movieResponse = await moviesFetchUser(page, 8);
-      console.log(movieResponse);
-      if (movieResponse) {
-        dispatch(setMovieHomeData(movieResponse.movieList));
-        setTotalPages(movieResponse.totalPages); // Update total pages
-      }
+  
+  async function fetchAllMovies(locationValue) {
+    const movieResponse = await moviesFetchUser(locationValue,page, 8);
+    console.log(movieResponse);
+   
+    if (movieResponse) {
+      dispatch(setMovieHomeData(movieResponse.movieList));
+      setTotalPages(movieResponse.totalPages); // Update total pages
     }
-
-    fetchAllMovies();
-  }, [page]); // Trigger fetch when the page changes
-
+  }
+  
+  useEffect(() => {
+    if (selectedLocation ===   "No Location Selected") {
+      const noLocation=''
+      fetchAllMovies(noLocation);
+    }else{
+      fetchAllMovies(selectedLocation);
+    }
+  }, [selectedLocation, page]); // Trigger fetch when selectedLocation or page changes
+  // Trigger fetch when selectedLocation or page changes
+  
   return (
     <>
       <UserNavBar />
