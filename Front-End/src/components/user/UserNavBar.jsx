@@ -257,7 +257,7 @@ function NavList() {
   }, []);
 
   return (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
+    <ul className="mb-4 mt-2  flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
       <NavListMenu />
       {navListItems.map(({ label, icon }, key) => (
         <Typography
@@ -356,7 +356,7 @@ export function UserNavBar() {
   }, []);
 
   return (
-    <Navbar className=" fixed max-w-full p-3  rounded-none z-50    ">
+    <Navbar className=" mx-auto fixed max-w-full p-3 top-0 rounded-none z-50 ">
       <div className="relative mx-auto flex items-center text-blue-gray-900">
         <Typography
           as="a"
