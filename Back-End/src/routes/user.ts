@@ -11,6 +11,6 @@ import userController from '../controller/userController'
     router.get("/moviename-search",userController.getMoviesBySearch)
     router.get("/fetchtheatrelocation",userController.getLocation)
     router.get("/fetchcolumnsandrows",userController.fetchcolumnsandrows)
-
+    router.get("/moviepagedata",userController.moviepagedata)
 
 export default router

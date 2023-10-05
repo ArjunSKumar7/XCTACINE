@@ -15,6 +15,14 @@ const checklocationselected = () => {
   } else {
     return "No selection";
   }
+};
+const checkbookingOperation=()=>{
+  const bookingOperation = localStorage.getItem("bookingOperation");
+  if (bookingOperation) {
+    return bookingOperation;
+  } else {
+    return "";
+  }
 }
 
 const initialState = {
@@ -23,6 +31,7 @@ const initialState = {
   movieHomeData: [],
   searchedMovieData: [],
   locationSelected: checklocationselected(),
+  bookingOperation:checkbookingOperation()
 };
 
 const userSlice = createSlice({
@@ -43,6 +52,8 @@ const userSlice = createSlice({
       localStorage.removeItem("userId");
       localStorage.removeItem("userToken");
       localStorage.removeItem("selectedLocation");
+      localStorage.removeItem("bookingOperation");
+      localStorage.removeItem("activePage");
     },
 
     setMovieHomeData: (state, action) => {
@@ -54,14 +65,17 @@ const userSlice = createSlice({
 
     setLocationSelected: (state, action) => {
       state.locationSelected = action.payload;
+    },
+
+    setBookingOperation:(state,action)=>{
+      console.log("setBookingOperation",action.payload)
+      state.bookingOperation=action.payload
     }
-
-
 
 
 
   },
 });
 
-export const { setToken, userLogout, setMovieHomeData, setSearchedMovie, setLocationSelected } = userSlice.actions;
+export const { setToken, userLogout, setMovieHomeData, setSearchedMovie, setLocationSelected,setBookingOperation } = userSlice.actions;
 export default userSlice.reducer;

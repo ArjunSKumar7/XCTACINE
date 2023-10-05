@@ -24,6 +24,19 @@ const screenSchema =new Schema( {
     theatreName:{
         type:String,
         required:true
+    },
+    movieTitle:
+    {
+        type:String
+    },
+    movieId:{
+        type:String
+    },
+    ticketPrice:{
+        type:Number
+    },
+    selectedDates:{
+        type:Array
     }
 })
 

@@ -97,6 +97,18 @@ const userController = {
 
   fetchcolumnsandrows: async (req: Request, res: Response) => {
     
+  },
+
+
+
+  moviepagedata: async (req: Request, res: Response) => {
+    try {
+      
+      
+    } catch (error) {
+      res.json({ message: "moviepagedata backend error:", error });
+      
+    }
   }
 
 

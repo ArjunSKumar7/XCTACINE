@@ -11,6 +11,7 @@ import theatrecontoller from '../controller/theatreController'
     router.post("/addscreen",theatrecontoller.addScreen)
     router.get("/fetchscreenlist/:id",theatrecontoller.fetchScreenList)
     router.get ("/fetchlocation",theatrecontoller.fetchLocation)
+    router.post("/moviescreenallocation",theatrecontoller.moviescreenallocation)
 
 
 export default router

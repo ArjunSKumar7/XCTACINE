@@ -16,7 +16,7 @@ export const login = async (endpoint, values) => {
     const response = await user_baseURL.post(endpoint, values);
     return response?.data;
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("Login error:", error);
     throw error;
   }
 };
@@ -82,5 +82,14 @@ export const columnsAndRowsFetch=async()=>{
     return response?.data
   }catch(error){
     console.log("columnsAndRowsFetch api error:",error)
+  }
+}
+
+export const moviePageData = async (movieId) => {
+  try {
+    const response =await user_baseURL.get(`/user/moviepagedata?movieId=${movieId}`);
+    return response?.data
+  }catch(error){
+    console.log("moviePageData api error:",error)
   }
 }

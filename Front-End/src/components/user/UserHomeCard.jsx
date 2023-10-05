@@ -24,14 +24,6 @@ export function UserHomeCard(props) {
   // const movieLanguage=[props.data.movieLanguage];
   let movieReleaseDate ;
 
-  // if(props?.data?.locationBasedMovieList){
-  //    movieImages = [props?.data?.locationBasedMovieList?.moviePoster];
-  //   // const movieDescriptions = [props.data.movieOverview];
-  //  movieTitle = [props?.data?.locationBasedMovieList?.movieTitle];
-  //   // const movieLanguage=[props.data.movieLanguage];
-  //   movieReleaseDate = [props?.data?.locationBasedMovieList?.movieReleaseDate];
-  // }
-
     movieImages = [props?.data?.moviePoster];
     // const movieDescriptions = [props.data.movieOverview];
     movieTitle = [props?.data?.movieTitle];
@@ -73,7 +65,7 @@ export function UserHomeCard(props) {
           >
             <div className="card-content h-full flex flex-col justify-end">
               <div className="card-footer rounded-b-[20px] bg-gray-800 bg-opacity-75 min-h-[100px] flex flex-col items-center justify-center">
-                <button className="bg-gray-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded">
+                <button onClick={() => props?.handleHomeBookClick(props?.data?.movieId)} className="bg-gray-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded">
                   Book Now
                 </button>
 

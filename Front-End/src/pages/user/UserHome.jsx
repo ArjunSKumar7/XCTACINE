@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setMovieHomeData } from "../../redux/userReducer";
+import { setMovieHomeData,setBookingOperation } from "../../redux/userReducer";
 import { moviesFetchUser } from "../../api/user/userApi";
 import { UserHomeCard } from "../../components/user/UserHomeCard";
 import { UserNavBar } from "../../components/user/UserNavBar";
 import Body from "../../components/user/Body";
 import { UserFooter } from "../../components/user/UserFooter";
 import { CircularPagination } from "../../components/CircularPagination";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const searchedMovies = useSelector((store) => store.user.searchedMovieData);
   const wholeMovieList = useSelector((store) => store.user.movieHomeData);
 const selectedLocation = useSelector((store) => store.user.locationSelected);
@@ -50,6 +52,16 @@ console.log("selectedLocation", selectedLocation);
     }
   }, [selectedLocation, page]); // Trigger fetch when selectedLocation or page changes
   // Trigger fetch when selectedLocation or page changes
+
+
+  async function handleHomeBookClick(movieId){
+        const data={
+          movieId:movieId
+        }
+localStorage.setItem("bookingOperation",data)
+dispatch(setBookingOperation(data))
+navigate('/movietobook')
+  }
   
   return (
     <>
@@ -57,7 +69,7 @@ console.log("selectedLocation", selectedLocation);
       <Body />
       <div className="grid md:grid-cols-4 grid-flow-col md:grid-flow-row md:h-full overflow-y-auto gap-3">
         {movies.length > 0 ? (
-          movies.map((movie, _id) => <UserHomeCard key={_id} data={movie} />)
+          movies.map((movie, _id) => <UserHomeCard key={_id} data={movie}  handleHomeBookClick={handleHomeBookClick}/>)
         ) : (
           <p>No movies found.</p>
         )}

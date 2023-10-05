@@ -1,10 +1,12 @@
 import { Request, Response, response } from "express";
 import Movie from "../model/movieSchema";
 import Screen from "../model/screenSchema";
-import Location from "../model/locationSchema"
+import Location from "../model/locationSchema";
+import { ObjectId } from "mongoose";
+
+import mongoose from "mongoose";
 
 const theatrecontroller = {
-
   addMovie: async (req: Request, res: Response) => {
     try {
       const movieTitle = req.body?.movieData?.title;
@@ -18,11 +20,10 @@ const theatrecontroller = {
           // Add the new theatreId to the existing movie
           existingMovie.theatreId.push(theatreId);
           const response = await existingMovie.save();
-      
+
           res.json({ message: "Movie updated with new theatreId.", response });
         }
       } else {
-       
         const movieUrl = `https://image.tmdb.org/t/p/w500${req.body?.movieData?.poster_path}  `;
         const movieObj = new Movie({
           movieId: req.body?.movieData?.id,
@@ -94,6 +95,7 @@ const theatrecontroller = {
           shows: req.body?.shows,
           theatreId: req.body?.theatreId,
           theatreName: req.body?.theatreName,
+          ticketPrice: req.body?.ticketPrice,
         });
         await screenObj.save().then((resposne) => {
           res.json({ message: "screen added successfully!", resposne });
@@ -107,6 +109,7 @@ const theatrecontroller = {
 
   fetchScreenList: async (req: Request, res: Response) => {
     try {
+      console.log("req", req.params.id);
       const theatreId = req.params.id;
       const screenListData = await Screen.find({ theatreId: theatreId });
       console.log("screenListData", screenListData);
@@ -117,20 +120,41 @@ const theatrecontroller = {
     }
   },
 
-
   fetchLocation: async (req: Request, res: Response) => {
     try {
       const locationData = await Location.find({});
-      const locationList =locationData[0].location
+      const locationList = locationData[0].location;
       res.json({ locationList: locationList });
     } catch (err) {
       res.json({ message: "fecthMovieList backend error:", err });
     }
-  }
+  },
 
-
-
-
+  moviescreenallocation: async (req: Request, res: Response) => {
+    try {
+      const data = req.body;
+      const movie = await Movie.findOne({ movieId: data.movieId });
+      console.log("movie", movie);
+      const response = await Screen.updateOne(
+        { _id: data.screenId },
+        {
+          $set: {
+            movieId: data.movieId,
+            movieTitle: movie?.movieTitle,
+            selectedDates: data.selectedDates,
+          },
+        }
+      );
+      console.log("response", response);
+      if (response.modifiedCount > 0) {
+        res.json({ message: "moviescreenallocation successfully!", response });
+      } else {
+        res.json({ message: "moviescreenallocation failed!", response });
+      }
+    } catch (error) {
+      res.json({ message: "moviescreenallocation backend error:", error });
+    }
+  },
 };
 
 export default theatrecontroller;

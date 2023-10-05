@@ -41,6 +41,7 @@ const theatreSlice = createSlice({
 
       setTheatreDetails: (state, action) => {
         console.log("setTheatreDetails", action.payload);
+        
       state.theatreDetails = action.payload;
     },
       setAddedMovies: (state, action) => {
@@ -56,8 +57,10 @@ const theatreSlice = createSlice({
       state.movieToList = action.payload;
     },
     setScreenToList: (state, action) => {
+      console.log("setScreenToList", action.payload);
+
       state.screenToList = action.payload;
-    },
+    }, 
 
     setLocationList: (state, action) => {
       console.log("setLocationList", action.payload);
@@ -65,6 +68,7 @@ const theatreSlice = createSlice({
     },
   },
 });
+
 
 export const {
   setTheatreToken,

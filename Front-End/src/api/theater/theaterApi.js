@@ -90,3 +90,14 @@ export const fetchLocation=async()=>{
     console.log("fetchLocation api error:",error)
   }
 }
+
+export const movieScreenAllocation =async(data)=>{
+  try {
+    console.log("movieScreenAllocation",data)
+    const response =await theatre_baseURL.post(`/theatre/moviescreenallocation`,data);
+    return response?.data
+    
+  } catch (error) {
+    console.log("fetchLocation api error:",error)
+  }
+}

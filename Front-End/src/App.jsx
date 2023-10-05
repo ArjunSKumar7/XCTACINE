@@ -17,6 +17,7 @@ import { TheatreLogin } from "../src/pages/theatre/TheatreLogin";
 import TheatreSignup from "../src/pages/theatre/TheatreSignUp";
 import TheatreMovieDetails from "./pages/theatre/TheatreMovieDetails";
 import TheatreScreenDetails from "./pages/theatre/TheatreScreenDetails";
+import TheatreShowMangement from "./pages/theatre/TheatreShowMangement";
 
 //*********************Admin Pages*********************/
 import { AdminLogin } from "./pages/admin/AdminLogin";
@@ -103,6 +104,13 @@ function App() {
           <Route
             path="/theatre/movielist"
             element={theatreToken ? <TheatreMovieDetails /> : <TheatreLogin />}
+          />
+        </Routes>
+
+        <Routes>
+          <Route
+            path="/theatre/showmanagement"
+            element={theatreToken ? <TheatreShowMangement /> : <TheatreLogin />}
           />
         </Routes>
 
