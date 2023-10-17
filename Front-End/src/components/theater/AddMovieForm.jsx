@@ -52,7 +52,7 @@ export function AddMovieForm() {
         setMovieData(response?.data?.results)
 
       })
-      console.log("movieData",movieData)
+      
   };
   return (
     <div className="m-2" style={{ maxHeight: "400px", overflowY: "auto" }}>

@@ -11,8 +11,8 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
-  // ListItemSuffix,
-  // Chip,
+  ListItemSuffix,
+  Chip,
   Accordion,
   AccordionHeader,
   AccordionBody,
@@ -20,10 +20,13 @@ import {
 import {
   PresentationChartBarIcon,
   ShoppingBagIcon,
-  // UserCircleIcon,
-  // Cog6ToothIcon,
-  // InboxIcon,
-  // PowerIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
+  FilmIcon,
+  TvIcon,
+  TicketIcon
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import {AddMovieForm} from "../../components/theater/AddMovieForm"
@@ -108,7 +111,7 @@ export function TheatreSideBar() {
           <ListItem className="p-0" selected={open === 2}>
             <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
               <ListItemPrefix>
-                <ShoppingBagIcon className="h-5 w-5" />
+                <FilmIcon className="h-5 w-5" />
               </ListItemPrefix>
               <Typography color="blue-gray" className="mr-auto font-normal">
                Movies
@@ -145,7 +148,7 @@ export function TheatreSideBar() {
           <ListItem className="p-0" selected={open === 3}>
             <AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 p-3">
               <ListItemPrefix>
-                <ShoppingBagIcon className="h-5 w-5" />
+                <TvIcon className="h-5 w-5" />
               </ListItemPrefix>
               <Typography color="blue-gray" className="mr-auto font-normal">
                 Screens
@@ -182,7 +185,13 @@ export function TheatreSideBar() {
           </AccordionBody>
         </Accordion>
 
-
+        <ListItem onClick={()=>{navigate("/theatre/showmanagement")}}>
+          <ListItemPrefix>
+            <TicketIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Show Management
+       
+        </ListItem>
 
 
 

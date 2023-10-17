@@ -13,6 +13,7 @@ import { useState } from "react";
 import{deleteTheatreMovie} from "../../api/theater/theaterApi"
 import { useSelector, useDispatch } from "react-redux";
 import {setMovieToList} from "../../redux/theatreReducer"
+import { toast } from "react-toastify";
 
   
   
@@ -34,8 +35,30 @@ import {setMovieToList} from "../../redux/theatreReducer"
     const resposne=await deleteTheatreMovie(props.movieId,theatreId)
 
     console.log(resposne);
-    return resposne;
-    }catch(err){
+   if(resposne.status===200){
+    toast.success(`${resposne.message}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    }else{
+      toast.error(`${resposne.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }}
+    catch(err){
       console.log(err);
       
     }

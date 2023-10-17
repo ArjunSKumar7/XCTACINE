@@ -65,7 +65,7 @@ export function UserHomeCard(props) {
           >
             <div className="card-content h-full flex flex-col justify-end">
               <div className="card-footer rounded-b-[20px] bg-gray-800 bg-opacity-75 min-h-[100px] flex flex-col items-center justify-center">
-                <button onClick={() => props?.handleHomeBookClick(props?.data?.movieId)} className="bg-gray-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded">
+                <button onClick={() => props?.handleHomeBookClick(props?.data?.movieId,props?.data?.moviePoster)} className="bg-gray-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded">
                   Book Now
                 </button>
 

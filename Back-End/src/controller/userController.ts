@@ -3,6 +3,8 @@ import Movie from "../model/movieSchema";
 import User from "../model/userSchema";
 import Location from "../model/locationSchema";
 import Theatre from "../model/theaterSchema";
+import Booking from "../model/bookingSchema";
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const userController = {
   moviesFetchUser: async (req: Request, res: Response) => {
     try {
@@ -103,10 +105,183 @@ const userController = {
 
   moviepagedata: async (req: Request, res: Response) => {
     try {
+      console.log("moviepagedatabackend",req.query)
+      const movieId=req.query.movieId
+      const location=req.query.location
+     
+      const movieDetails=await Movie.findOne({movieId:movieId})
+
+      const moviepageaggregation = await Theatre.aggregate([
+        {$match:{Location:location,blockedStatus:false}},
+        {$addFields:{_id:{$toString:"$_id"}}},
+        {$lookup:{from:"screenschemas",localField:"_id",foreignField:"theatreId",as:"screen"}},
+        {$unwind:{path: "$screen",
+        includeArrayIndex: "string",}},
+        {$match:{"screen.movieId":movieId}},
+        {
+          $project:
+           
+              {
+                Email: false,
+                Password: false,
+               
+                __v: false,
+                string: false,
+                screen: {
+                  theatreId: false,
+                  theatreName: false,
+                  __v: false,
+                },
+              },
+        },
+        {
+          $group:
+           
+          {
+            _id: "$_id",
+                                
+          blockedStatus: {
+           $first: "$blockedStatus",
+          },
+          approvalStatus: {
+          $first: "$approvalStatus",
+                                },
+          theatreName: {
+          $first: "$Name",
+                                },
+          location: {
+          $first: "$Location",
+          },
+          screen: {
+          $push: "$screen",
+            },
+          }
+        },
+        
+      ])
+      console.log("moviepageaggregation",moviepageaggregation)
+      console.log("movieDetailssssssssssssssssssssssss",movieDetails)
+res.json({movieDetails:movieDetails,screenList:moviepageaggregation})
+
       
       
     } catch (error) {
       res.json({ message: "moviepagedata backend error:", error });
+      
+    }
+  },
+
+
+  fetchUserData: async (req: Request, res: Response) => {
+    try {
+      const userData = await User.findOne({_id:req.query.userId});
+      res.json({ userData: userData });
+    } catch (err) {
+      res.json({ message: "fecthUserData backend error:", err });
+    }
+  },
+
+  fetchBookingMovie: async (req: Request, res: Response) => {
+    try {
+      const bookingMovieData = await Movie.findOne({movieId:req.query.movieId});
+      res.json({ bookingMovieData: bookingMovieData });
+      
+    } catch (error) {
+      res.json({ message: "fecthBookingMovie backend error:", error });
+      
+    }
+  },
+
+  stripeGateWay:async (req:Request, res:Response)=>{
+    try {
+      const bookingdata=req.body
+      console.log("booking ",bookingdata)
+      const user = await User.findOne({ _id: bookingdata.userId });
+      console.log("user",user)
+      const userEmail=user?.Email
+      const seatBookedQty=bookingdata?.ticketCount
+      const totalTicketAmount =bookingdata?.ticketPrice*bookingdata?.ticketCount
+      if(bookingdata?.gateway==="stripe"){
+       try {
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ['card'],
+          mode: 'payment',
+          line_items: [
+            {
+              price_data: {
+                currency: 'inr',
+                product_data: {
+                  name: bookingdata.movieName,
+                },
+                unit_amount: totalTicketAmount * 100,
+              },
+              quantity: 1,
+            },
+          ],
+          success_url: `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/success`,
+          cancel_url: `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/cancel`,
+        });
+
+        // res.json({ urlAndId:{url:session.url, Id:session.id}, status:'success' });
+        res.json({paymenturl: session.url, paymentId: session.id, status: 'success' });
+      
+       } catch (error) {
+        res.json({ message: "stripeGateWay backend error:", error });
+       }
+      }
+      
+    } catch (error) {
+      res.json({ message: "stripeGateWay backend error:", error });
+    }
+  },
+
+  createBooking:async (req:Request, res:Response)=>{
+    try {
+      const bookingdata=req.body
+      console.log("booking ",bookingdata)
+      const user = await User.findOne({ _id: bookingdata?.userId });
+      const bookingSeatsQty = bookingdata?.ticketCount
+      const totalTicketAmount = bookingdata?.ticketPrice*bookingSeatsQty
+      bookingdata.totalTicketAmount=totalTicketAmount
+      bookingdata.userMailId=user?.Email
+      bookingdata.bookeddate=new Date()
+      console.log("booking1 ",bookingdata)
+      if(bookingdata?.paymentStatus==='success'){
+        try {
+          const bookingExist = await Booking.findOne({paymentId:bookingdata?.paymentId});
+          if(bookingExist){
+            res.json({ message: "booking already exist" });
+          }else{
+            const bookingObject = new Booking({
+              ticketPrice: bookingdata?.ticketPrice,
+              userId: bookingdata?.userId,
+              email: bookingdata?.userMailId,
+              userName: user?.Name,
+              showDate: bookingdata?.showDate,
+              showTime: bookingdata?.selectedShow,
+              bookedDate: bookingdata?.bookeddate,
+              paymentId: bookingdata?.paymentId,
+              paymentStatus: bookingdata?.paymentStatus,
+              movieName: bookingdata?.movieName,  
+              theaterId: bookingdata?.theaterId,
+              screenName: bookingdata?.selectedScreen,
+              screenId: bookingdata?.screenId,
+              bookedSeats: bookingdata?.selectedSeats,
+              theaterName: bookingdata?.selectedtheatre,
+              totalTicketAmount: bookingdata?.totalTicketAmount,
+              movieId: bookingdata?.movieId
+
+
+            });
+            const response=await bookingObject.save()
+            res.json({ message: "You have successfully booked you ticket. Enjoy!!",status:200, response });
+          }
+        } catch (error) {
+          res.json({ message: "createBooking backend condition error:", error });
+        }
+      }
+    } catch (error) {
+      res.json({ message: "createBooking backend error:", error });
       
     }
   }

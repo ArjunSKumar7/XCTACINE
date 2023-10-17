@@ -85,11 +85,51 @@ export const columnsAndRowsFetch=async()=>{
   }
 }
 
-export const moviePageData = async (movieId) => {
+export const moviePageData = async (movieId,location) => {
   try {
-    const response =await user_baseURL.get(`/user/moviepagedata?movieId=${movieId}`);
+    console.log("movieId",movieId,"location",location);
+    const response =await user_baseURL.get(`/user/moviepagedata?movieId=${movieId}&location=${location}`);
     return response?.data
   }catch(error){
     console.log("moviePageData api error:",error)
+  }
+}
+
+export const fetchUserData = async (userId) => {
+  try {
+    const response =await user_baseURL.get(`/user/fetchuserdata?userId=${userId}`);
+    return response?.data
+  }catch(error){
+    console.log("fetchUserData api error:",error)
+  }
+}
+
+
+export const bookingMovieFetch = async (movieId) => {
+  try {
+    const response =await user_baseURL.get(`/user/bookingmoviefetch?movieId=${movieId}`);
+    return response?.data
+    
+  } catch (error) {
+    console.log("bookingMovieFetch api error:",error)
+    
+  }
+}
+
+export const stripeGateWay = async (bookingData) => {
+  try {
+    const response =await user_baseURL.post(`/user/booking/stripeGateWay`,bookingData);
+    return response?.data
+  } catch (error) {
+    console.log("stripeGateWay api error:",error)
+  }
+}
+
+export const PaymentStatusReturn = async (bookingData) => {
+  try {
+    const response =await user_baseURL.post(`/user/booking/confirmation`,bookingData);
+    return response?.data
+  } catch (error) {
+    console.log("PaymentStatusReturn api error:",error)
   }
 }

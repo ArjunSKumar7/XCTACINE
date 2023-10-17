@@ -10,9 +10,10 @@ import {
   import {  TrashIcon } from "@heroicons/react/24/solid";
 import { AlertBox } from "../../components/AlertBox"
 import { useState } from "react";
-import{deleteTheatreMovie} from "../../api/theater/theaterApi"
+import{deleteTheatreScreen} from "../../api/theater/theaterApi"
 import { useSelector, useDispatch } from "react-redux";
-import {setMovieToList} from "../../redux/theatreReducer"
+import { setScreenToList } from "../../redux/theatreReducer";
+import { toast } from "react-toastify";
 
   
   
@@ -20,19 +21,46 @@ import {setMovieToList} from "../../redux/theatreReducer"
     console.log("props", props);
     const dispatch = useDispatch()
 
-    const theatreMoviesList = useSelector((store)=>store.theatre.movieToList)
+    const screenList = useSelector(
+      (store) => store.theatre.screenToList
+  
+    );
+    console.log("screenList", screenList);
 
     console.log("props", props);
     const [open, setOpen] = useState(false);
 
-   const theatreMovieListDelete = async() => {
+   const theatreScreenListDelete = async() => {
     try{
-      const updatedMovieList = theatreMoviesList.filter((movie)=>movie.movieId!==props.movieId)
-      dispatch(setMovieToList(updatedMovieList))
-    const resposne=await deleteTheatreMovie(props.movieId)
+      console.log("theatrescreencalled")
+      const updatedScreenList = screenList.filter((screen)=>screen._id!==props?.screenId)
+      dispatch(setScreenToList(updatedScreenList))
+    const resposne=await deleteTheatreScreen(props?.screenId)
 
     console.log(resposne);
-    return resposne;
+    if (resposne?.message === "screen deleted") {
+      toast.success(`${resposne.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      toast.error(`${resposne.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
     }catch(err){
       console.log(err);
       
@@ -42,17 +70,17 @@ import {setMovieToList} from "../../redux/theatreReducer"
 
       console.log("props", props);
     return (
-      <tr key={props.movieId}>
+      <tr key={props.screenId}>
       <td className={props.classes}>
         <div className="flex items-center gap-3">
-          <Avatar src={props.moviePoster} alt={props.movieTitle} size="sm" />
+          {/* <Avatar src={props.moviePoster} alt={props.movieTitle} size="sm" /> */}
           <div className="flex flex-col">
             <Typography
               variant="small"
               color="blue-gray"
               className="font-normal"
             >
-              {props.movieTitle}
+              {props.screenName}
             </Typography>
             {/* <Typography
               variant="small"
@@ -80,9 +108,16 @@ import {setMovieToList} from "../../redux/theatreReducer"
           >
             {props.movieReleaseDate}
           </Typography> */}
-          <div className="w-16 h-8  border-2 bg-green-500 border-green-900 rounded-full">
-            {}
-            </div>
+        <div className="grid grid-cols-2 gap-1">
+  {Object.keys(props?.screenshows[0]).map((showKey) => (
+    <div
+      key={showKey}
+      className="w-16 h-8 border-2 bg-green-500 border-green-900 rounded-full flex items-center justify-center"
+    >
+      {props?.screenshows[0][showKey]}
+    </div>
+  ))}
+</div>
         </div>
       </td>
   
@@ -94,13 +129,13 @@ import {setMovieToList} from "../../redux/theatreReducer"
             color="blue-gray"
             className="font-normal"
           >
-            {props.movieLanguage}
+            {props.theatreName}:{props?.movieTitle}
           </Typography>
          
         </div>
       </td>
   
-      <td className={props.classes}>
+      {/* <td className={props.classes}>
         <div className="flex flex-col">
         <Typography
         variant="small"
@@ -117,7 +152,7 @@ import {setMovieToList} from "../../redux/theatreReducer"
       </Typography>
          
         </div>
-      </td>
+      </td> */}
       {/* <td className={classes}>
         <div className="w-max">
           <Chip
@@ -145,7 +180,7 @@ import {setMovieToList} from "../../redux/theatreReducer"
             
           <TrashIcon class="h-6 w-6 text-gray-900 "
           onClick={handleOpen} />
-          <AlertBox open={open} handleOpen={handleOpen} message={"Are you sure you want to delete this movie"} theatreMovieListDelete={theatreMovieListDelete}/>
+          <AlertBox open={open} handleOpen={handleOpen} message={"Are you sure you want to delete this movie"} theatreScreenListDelete={theatreScreenListDelete}/>
           </IconButton>
         </Tooltip>
       </td>

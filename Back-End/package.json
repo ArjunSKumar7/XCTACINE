@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "local":"nodemon --exec ts-node ./src/app.ts",
+    "local": "nodemon --exec ts-node ./src/app.ts",
     "start": "node build/js/app.js",
     "build": "tsc -w"
   },
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@stripe/react-stripe-js": "^2.3.1",
     "@types/cookie-parser": "^1.4.3",
     "@types/morgan": "^1.9.4",
     "bcryptjs": "^2.4.3",
@@ -25,6 +26,7 @@
     "mongoose": "^7.4.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
+    "stripe": "^13.10.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },

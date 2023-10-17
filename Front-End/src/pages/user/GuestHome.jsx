@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setMovieHomeData,setBookingOperation } from "../../redux/userReducer";
+import { setMovieHomeData,} from "../../redux/userReducer";
 import { moviesFetchUser } from "../../api/user/userApi";
 import { UserHomeCard } from "../../components/user/UserHomeCard";
-import { UserNavBar } from "../../components/user/UserNavBar";
+import { GuestNavBar } from "../../components/user/GuestNavBar";
 import Body from "../../components/user/Body";
 import { UserFooter } from "../../components/user/UserFooter";
 import { CircularPagination } from "../../components/CircularPagination";
 import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const GuestHome = () => {
   const navigate = useNavigate();
   const searchedMovies = useSelector((store) => store.user.searchedMovieData);
   const wholeMovieList = useSelector((store) => store.user.movieHomeData);
@@ -54,20 +54,14 @@ console.log("selectedLocation", selectedLocation);
   // Trigger fetch when selectedLocation or page changes
 
 
-  async function handleHomeBookClick(movieId,moviePoster){
-        const data={
-          movieId:movieId,
-          movieposter:moviePoster
-        }
-console.log("data",data)
-localStorage.setItem('bookingOperation',JSON.stringify(data))
-dispatch(setBookingOperation(data))
-navigate('/movietobook')
+  async function handleHomeBookClick(){
+       
+navigate('/login')
   }
   
   return (
     <>
-      <UserNavBar />
+      <GuestNavBar />
       <Body />
       <div className="grid md:grid-cols-4 grid-flow-col md:grid-flow-row md:h-full overflow-y-auto gap-3">
         {movies.length > 0 ? (
@@ -90,4 +84,4 @@ navigate('/movietobook')
   );
 };
 
-export default Home;
+export default GuestHome;

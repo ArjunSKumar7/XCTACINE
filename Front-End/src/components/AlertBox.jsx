@@ -35,9 +35,12 @@ export function AlertBox(props) {
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={props.theatreMovieListDelete}>
+          {props?.theatreScreenListDelete && <Button variant="gradient" color="green" onClick={props?.theatreScreenListDelete}>
+            <span>Confirm.</span>
+          </Button>}
+          {props?.theatreMovieListDelete && <Button variant="gradient" color="green" onClick={props?.theatreMovieListDelete}>
             <span>Confirm</span>
-          </Button>
+          </Button>}
         </DialogFooter>
       </Dialog>
     </>

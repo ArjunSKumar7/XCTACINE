@@ -14,9 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import  {addScreen } from "../../api/theater/theaterApi";
 import { useDispatch, useSelector } from "react-redux";
+import { setScreenToList } from "../../redux/theatreReducer";
 
 
 export function AddScreenForm(props) {
+  const screenListForUpdation = useSelector(
+    (store) => store.theatre.screenToList
+
+  );
+  console.log("screenListForUpdation", screenListForUpdation);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showEnabled, setShowEnabled] = useState([false, false, false, false, false, false]);
@@ -112,31 +118,49 @@ export function AddScreenForm(props) {
       values.shows = [enabledShowFields];
       console.log("screenvalues",values);
       const response = await addScreen(values);
+      console.log("response", response);
+      if(response?.message==="screen added successfully!"){
+        const screenListForUpdationCopy = JSON.stringify(screenListForUpdation)   
+        const resultCopy = JSON.parse(screenListForUpdationCopy)
+        const updatedScrnList = [
+          ...resultCopy,
+          response?.addedScreenObj,
+        ];
 
-      // const updatedScrnList = [
-      //   ...screenListForUpdation,
-      //   response?.addedScreenObj,
-      // ];
-      // dispatch(setAddedScreens(values));//updatedScrnList
+          dispatch(setScreenToList(updatedScrnList));//updatedScrnList
+          toast.success(` ${response?.message}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          navigate("/theatre/screenlist");
+        }else{
+          toast.error(` ${response.message} !!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+        props?.handleAddScreenOpen();
+      },
+      });
+
+    
       
 
-      console.log(" page ", response);
-      if (response?.status === "success") {
-        toast.success(` Screen added successfully !!`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        navigate("/screenlist");
-      }
-      props.handleAddScreenOpen();
-    },
-  });
+      
+       
+
 
 const handleshowEnabled = (index) => {
   const newShowEnabled = [...showEnabled];

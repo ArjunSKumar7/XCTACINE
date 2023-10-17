@@ -49,32 +49,16 @@ function ProfileMenu() {
   };
 
   const handleProfile=()=>{
-    navigate("/profile");
+    navigate('/login')
   }
 
   const profileMenuItems = [
     {
-      label: "My Profile",
+      label: "Guest",
       icon: UserCircleIcon,
     
     },
-    {
-      label: "Edit Profile",
-      icon: Cog6ToothIcon,
-    },
-    {
-      label: "Inbox",
-      icon: InboxArrowDownIcon,
-    },
-    {
-      label: "Help",
-      icon: LifebuoyIcon,
-    },
-    {
-      label: "Sign Out",
-      icon: PowerIcon,
-      onClick: signout,
-    },
+    
   ];
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -111,10 +95,7 @@ function ProfileMenu() {
             <MenuItem
               key={label}
               onClick={() => {
-                if (label === "Sign Out") {
-                  signout(); // Call the handleLogout function when "Sign Out" is clicked
-                  closeMenu(); // Close the menu after clicking "Sign Out"
-                }else if (label === "My Profile") {
+               if (label === "My Profile") {
                   handleProfile();
                   closeMenu(); 
                 }
@@ -239,7 +220,7 @@ const navListItems = [
 function NavList() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  const [TheatreLocation, setTheatreLocation] = useState("");
+  const [TheatreLocation, setTheatreLocation] = useState(["No Location Selected"]);
 
   const storedLocation = useSelector((store) => store.user.locationSelected);
 
@@ -251,6 +232,7 @@ function NavList() {
   };
 
   useEffect(() => {
+   
     async function fetchData() {
       const response = await getLocation();
       console.log("theatre response", response);
@@ -312,13 +294,12 @@ function NavList() {
         <Select
           className="bg-gray-300 focus:outline-none    rounded text-black"
           label="Select Location"
-          value={storedLocation}
+          value={storedLocation }
           animate={{
             mount: { y: 0 },
             unmount: { y: 25 },
           }}
         >
-        
           {TheatreLocation ? (
             TheatreLocation.map((location, Index) => (
               <Option
@@ -343,7 +324,7 @@ function NavList() {
   );
 }
 
-export function UserNavBar() {
+export function GuestNavBar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);

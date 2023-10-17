@@ -12,5 +12,9 @@ import userController from '../controller/userController'
     router.get("/fetchtheatrelocation",userController.getLocation)
     router.get("/fetchcolumnsandrows",userController.fetchcolumnsandrows)
     router.get("/moviepagedata",userController.moviepagedata)
+    router.get("/fetchuserdata",userController.fetchUserData)
+    router.get("/bookingmoviefetch",userController.fetchBookingMovie)
+    router.post("/booking/stripeGateWay",userController.stripeGateWay)
+    router.post("/booking/confirmation",userController.createBooking)
 
 export default router

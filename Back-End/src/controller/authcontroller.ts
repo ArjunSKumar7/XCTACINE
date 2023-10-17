@@ -187,6 +187,7 @@ const authController = {
 
   adminLogin: async (req: Request, res: Response) => {
     try {
+      
       const { Email, Password }: { Email: string; Password: string } = req.body;
       const adminFile = await Admin.findOne({ Email: Email });
 
@@ -226,6 +227,9 @@ const authController = {
       console.log("backendloginerror", error);
     }
   },
+
+
+
 
   usergLogin: async (req: Request, res: Response) => {
    

@@ -16,6 +16,9 @@ const movieSchema = new Schema({
   moviePoster: {
     type: String,
   },
+  movieBackgroundPoster: {
+    type: String,
+  },
   movieReleaseDate: {
     type: Date,
   },

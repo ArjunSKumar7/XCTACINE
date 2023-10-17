@@ -203,7 +203,8 @@ const Signup = () => {
         localStorage.setItem("userToken", response.token);
         dispatch(setToken(response)); 
 
-        navigate("/");
+        navigate("/home");
+        window.location.reload();
       } catch (error) {
         console.log("error");
       }
@@ -312,7 +313,7 @@ const Signup = () => {
             unmount: { scale: 0.9, y: -100 },
           }}
         >
-          <DialogHeader>Its a simple dialog.</DialogHeader>
+          <DialogHeader>OTP VERIFICATION</DialogHeader>
           <DialogBody className="flex flex-col items-center justify-center p-1">
             <h1 className="text-lg text-black font-bold mb-1">OTP Sent</h1>
             <div>

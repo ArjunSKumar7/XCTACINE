@@ -81,6 +81,21 @@ export const ScreenListDataFetch= async (theatreId) => {
 }
 }
 
+
+export const deleteTheatreScreen = async (screenId) => {
+  try{
+    console.log("apiId",screenId)
+    const response =await theatre_baseURL.delete(`/theatre/deletescreen?screenId=${screenId}`);
+    console.log("deleteTheatreScreen api",response.data);
+    return response?.data
+  }catch(error){
+    console.log("deleteTheatreScreen api error:",error)
+  
+}
+}
+
+
+
 export const fetchLocation=async()=>{
   try {
     const response =await theatre_baseURL.get(`/theatre/fetchlocation`);

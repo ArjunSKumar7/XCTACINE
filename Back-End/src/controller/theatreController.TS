@@ -25,25 +25,22 @@ const theatrecontroller = {
         }
       } else {
         const movieUrl = `https://image.tmdb.org/t/p/w500${req.body?.movieData?.poster_path}  `;
+        const moviebackpath = `https://image.tmdb.org/t/p/w500${req.body?.movieData?.backdrop_path}  `;
         const movieObj = new Movie({
           movieId: req.body?.movieData?.id,
           movieTitle: req.body?.movieData?.title,
           movieLanguage: req.body?.movieData?.original_language,
           movieOverview: req.body.movieData?.overview,
           moviePoster: movieUrl,
+          movieBackgroundPoster: moviebackpath,
           movieReleaseDate: req.body.movieData?.release_date,
           theatreId: req.body?.theatreData?.theatreId,
         });
-        // await movieObj.save().then((resposne) => {
-        //   console.log("movie obj response",response);
-        //   res.json({ message: "movie added successfully!", resposne });
-        // });
+      
         const response = await movieObj.save();
-        console.log("movie obj response", response);
         res.json({ message: "movie added successfully!", response });
       }
     } catch (error) {
-      console.log("addmovie backend error:", error);
       res.json({ message: "addmovie backend error:", error });
     }
   },
@@ -57,24 +54,27 @@ const theatrecontroller = {
 
       res.json({ movieList: movieListData });
     } catch (err) {
-      console.log("fecthMovieList backend error:", err);
       res.json({ message: "fecthMovieList backend error:", err });
     }
   },
 
   deleteMovie: async (req: Request, res: Response) => {
-    console.log("Aaaaaaaa");
     try {
-      console.log("req", req.query);
 
       const { movieId, theatreId } = req.query;
-
-      const movieDeleteResponse = await Movie.updateOne(
-        { movieId: movieId },
-        { $pull: { theatreId: theatreId } }
-      );
-      console.log("movieDeleteResponse", movieDeleteResponse);
-      res.json({ message: "movie deleted", movieDeleteResponse });
+      const movie = await Movie.findOne({ movieId: movieId });
+      if (movie?.theatreId.length === 1 && movie?.theatreId[0] === theatreId) {
+        const movieDeleteResponse = await Movie.deleteOne({ movieId: movieId });
+     
+        return res.json({ message: "Movie deleted", movieDeleteResponse });
+      } else {
+        const movieDeleteResponse = await Movie.updateOne(
+          { movieId: movieId },
+          { $pull: { theatreId: theatreId } }
+        );
+        
+        res.json({ message: "movie deleted",status:200, movieDeleteResponse });
+      }
     } catch (err) {
       res.json({ message: "fecthUserMovieList backend error:", err });
     }
@@ -97,28 +97,37 @@ const theatrecontroller = {
           theatreName: req.body?.theatreName,
           ticketPrice: req.body?.ticketPrice,
         });
-        await screenObj.save().then((resposne) => {
-          res.json({ message: "screen added successfully!", resposne });
-        });
+      const resposne =  await screenObj.save()
+          res.json({ message: "screen added successfully!", addedScreenObj:resposne, });
       }
     } catch (error) {
-      console.log("addScreen backend error:", error);
       res.json({ message: "fecthUserMovieList backend error:", error });
     }
   },
 
   fetchScreenList: async (req: Request, res: Response) => {
     try {
-      console.log("req", req.params.id);
       const theatreId = req.params.id;
       const screenListData = await Screen.find({ theatreId: theatreId });
-      console.log("screenListData", screenListData);
 
       res.json({ screenList: screenListData });
     } catch (err) {
-      res.json({ message: "fecthMovieList backend error:", err });
+      res.json({ message: "fetchScreenList backend error:", err });
     }
   },
+
+  deleteScreen: async (req: Request, res: Response) => {
+    try {
+      console.log("req", req.query);
+      const screenId  = req.query.screenId;
+      const screenDeleteResponse = await Screen.deleteOne({ _id: screenId });
+      res.json({ message: "screen deleted", screenDeleteResponse });
+    } catch (err) {
+      res.json({ message: "deleteScreen backend error:", err });
+    }
+    
+  },
+
 
   fetchLocation: async (req: Request, res: Response) => {
     try {
@@ -134,7 +143,6 @@ const theatrecontroller = {
     try {
       const data = req.body;
       const movie = await Movie.findOne({ movieId: data.movieId });
-      console.log("movie", movie);
       const response = await Screen.updateOne(
         { _id: data.screenId },
         {
@@ -145,7 +153,6 @@ const theatrecontroller = {
           },
         }
       );
-      console.log("response", response);
       if (response.modifiedCount > 0) {
         res.json({ message: "moviescreenallocation successfully!", response });
       } else {

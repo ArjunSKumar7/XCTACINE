@@ -24,14 +24,35 @@ const checkbookingOperation=()=>{
     return "";
   }
 }
+const checkuserId=()=>{
+  const userId = localStorage.getItem("userId");
+  if (userId) {
+    return userId;
+  } else {
+    return "";
+  }
+}
+
+const checkStripeId=()=>{
+  const stripeId = localStorage.getItem("stripeId");
+  if (stripeId) {
+    return stripeId;
+  } else {
+    return "";
+  }
+}
 
 const initialState = {
   userToken: checkusertoken(),
-  userId: "",
+  userId: checkuserId(),
   movieHomeData: [],
   searchedMovieData: [],
   locationSelected: checklocationselected(),
-  bookingOperation:checkbookingOperation()
+  bookingOperation:checkbookingOperation(),
+  selectedDate:"",
+  userSelectedSeats: [],
+  userSeatCount: 0,
+  stripeId:checkStripeId()
 };
 
 const userSlice = createSlice({
@@ -54,6 +75,7 @@ const userSlice = createSlice({
       localStorage.removeItem("selectedLocation");
       localStorage.removeItem("bookingOperation");
       localStorage.removeItem("activePage");
+      localStorage.removeItem("stripeId");
     },
 
     setMovieHomeData: (state, action) => {
@@ -70,12 +92,28 @@ const userSlice = createSlice({
     setBookingOperation:(state,action)=>{
       console.log("setBookingOperation",action.payload)
       state.bookingOperation=action.payload
-    }
+    },
+ setSelectedDate :(state,action)=>{
+    state.selectedDate=action.payload
+ },
+
+ setUserSelectedSeats: (state, action) => {
+  state.userSelectedSeats = action.payload;
+},
+    
+setUserSeatCount: (state, action) => {
+  state.userSeatCount = state.userSeatCount + action.payload;
+},
+
+setStripeId:(state,action)=>{
+  state.stripeId=action.payload
+}
+
 
 
 
   },
 });
 
-export const { setToken, userLogout, setMovieHomeData, setSearchedMovie, setLocationSelected,setBookingOperation } = userSlice.actions;
+export const { setToken, userLogout, setMovieHomeData, setSearchedMovie, setLocationSelected,setBookingOperation,setSelectedDate ,setUserSelectedSeats,setUserSeatCount,setStripeId,} = userSlice.actions;
 export default userSlice.reducer;
