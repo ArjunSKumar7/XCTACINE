@@ -7,7 +7,7 @@ import {
   setSearchedMovie,
   setLocationSelected,
 } from "../../redux/userReducer";
-import { getMoviesBySearch, getLocation } from "../../api/user/userApi";
+import { getMoviesBySearch, getLocation,fetchUserData } from "../../api/user/userApi";
 import {
   Navbar,
   MobileNav,
@@ -223,7 +223,7 @@ function NavListMenu() {
 // nav list component
 const navListItems = [
   {
-    label: "Account",
+    label: "Guest",
     icon: UserCircleIcon,
   },
   {
@@ -238,9 +238,12 @@ const navListItems = [
 
 function NavList() {
   const dispatch = useDispatch();
+  const [UserName, setUserName] = useState("");
   const [searchText, setSearchText] = useState("");
   const [TheatreLocation, setTheatreLocation] = useState("");
 
+const userId=useSelector((store)=>store.user.userId);
+console.log("userId",userId);
   const storedLocation = useSelector((store) => store.user.locationSelected);
 
   const searchUserMovies = async (e) => {
@@ -249,6 +252,19 @@ function NavList() {
     const movieDataBySearch = await getMoviesBySearch(e.target.value);
     dispatch(setSearchedMovie(movieDataBySearch?.movieList));
   };
+
+  useEffect(()=>{
+    async function fetchUserName(){
+      const user=await fetchUserData(userId);
+      return user?.userData?.Name
+      
+    }
+    fetchUserName().then((name)=>{
+      console.log("name",name);
+      setUserName(name);
+    })
+
+  },[])
 
   useEffect(() => {
     async function fetchData() {
@@ -279,7 +295,7 @@ function NavList() {
         >
           <MenuItem className="flex items-center gap-2 lg:rounded-full">
             {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
-            {label}
+            {label === "Account" ? (UserName ? UserName : "Guest") : label}
           </MenuItem>
         </Typography>
       ))}

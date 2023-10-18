@@ -16,6 +16,7 @@ function UserPaymentSuccess() {
     async function confirmPayment(){
         const booking ={
           ...data,
+          
           paymentId:paymentId,
           paymentStatus:'success',
          

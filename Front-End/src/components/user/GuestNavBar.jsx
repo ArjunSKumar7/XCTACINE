@@ -95,7 +95,7 @@ function ProfileMenu() {
             <MenuItem
               key={label}
               onClick={() => {
-               if (label === "My Profile") {
+               if (label === "Guest") {
                   handleProfile();
                   closeMenu(); 
                 }
@@ -127,97 +127,98 @@ function ProfileMenu() {
 }
 
 // nav list menu
-const navListMenuItems = [
-  {
-    title: "@material-tailwind/html",
-    description:
-      "Learn how to use @material-tailwind/html, packed with rich components and widgets.",
-  },
-  {
-    title: "@material-tailwind/react",
-    description:
-      "Learn how to use @material-tailwind/react, packed with rich components for React.",
-  },
-  {
-    title: "Material Tailwind PRO",
-    description:
-      "A complete set of UI Elements for building faster websites in less time.",
-  },
-];
+// const navListMenuItems = [
+//   {
+//     title: "@material-tailwind/html",
+//     description:
+//       "Learn how to use @material-tailwind/html, packed with rich components and widgets.",
+//   },
+//   {
+//     title: "@material-tailwind/react",
+//     description:
+//       "Learn how to use @material-tailwind/react, packed with rich components for React.",
+//   },
+//   {
+//     title: "Material Tailwind PRO",
+//     description:
+//       "A complete set of UI Elements for building faster websites in less time.",
+//   },
+// ];
 
-function NavListMenu() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+// function NavListMenu() {
+//   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const renderItems = navListMenuItems.map(({ title, description }) => (
-    <a href="#" key={title}>
-      <MenuItem>
-        <Typography variant="h6" color="blue-gray" className="mb-1">
-          {title}
-        </Typography>
-        <Typography variant="small" color="gray" className="font-normal">
-          {description}
-        </Typography>
-      </MenuItem>
-    </a>
-  ));
+//   const renderItems = navListMenuItems.map(({ title, description }) => (
+//     <a href="#" key={title}>
+//       <MenuItem>
+//         <Typography variant="h6" color="blue-gray" className="mb-1">
+//           {title}
+//         </Typography>
+//         <Typography variant="small" color="gray" className="font-normal">
+//           {description}
+//         </Typography>
+//       </MenuItem>
+//     </a>
+//   ));
 
-  return (
-    <React.Fragment>
-      <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
-        <MenuHandler>
-          <Typography as="a" href="#" variant="small" className="font-normal">
-            <MenuItem className="hidden items-center gap-2 text-blue-gray-900 lg:flex lg:rounded-full">
-              <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
-              <ChevronDownIcon
-                strokeWidth={2}
-                className={`h-3 w-3 transition-transform ${
-                  isMenuOpen ? "rotate-180" : ""
-                }`}
-              />
-            </MenuItem>
-          </Typography>
-        </MenuHandler>
-        <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid">
-          <Card
-            color="blue"
-            shadow={false}
-            variant="gradient"
-            className="col-span-3 grid h-full w-full place-items-center rounded-md"
-          >
-            <RocketLaunchIcon strokeWidth={1} className="h-28 w-28" />
-          </Card>
-          <ul className="col-span-4 flex w-full flex-col gap-1">
-            {renderItems}
-          </ul>
-        </MenuList>
-      </Menu>
-      <MenuItem className="flex items-center gap-2 text-blue-gray-900 lg:hidden">
-        <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
-      </MenuItem>
-      <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
-        {renderItems}
-      </ul>
-    </React.Fragment>
-  );
-}
+//   return (
+//     <React.Fragment>
+//       <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
+//         <MenuHandler>
+//           <Typography as="a" href="#" variant="small" className="font-normal">
+//             <MenuItem className="hidden items-center gap-2 text-blue-gray-900 lg:flex lg:rounded-full">
+//               <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
+//               <ChevronDownIcon
+//                 strokeWidth={2}
+//                 className={`h-3 w-3 transition-transform ${
+//                   isMenuOpen ? "rotate-180" : ""
+//                 }`}
+//               />
+//             </MenuItem>
+//           </Typography>
+//         </MenuHandler>
+//         <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid">
+//           <Card
+//             color="blue"
+//             shadow={false}
+//             variant="gradient"
+//             className="col-span-3 grid h-full w-full place-items-center rounded-md"
+//           >
+//             <RocketLaunchIcon strokeWidth={1} className="h-28 w-28" />
+//           </Card>
+//           <ul className="col-span-4 flex w-full flex-col gap-1">
+//             {renderItems}
+//           </ul>
+//         </MenuList>
+//       </Menu>
+//       <MenuItem className="flex items-center gap-2 text-blue-gray-900 lg:hidden">
+//         <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
+//       </MenuItem>
+//       <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
+//         {renderItems}
+//       </ul>
+//     </React.Fragment>
+//   );
+// }
 
 // nav list component
 const navListItems = [
   {
-    label: "Account",
+    label: "Guest",
     icon: UserCircleIcon,
   },
-  {
-    label: "Blocks",
-    icon: CubeTransparentIcon,
-  },
-  {
-    label: "Docs",
-    icon: CodeBracketSquareIcon,
-  },
+  // {
+  //   label: "Blocks",
+  //   icon: CubeTransparentIcon,
+  // },
+  // {
+  //   label: "Docs",
+  //   icon: CodeBracketSquareIcon,
+  // },
 ];
 
 function NavList() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [TheatreLocation, setTheatreLocation] = useState(["No Location Selected"]);
@@ -247,9 +248,14 @@ function NavList() {
     });
   }, []);
 
+  const handleProfile=()=>{
+    navigate('/login')
+  }
+
+
   return (
     <ul className="mb-4 mt-2  flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-      <NavListMenu />
+      {/* <NavListMenu /> */}
       {navListItems.map(({ label, icon }, key) => (
         <Typography
           key={label}
@@ -259,10 +265,20 @@ function NavList() {
           color="blue-gray"
           className="font-normal"
         >
-          <MenuItem className="flex items-center gap-2 lg:rounded-full">
-            {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
-            {label}
-          </MenuItem>
+         {label === "Guest" ? (
+  <MenuItem
+    className="flex items-center gap-2 lg:rounded-full"
+    onClick={handleProfile}
+  >
+    {React.createElement(icon, { className: "h-[18px] w-[18px]" })}
+    {label}
+  </MenuItem>
+) : (
+  <MenuItem className="flex items-center gap-2 lg:rounded-full">
+    {React.createElement(icon, { className: "h-[18px] w-[18px]" })}
+    {label}
+  </MenuItem>
+)}
         </Typography>
       ))}
       {/********************************searchbar *************************************************/}

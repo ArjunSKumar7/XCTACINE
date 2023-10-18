@@ -44,6 +44,7 @@ import {stripeGateWay,} from "../../api/user/userApi"
 
        };
        const response =await stripeGateWay(bookingData)
+       //null
        console.log("response",response)
        localStorage.setItem("stripeId", response?.paymentId);
        localStorage.setItem("bookingOperation",JSON.stringify(bookingData))

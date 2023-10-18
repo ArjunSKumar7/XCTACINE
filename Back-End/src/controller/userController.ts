@@ -4,6 +4,7 @@ import User from "../model/userSchema";
 import Location from "../model/locationSchema";
 import Theatre from "../model/theaterSchema";
 import Booking from "../model/bookingSchema";
+import * as uuid from 'uuid';
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const userController = {
   moviesFetchUser: async (req: Request, res: Response) => {
@@ -105,7 +106,6 @@ const userController = {
 
   moviepagedata: async (req: Request, res: Response) => {
     try {
-      console.log("moviepagedatabackend",req.query)
       const movieId=req.query.movieId
       const location=req.query.location
      
@@ -159,8 +159,7 @@ const userController = {
         },
         
       ])
-      console.log("moviepageaggregation",moviepageaggregation)
-      console.log("movieDetailssssssssssssssssssssssss",movieDetails)
+    
 res.json({movieDetails:movieDetails,screenList:moviepageaggregation})
 
       
@@ -195,14 +194,17 @@ res.json({movieDetails:movieDetails,screenList:moviepageaggregation})
   stripeGateWay:async (req:Request, res:Response)=>{
     try {
       const bookingdata=req.body
-      console.log("booking ",bookingdata)
+    
       const user = await User.findOne({ _id: bookingdata.userId });
-      console.log("user",user)
+     
       const userEmail=user?.Email
       const seatBookedQty=bookingdata?.ticketCount
       const totalTicketAmount =bookingdata?.ticketPrice*bookingdata?.ticketCount
       if(bookingdata?.gateway==="stripe"){
        try {
+        const uniqueId = uuid.v4();
+        const successUrl = `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/success/${uniqueId}`;
+      const cancelUrl = `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/cancel/${uniqueId}`;
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card'],
           mode: 'payment',
@@ -218,11 +220,13 @@ res.json({movieDetails:movieDetails,screenList:moviepageaggregation})
               quantity: 1,
             },
           ],
-          success_url: `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/success`,
-          cancel_url: `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/cancel`,
+          
+          success_url: successUrl,
+
+          cancel_url: cancelUrl,
         });
 
-        // res.json({ urlAndId:{url:session.url, Id:session.id}, status:'success' });
+       
         res.json({paymenturl: session.url, paymentId: session.id, status: 'success' });
       
        } catch (error) {
@@ -238,14 +242,14 @@ res.json({movieDetails:movieDetails,screenList:moviepageaggregation})
   createBooking:async (req:Request, res:Response)=>{
     try {
       const bookingdata=req.body
-      console.log("booking ",bookingdata)
+    
       const user = await User.findOne({ _id: bookingdata?.userId });
       const bookingSeatsQty = bookingdata?.ticketCount
       const totalTicketAmount = bookingdata?.ticketPrice*bookingSeatsQty
       bookingdata.totalTicketAmount=totalTicketAmount
       bookingdata.userMailId=user?.Email
       bookingdata.bookeddate=new Date()
-      console.log("booking1 ",bookingdata)
+     
       if(bookingdata?.paymentStatus==='success'){
         try {
           const bookingExist = await Booking.findOne({paymentId:bookingdata?.paymentId});

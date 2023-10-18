@@ -10,10 +10,11 @@ const checkusertoken = () => {
 
 const checklocationselected = () => {
   const locationSelected = localStorage.getItem("selectedLocation");
+  console
   if (locationSelected) {
     return locationSelected;
   } else {
-    return "No selection";
+    return "No Location Selected";
   }
 };
 const checkbookingOperation=()=>{
@@ -68,7 +69,7 @@ const userSlice = createSlice({
       // localStorage.removeItem("token")
     },
     userLogout: (state) => {
-      state.userToken = null;
+      state.userToken = null; 
       state.userId = null;
       localStorage.removeItem("userId");
       localStorage.removeItem("userToken");
@@ -76,6 +77,7 @@ const userSlice = createSlice({
       localStorage.removeItem("bookingOperation");
       localStorage.removeItem("activePage");
       localStorage.removeItem("stripeId");
+     
     },
 
     setMovieHomeData: (state, action) => {
