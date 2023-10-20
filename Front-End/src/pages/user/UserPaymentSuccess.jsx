@@ -1,13 +1,16 @@
 import { Button, Typography } from "@material-tailwind/react";
 import { useSelector,useDispatch  } from "react-redux";
 import {PaymentStatusReturn} from "../../api/user/userApi"
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import {toast} from "react-toastify"
 import{useNavigate} from "react-router-dom"
+import { useParams } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
 
 function UserPaymentSuccess() {
   const navigate=useNavigate()
-    
+  const { uuId } = useParams()
+  console.log("payment",uuId)
     const bookingData= useSelector((store)=>store.user.bookingOperation);
     const paymentId= useSelector((store)=>store.user.stripeId)
     const data=JSON.parse(bookingData)
@@ -16,7 +19,7 @@ function UserPaymentSuccess() {
     async function confirmPayment(){
         const booking ={
           ...data,
-          
+
           paymentId:paymentId,
           paymentStatus:'success',
          
@@ -59,7 +62,7 @@ function UserPaymentSuccess() {
         })
     },[])
 
-   const handleHomeClick=()=>{
+const handleHomeClick=()=>{
     navigate("/")
    }
   return (

@@ -10,7 +10,7 @@ import {
   import { useSelector,useDispatch } from "react-redux";
   import { useEffect ,useState} from "react";
 import {stripeGateWay,} from "../../api/user/userApi"
-  import {setStripeId} from "../../redux/userReducer"   
+  import {setStripeId,setUniqueId} from "../../redux/userReducer"   
   function CheckIcon() {
     return (
       <svg
@@ -48,6 +48,8 @@ import {stripeGateWay,} from "../../api/user/userApi"
        console.log("response",response)
        localStorage.setItem("stripeId", response?.paymentId);
        localStorage.setItem("bookingOperation",JSON.stringify(bookingData))
+       localStorage.setItem("uniqueId",response?.uniqueId);
+       dispatch(setUniqueId(response?.uniqueId));
     dispatch(setStripeId(response?.paymentId));
     const paymentURL = response?.paymenturl;
     window.location.href = paymentURL;

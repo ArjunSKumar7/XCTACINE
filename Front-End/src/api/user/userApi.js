@@ -133,3 +133,22 @@ export const PaymentStatusReturn = async (bookingData) => {
     console.log("PaymentStatusReturn api error:",error)
   }
 }
+
+export const editProfile = async (values,userId) => {
+  try {
+    const response =await user_baseURL.put(`/user/editprofile?userId=${userId}`,values);
+    return response?.data
+  } catch (error) {
+    console.log("editProfile api error:",error)
+  }
+  
+}
+
+export const fetchUserBookings = async (userId) => {
+  try {
+    const response =await user_baseURL.get(`/user/fetchuserbookings?userId=${userId}`);
+    return response?.data
+  } catch (error) {
+    console.log("fetchUserBookings api error:",error)
+  }
+}

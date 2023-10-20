@@ -5,7 +5,8 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
  
-export function ProfileAccordion() {
+export function ProfileAccordion(props) {
+  console.log("props", props);
   const [open, setOpen] = React.useState(1);
  
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
@@ -22,9 +23,14 @@ export function ProfileAccordion() {
          Upcoming Booked Shows
         </AccordionHeader>
         <AccordionBody className="pt-0 text-base font-normal">
-          We&apos;re not always in the position that we want to be at. We&apos;re constantly
-          growing. We&apos;re constantly making mistakes. We&apos;re constantly trying to express
-          ourselves and actualize our dreams.
+          {props?.upcomingBookings?(props?.upcomingBookings?.map((booking,index) => (
+            <div key={index}>
+                    <h3>{booking.movieName}</h3>
+                    <h4>{"Theatre: "+booking.theaterName+","+"Date: "+booking.showDate}</h4>
+                    <h4>{"show time: "+booking.showTime}</h4>
+            </div>
+          ))):<h3>{"No upcoming bookings"}</h3>}
+         
         </AccordionBody>
       </Accordion>
       <Accordion open={open === 2} className="mb-2 rounded-lg border border-blue-gray-100 px-4">

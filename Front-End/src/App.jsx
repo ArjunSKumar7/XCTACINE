@@ -3,6 +3,7 @@
   import { useSelector } from "react-redux";
   import { ToastContainer } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
+  import { useState } from "react";
   // import {useNavigate} from 'react-router-dom';
   //*********************************User Pages***********************************************/
   import UserHome from "../src/pages/user/UserHome";
@@ -31,6 +32,8 @@
   import UserPaymentSuccess from "./pages/user/UserPaymentSuccess";
 
   function App() {
+
+    const uniqueId = useSelector((store) => store.user?.uniqueId);
     const userToken = useSelector((state) => state.user.userToken);
     console.log("userToken", userToken);
     const theatreToken = useSelector((state) => state.theatre.theatreToken);
@@ -92,7 +95,7 @@
 
           <Routes>
             <Route
-              path="/stripe/payment/success"
+              path={`/stripe/payment/success/${uniqueId}`}
               element={userToken ? <UserPaymentSuccess /> : <LoginForm />}
             />
           </Routes>

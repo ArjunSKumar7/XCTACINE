@@ -10,7 +10,6 @@ const checkusertoken = () => {
 
 const checklocationselected = () => {
   const locationSelected = localStorage.getItem("selectedLocation");
-  console
   if (locationSelected) {
     return locationSelected;
   } else {
@@ -43,6 +42,16 @@ const checkStripeId=()=>{
   }
 }
 
+const checkUniqueId=()=>{
+  const uniqueId = localStorage.getItem("uniqueId");
+  if (uniqueId) {
+    return uniqueId;
+  } else {
+    return "";
+  }
+}
+
+
 const initialState = {
   userToken: checkusertoken(),
   userId: checkuserId(),
@@ -53,7 +62,8 @@ const initialState = {
   selectedDate:"",
   userSelectedSeats: [],
   userSeatCount: 0,
-  stripeId:checkStripeId()
+  stripeId:checkStripeId(),
+  uniqueId:checkUniqueId()
 };
 
 const userSlice = createSlice({
@@ -109,6 +119,10 @@ setUserSeatCount: (state, action) => {
 
 setStripeId:(state,action)=>{
   state.stripeId=action.payload
+},
+
+setUniqueId:(state,action)=>{
+  state.uniqueId=action.payload
 }
 
 
@@ -117,5 +131,5 @@ setStripeId:(state,action)=>{
   },
 });
 
-export const { setToken, userLogout, setMovieHomeData, setSearchedMovie, setLocationSelected,setBookingOperation,setSelectedDate ,setUserSelectedSeats,setUserSeatCount,setStripeId,} = userSlice.actions;
+export const { setToken, userLogout, setMovieHomeData, setSearchedMovie, setLocationSelected,setBookingOperation,setSelectedDate ,setUserSelectedSeats,setUserSeatCount,setStripeId,setUniqueId} = userSlice.actions;
 export default userSlice.reducer;

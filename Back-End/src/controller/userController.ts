@@ -224,10 +224,13 @@ res.json({movieDetails:movieDetails,screenList:moviepageaggregation})
           success_url: successUrl,
 
           cancel_url: cancelUrl,
+          metadata: {
+            uniqueId: uniqueId,
+          }
         });
 
        
-        res.json({paymenturl: session.url, paymentId: session.id, status: 'success' });
+        res.json({paymenturl: session.url, paymentId: session.id,uniqueId:uniqueId, status: 'success' });
       
        } catch (error) {
         res.json({ message: "stripeGateWay backend error:", error });
@@ -286,6 +289,29 @@ res.json({movieDetails:movieDetails,screenList:moviepageaggregation})
       }
     } catch (error) {
       res.json({ message: "createBooking backend error:", error });
+      
+    }
+  },
+
+  editProfile:async (req:Request, res:Response)=>{
+    try {
+      console.log("req.body",req.body)
+      console.log("req.file",req.file)
+      console.log("req.query",req.query)
+    } catch (error) {
+      res.json({ message: "editProfile backend error:", error });
+      
+    }
+  },
+
+  fetchUserBookings:async (req:Request, res:Response)=>{
+    try {
+      const response=await Booking.find({userId:req.query.userId})
+      res.json({ response });
+      
+      
+    } catch (error) {
+      res.json({ message: "fetchUserBookings backend error:", error });
       
     }
   }

@@ -1,5 +1,6 @@
 import express from 'express'
 import userController from '../controller/userController'
+import {uploadProfilePic} from "../multer/multer"
 
 
 
@@ -16,5 +17,7 @@ import userController from '../controller/userController'
     router.get("/bookingmoviefetch",userController.fetchBookingMovie)
     router.post("/booking/stripeGateWay",userController.stripeGateWay)
     router.post("/booking/confirmation",userController.createBooking)
+    router.put("/editprofile",uploadProfilePic,userController.editProfile)
+    router.get ("/fetchuserbookings",userController.fetchUserBookings)
 
 export default router

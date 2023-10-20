@@ -14,6 +14,7 @@
     "@material-tailwind/react": "^2.0.8",
     "@reduxjs/toolkit": "^1.9.5",
     "@stripe/react-stripe-js": "^2.3.1",
+    "@stripe/stripe-js": "^2.1.9",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
     "file-type": "^18.5.0",

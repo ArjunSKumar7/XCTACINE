@@ -12,6 +12,7 @@ import adminRoute from "./routes/admin";
 import theatreRoute from "./routes/theatre";
 import serverConfig from "./config/serverConfig";
 import authMiddlewares from "./middlewares/authMiddlewares";
+import {v2 as cloudinary} from 'cloudinary';
 
 const app: Application = express();
 const server = http.createServer(app);
@@ -26,6 +27,10 @@ const corsOptions = {
   credentials: true, // Enable sending cookies from the frontend to the backend
 };
 
+
+
+
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -33,6 +38,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 db.connect();
+  
+          
+cloudinary.config({ 
+  cloud_name: 'dvrynofzp', 
+  api_key: '794227963189558', 
+  api_secret: 'Tx1xRWAb1iFHUGDK731SRCilxMA' 
+});
+
+          
+// cloudinary.config({ 
+//   cloud_name: process.env.CLOUD_NAME, 
+//   api_key: process.env.CLOUD_API_KEY, 
+//   api_secret:process.env.CLOUD_API_SECRET 
+// });
 
 //routes
 
