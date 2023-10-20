@@ -12,4 +12,6 @@ router.delete("/deletemovie", theatreController_1.default.deleteMovie);
 router.post("/addscreen", theatreController_1.default.addScreen);
 router.get("/fetchscreenlist/:id", theatreController_1.default.fetchScreenList);
 router.get("/fetchlocation", theatreController_1.default.fetchLocation);
+router.post("/moviescreenallocation", theatreController_1.default.moviescreenallocation);
+router.delete("/deletescreen", theatreController_1.default.deleteScreen);
 exports.default = router;

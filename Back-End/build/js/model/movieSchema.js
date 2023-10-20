@@ -17,6 +17,9 @@ const movieSchema = new mongoose_1.Schema({
     moviePoster: {
         type: String,
     },
+    movieBackgroundPoster: {
+        type: String,
+    },
     movieReleaseDate: {
         type: Date,
     },

@@ -24,6 +24,18 @@ const screenSchema = new mongoose_1.Schema({
     theatreName: {
         type: String,
         required: true
+    },
+    movieTitle: {
+        type: String
+    },
+    movieId: {
+        type: String
+    },
+    ticketPrice: {
+        type: Number
+    },
+    selectedDates: {
+        type: Array
     }
 });
 const Screen = (0, mongoose_1.model)("ScreenSchema", screenSchema);

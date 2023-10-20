@@ -71,7 +71,7 @@ const authController = {
             res.json({
                 status: "failed",
                 token: "",
-                message: err.message,
+                message: err,
             });
         }
     }),

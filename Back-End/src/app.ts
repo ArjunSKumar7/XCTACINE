@@ -38,20 +38,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 db.connect();
-  
-          
-cloudinary.config({ 
-  cloud_name: 'dvrynofzp', 
-  api_key: '794227963189558', 
-  api_secret: 'Tx1xRWAb1iFHUGDK731SRCilxMA' 
-});
 
           
-// cloudinary.config({ 
-//   cloud_name: process.env.CLOUD_NAME, 
-//   api_key: process.env.CLOUD_API_KEY, 
-//   api_secret:process.env.CLOUD_API_SECRET 
-// });
+
+
+          
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUD_API_KEY, 
+  api_secret:process.env.CLOUD_API_SECRET 
+});
 
 //routes
 
