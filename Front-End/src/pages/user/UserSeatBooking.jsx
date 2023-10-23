@@ -6,9 +6,10 @@ import { Button } from "@material-tailwind/react";
 import { useSelector,useDispatch  } from "react-redux";
 import { useEffect } from "react";
 import moment from "moment";
-import {setBookingOperation} from "../../redux/userReducer"
+import {setBookingOperation,} from "../../redux/userReducer"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import {fetchBookedSeatsData} from "../../api/user/userApi"
 
 
 
@@ -22,22 +23,23 @@ function UserSeatBooking() {
   const ticketCount= useSelector((store)=>store.user.userSeatCount)
   console.log("priorSeatcount", ticketCount)
 
-// useEffect(()=>{
-  
-//   const data ={
-//     date:bookingOperation?.showDate,
-//     show:bookingOperation?.selectedShow,
-//     theatreId:bookingOperation?.theatreId,
-//     movieId:bookingOperation?.movieId,
-//     screenId:bookingOperation?.screenId,
-//     screenName:bookingOperation?.selectedScreen,
-//     movieName:bookingOperation?.movieName,
-//     theatreName:bookingOperation?.selectedtheatre,
-//   }
+useEffect(()=>{
+  async function fetchBookedSeats(){
+const data={
+        date:bookingOperation?.showDate,
+        show:bookingOperation?.selectedShow,
+        theater:bookingOperation?.selectedtheatre,
+        screen:bookingOperation?.screenId,
+        movie:bookingOperation?.movieId
+}
 
+    const bookedSeats= await fetchBookedSeatsData(data);
+    console.log("bookedSeats",bookedSeats)
+    dispatch(setBookingOperation(bookedSeats))
+  }
+  fetchBookedSeats();
 
-
-// })
+},[])
 
 
 

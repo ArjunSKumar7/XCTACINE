@@ -27,6 +27,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch } from "react-redux";
 import{theatreLogout} from "../../redux/theatreReducer"
+import { useNavigate } from "react-router-dom";
  
 // profile menu component
 const profileMenuItems = [
@@ -54,9 +55,11 @@ const profileMenuItems = [
  
 function ProfileMenu() {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const signout = () => {
     dispatch(theatreLogout());
+    navigate("theatre/login");
+
   }
   
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);

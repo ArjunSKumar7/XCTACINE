@@ -19,5 +19,6 @@ import {uploadProfilePic} from "../multer/multer"
     router.post("/booking/confirmation",userController.createBooking)
     router.put("/editprofile",uploadProfilePic,userController.editProfile)
     router.get ("/fetchuserbookings",userController.fetchUserBookings)
+    router.post("/fetchbookedseats",userController.fetchBookedSeats)
 
 export default router

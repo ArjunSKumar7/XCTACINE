@@ -152,3 +152,12 @@ export const fetchUserBookings = async (userId) => {
     console.log("fetchUserBookings api error:",error)
   }
 }
+
+export const fetchBookedSeatsData = async (data) => {
+  try {
+    const response =await user_baseURL.post(`/user/fetchbookedseats`,data);
+    return response?.data
+  } catch (error) {
+    console.log("fetchBookedSeatsData api error:",error)
+  }
+}

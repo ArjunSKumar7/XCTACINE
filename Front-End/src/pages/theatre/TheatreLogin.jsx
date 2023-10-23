@@ -50,7 +50,7 @@ export function TheatreLogin() {
       localStorage.setItem("theatreToken", response?.token);  
       localStorage.setItem("theatreDetails",JSON.stringify(theatreDetails));
   
-      navigate("/theatre/login");
+      navigate("/theatre/dashboard");
     },
   });
 

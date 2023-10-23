@@ -15,7 +15,7 @@
   import GuestHome from "./pages/user/GuestHome";
 
   //*******************************Theatre Pages*******************************/
-  import TheatreHome from "../src/pages/theatre/TheatreHome";
+  import TheatreDashBoard from "../src/pages/theatre/TheatreDashBoard";
   import { TheatreLogin } from "../src/pages/theatre/TheatreLogin";
   import TheatreSignup from "../src/pages/theatre/TheatreSignUp";
   import TheatreMovieDetails from "./pages/theatre/TheatreMovieDetails";
@@ -106,19 +106,19 @@
           <Routes>
             <Route
               path="/theatre/login"
-              element={theatreToken ? <TheatreHome data={theatredata} />: <TheatreLogin />}
+              element={theatreToken ? <TheatreDashBoard data={theatredata} />: <TheatreLogin />}
             />
           </Routes>
 
           <Routes>
             <Route
-              path="/theatre"
-              element={theatreToken ? <TheatreHome data={theatredata} />: <TheatreLogin />}
+              path="/theatre/dashboard"
+              element={theatreToken ? <TheatreDashBoard data={theatredata} />: <TheatreLogin />}
             />
           </Routes>
 
           <Routes>
-            <Route path="/theatre/signup" element={theatreToken ? <TheatreHome data={theatredata}/> : <TheatreSignup />} />
+            <Route path="/theatre/signup" element={theatreToken ? <TheatreDashBoard data={theatredata}/> : <TheatreSignup />} />
           </Routes>
 
           <Routes>

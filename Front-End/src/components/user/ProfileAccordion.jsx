@@ -23,13 +23,13 @@ export function ProfileAccordion(props) {
          Upcoming Booked Shows
         </AccordionHeader>
         <AccordionBody className="pt-0 text-base font-normal">
-          {props?.upcomingBookings?(props?.upcomingBookings?.map((booking,index) => (
+          {props?.upcomingBookings?.lenght>0?(props?.upcomingBookings?.map((booking,index) => (
             <div key={index}>
                     <h3>{booking.movieName}</h3>
                     <h4>{"Theatre: "+booking.theaterName+","+"Date: "+booking.showDate}</h4>
                     <h4>{"show time: "+booking.showTime}</h4>
             </div>
-          ))):<h3>{"No upcoming bookings"}</h3>}
+          ))):<h3>No upcoming bookings</h3>}
          
         </AccordionBody>
       </Accordion>

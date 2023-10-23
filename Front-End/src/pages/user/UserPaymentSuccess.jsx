@@ -22,6 +22,7 @@ function UserPaymentSuccess() {
 
           paymentId:paymentId,
           paymentStatus:'success',
+          bookingStatus:"confirmed"
          
     
         }

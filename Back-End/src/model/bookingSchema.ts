@@ -33,8 +33,11 @@ const bookingSchema = new Schema({
     
       },
       paymentStatus:{
-
+         type:String
       },
+      bookingStatus:{
+        type:String
+     },
       movieName: {
         type: String,
     

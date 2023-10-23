@@ -66,17 +66,14 @@ export function TheatreSideBar() {
             />
           }
         >
-          <ListItem className="p-0" selected={open === 1}>
-            <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
-              <ListItemPrefix>
-                <PresentationChartBarIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
-                Dashboard
-              </Typography>
-            </AccordionHeader>
-          </ListItem>
-          <AccordionBody className="py-1">
+          <ListItem onClick={()=>{navigate("/theatre/dashboard")}}>
+          <ListItemPrefix>
+            <PresentationChartBarIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Dashboard
+       
+        </ListItem>
+          {/* <AccordionBody className="py-1">
             <List className="p-0">
               <ListItem>
                 <ListItemPrefix>
@@ -97,7 +94,7 @@ export function TheatreSideBar() {
                 Projects
               </ListItem>
             </List>
-          </AccordionBody>
+          </AccordionBody> */}
         </Accordion>
         <Accordion
           open={open === 2}
