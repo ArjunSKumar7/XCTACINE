@@ -242,7 +242,8 @@ function NavList() {
   const [searchText, setSearchText] = useState("");
   const [TheatreLocation, setTheatreLocation] = useState("");
 
-const userId=useSelector((store)=>store.user.userId);
+const userId=useSelector((store)=>store.user?.userId);
+
 console.log("userId",userId);
   const storedLocation = useSelector((store) => store.user.locationSelected);
 
@@ -259,7 +260,7 @@ console.log("userId",userId);
       return user?.userData?.Name
       
     }
-    fetchUserName().then((name)=>{
+    fetchUserName(userId).then((name)=>{
       console.log("name",name);
       setUserName(name);
     })

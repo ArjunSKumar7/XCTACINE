@@ -11,6 +11,7 @@ import { setSelectedDate } from "../../redux/userReducer";
 import TheaterNameComponent from "../../pages/user/BookNowMovieList/TheatreNameComponent"
 function UserBookNowMovie() {
   const dispatch = useDispatch();
+  
   const movieId = useSelector((store) => store.user?.bookingOperation?.movieId);
   console.log("movieId", movieId);
   const location = useSelector((store) => store.user?.locationSelected);

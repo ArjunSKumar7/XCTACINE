@@ -13,12 +13,12 @@ function UserPaymentSuccess() {
   console.log("payment",uuId)
     const bookingData= useSelector((store)=>store.user.bookingOperation);
     const paymentId= useSelector((store)=>store.user.stripeId)
-    const data=JSON.parse(bookingData)
+   
     console.log("bookingdata",paymentId)
 
     async function confirmPayment(){
         const booking ={
-          ...data,
+          ...bookingData,
 
           paymentId:paymentId,
           paymentStatus:'success',
@@ -72,34 +72,34 @@ const handleHomeClick=()=>{
  <figure className="relative h-4/5 w-4/5">
       <img
         className="h-full w-full rounded-xl object-fit object-center"
-        src={data.movieposter} 
+        src={bookingData?.movieposter} 
             alt="Movie Poster"
       />
       <figcaption className="absolute bottom-8 left-2/4 flex w-[calc(100%-4rem)] -translate-x-2/4 justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
         <div>
           <Typography variant="h5" color="blue-gray">
-          {data.movieName} 
+          {bookingData?.movieName} 
           </Typography>
           <Typography color="gray" className="mt-2 font-normal">
-          {data.selectedtheatre} 
+          {bookingData?.selectedtheatre} 
           </Typography>
           <Typography color="gray" className="mt-2 font-normal">
-          {"screen :"+data.selectedScreen} 
+          {"screen :"+bookingData?.selectedScreen} 
           </Typography>
           <Typography color="gray" className="mt-2 font-normal">
-          { "seats:"+data.selectedSeats} 
+          { "seats:"+bookingData?.selectedSeats} 
           </Typography>
           <Typography color="gray" className="mt-2 font-normal">
-          {"Total Amount "+data.ticketCount*data.ticketPrice } 
+          {"Total Amount "+bookingData?.ticketCount*bookingData?.ticketPrice } 
           </Typography>
           <Typography color="gray" className="mt-2 font-normal">
-          {data.showDate} 
+          {bookingData?.showDate} 
           
           </Typography>
           <Button  className="mt-2" size="sm" onClick={handleHomeClick}>back to home</Button>
         </div>
         <Typography variant="h5" color="blue-gray">
-        {data.selectedShow}
+        {bookingData?.selectedShow}
         
         </Typography>
        
