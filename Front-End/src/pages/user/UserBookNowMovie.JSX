@@ -9,13 +9,10 @@ import moment from "moment";
 import { ButtonGroup, Button } from "@material-tailwind/react";
 import { setSelectedDate } from "../../redux/userReducer";
 import TheaterNameComponent from "../../pages/user/BookNowMovieList/TheatreNameComponent"
-import { json } from "react-router-dom";
 function UserBookNowMovie() {
   const dispatch = useDispatch();
-  const details=useSelector((store)=>store.user.bookingOperation)
-  const bookingsInfo=JSON.parse(details)
-console.log("bookingsInfo",bookingsInfo)
-  const movieId = bookingsInfo?.movieId
+  const movieId = useSelector((store) => store.user?.bookingOperation?.movieId);
+  console.log("movieId", movieId);
   const location = useSelector((store) => store.user?.locationSelected);
   console.log("location", location);
 

@@ -17,8 +17,7 @@ function UserSeatBooking() {
   const[BookedSeats,setBookedSeats]=useState([])
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const details = useSelector((store)=>store.user.bookingOperation);
-  const bookingOperation=JSON.parse(details)
+  const bookingOperation = useSelector((store)=>store.user.bookingOperation);
 
   const selectedSeats= useSelector((store)=>store.user.userSelectedSeats)
   console.log("bookingOperation",selectedSeats);

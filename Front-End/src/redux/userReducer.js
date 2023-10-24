@@ -19,7 +19,7 @@ const checklocationselected = () => {
 const checkbookingOperation=()=>{
   const bookingOperation = localStorage.getItem("bookingOperation");
   if (bookingOperation) {
-    return bookingOperation;
+    return JSON.parse(bookingOperation);
   } else {
     return "";
   }
