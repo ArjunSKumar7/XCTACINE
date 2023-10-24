@@ -61,31 +61,31 @@ const userController = {
             else {
                 const theatreAggregation = yield theaterSchema_1.default.aggregate([
                     {
-                        $match: { Location: locationValue }
+                        $match: { Location: locationValue },
                     },
                     {
-                        $project: { _id: { $toString: "$_id" } }
+                        $project: { _id: { $toString: "$_id" } },
                     },
                     {
                         $lookup: {
                             from: "movieschemas",
                             localField: "_id",
                             foreignField: "theatreId",
-                            as: "locationBasedMovieList"
-                        }
+                            as: "locationBasedMovieList",
+                        },
                     },
                     {
-                        $unwind: "$locationBasedMovieList"
+                        $unwind: "$locationBasedMovieList",
                     },
                     {
-                        $skip: skip
+                        $skip: skip,
                     },
                     {
-                        $limit: limit
+                        $limit: limit,
                     },
                     {
-                        $sort: { "locationBasedMovieList.movieReleaseDate": -1 }
-                    }
+                        $sort: { "locationBasedMovieList.movieReleaseDate": -1 },
+                    },
                 ]);
                 //maping so that i get it in exact format as no location selected response
                 const movieList = theatreAggregation.map((theatre) => theatre.locationBasedMovieList);
@@ -134,8 +134,7 @@ const userController = {
             res.json({ message: "fecthMovieList backend error:", err });
         }
     }),
-    fetchcolumnsandrows: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    }),
+    fetchcolumnsandrows: (req, res) => __awaiter(void 0, void 0, void 0, function* () { }),
     moviepagedata: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const movieId = req.query.movieId;
@@ -144,9 +143,15 @@ const userController = {
             const moviepageaggregation = yield theaterSchema_1.default.aggregate([
                 { $match: { Location: location, blockedStatus: false } },
                 { $addFields: { _id: { $toString: "$_id" } } },
-                { $lookup: { from: "screenschemas", localField: "_id", foreignField: "theatreId", as: "screen" } },
-                { $unwind: { path: "$screen",
-                        includeArrayIndex: "string", } },
+                {
+                    $lookup: {
+                        from: "screenschemas",
+                        localField: "_id",
+                        foreignField: "theatreId",
+                        as: "screen",
+                    },
+                },
+                { $unwind: { path: "$screen", includeArrayIndex: "string" } },
                 { $match: { "screen.movieId": movieId } },
                 {
                     $project: {
@@ -179,10 +184,13 @@ const userController = {
                         screen: {
                             $push: "$screen",
                         },
-                    }
+                    },
                 },
             ]);
-            res.json({ movieDetails: movieDetails, screenList: moviepageaggregation });
+            res.json({
+                movieDetails: movieDetails,
+                screenList: moviepageaggregation,
+            });
         }
         catch (error) {
             res.json({ message: "moviepagedata backend error:", error });
@@ -199,7 +207,9 @@ const userController = {
     }),
     fetchBookingMovie: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const bookingMovieData = yield movieSchema_1.default.findOne({ movieId: req.query.movieId });
+            const bookingMovieData = yield movieSchema_1.default.findOne({
+                movieId: req.query.movieId,
+            });
             res.json({ bookingMovieData: bookingMovieData });
         }
         catch (error) {
@@ -219,12 +229,12 @@ const userController = {
                     const successUrl = `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/success/${uniqueId}`;
                     const cancelUrl = `${process.env.XCTACINE_STRIPE_PAYMENT_REDIRECT_URL}/cancel/${uniqueId}`;
                     const session = yield stripe.checkout.sessions.create({
-                        payment_method_types: ['card'],
-                        mode: 'payment',
+                        payment_method_types: ["card"],
+                        mode: "payment",
                         line_items: [
                             {
                                 price_data: {
-                                    currency: 'inr',
+                                    currency: "inr",
                                     product_data: {
                                         name: bookingdata.movieName,
                                     },
@@ -237,9 +247,14 @@ const userController = {
                         cancel_url: cancelUrl,
                         metadata: {
                             uniqueId: uniqueId,
-                        }
+                        },
                     });
-                    res.json({ paymenturl: session.url, paymentId: session.id, uniqueId: uniqueId, status: 'success' });
+                    res.json({
+                        paymenturl: session.url,
+                        paymentId: session.id,
+                        uniqueId: uniqueId,
+                        status: "success",
+                    });
                 }
                 catch (error) {
                     res.json({ message: "stripeGateWay backend error:", error });
@@ -259,9 +274,11 @@ const userController = {
             bookingdata.totalTicketAmount = totalTicketAmount;
             bookingdata.userMailId = user === null || user === void 0 ? void 0 : user.Email;
             bookingdata.bookeddate = new Date();
-            if ((bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.paymentStatus) === 'success') {
+            if ((bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.paymentStatus) === "success") {
                 try {
-                    const bookingExist = yield bookingSchema_1.default.findOne({ paymentId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.paymentId });
+                    const bookingExist = yield bookingSchema_1.default.findOne({
+                        paymentId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.paymentId,
+                    });
                     if (bookingExist) {
                         res.json({ message: "booking already exist" });
                     }
@@ -277,20 +294,28 @@ const userController = {
                             paymentId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.paymentId,
                             paymentStatus: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.paymentStatus,
                             movieName: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.movieName,
-                            theaterId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.theaterId,
+                            theatreId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.theatreId,
                             screenName: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.selectedScreen,
                             screenId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.screenId,
                             bookedSeats: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.selectedSeats,
-                            theaterName: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.selectedtheatre,
+                            theatreName: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.selectedtheatre,
                             totalTicketAmount: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.totalTicketAmount,
-                            movieId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.movieId
+                            movieId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.movieId,
+                            bookingStatus: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.bookingStatus,
                         });
                         const response = yield bookingObject.save();
-                        res.json({ message: "You have successfully booked you ticket. Enjoy!!", status: 200, response });
+                        res.json({
+                            message: "You have successfully booked you ticket. Enjoy!!",
+                            status: 200,
+                            response,
+                        });
                     }
                 }
                 catch (error) {
-                    res.json({ message: "createBooking backend condition error:", error });
+                    res.json({
+                        message: "createBooking backend condition error:",
+                        error,
+                    });
                 }
             }
         }
@@ -300,9 +325,14 @@ const userController = {
     }),
     editProfile: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log("req.body", req.body);
-            console.log("req.file", req.file);
-            console.log("req.query", req.query);
+            const user = yield userSchema_1.default.updateOne({ _id: req.query.userId }, {
+                $set: {
+                    Name: req.body.Name,
+                    Email: req.body.Email,
+                    Mobile: req.body.Mobile,
+                },
+            });
+            res.json({ message: "User updated successfully", user });
         }
         catch (error) {
             res.json({ message: "editProfile backend error:", error });
@@ -315,6 +345,27 @@ const userController = {
         }
         catch (error) {
             res.json({ message: "fetchUserBookings backend error:", error });
+        }
+    }),
+    fetchBookedSeats: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c, _d, _e, _f;
+        try {
+            console.log(req.body);
+            const aggregateData = yield bookingSchema_1.default.aggregate([
+                { $match: {
+                        bookingStatus: (_a = req.body) === null || _a === void 0 ? void 0 : _a.bookingStatus,
+                        showDate: (_b = req.body) === null || _b === void 0 ? void 0 : _b.date,
+                        showTime: (_c = req.body) === null || _c === void 0 ? void 0 : _c.show,
+                        theatreName: (_d = req.body) === null || _d === void 0 ? void 0 : _d.theatre,
+                        screenId: (_e = req.body) === null || _e === void 0 ? void 0 : _e.screen,
+                        movieId: (_f = req.body) === null || _f === void 0 ? void 0 : _f.movie,
+                    } }
+            ]);
+            const bookedSeats = aggregateData.map((obj) => obj.bookedSeats).flat();
+            res.json({ bookedSeats });
+        }
+        catch (error) {
+            res.json({ message: "fetchBookedSeats backend error:", error });
         }
     })
 };

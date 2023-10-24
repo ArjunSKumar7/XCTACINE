@@ -18,9 +18,9 @@
       }
     }
     // Check if the current seat is reserved based on its rowNo and colNo
-    // const isReserved = (id) => {
-    //   return props?.bookedArray?.includes(id);
-    // };
+    const isReserved = (id) => {
+      return props?.bookedSeats?.includes(id);
+    };
 
     return (
       <div className="">
@@ -28,9 +28,8 @@
           key={props.seatId}
           size="sm"
           onClick={() => seatSelectHandle(props.seatId)}
-          // disabled={isReserved(props.seatId)}
-          // color={isClicked ? "blue" : isReserved(props.seatId) ? "red" : "white"}
-          color={isClicked ? "green" : "white"}
+          disabled={isReserved(props.seatId)}
+          color={isClicked ? "green": isReserved(props.seatId) ? "gray"  : "white"}
           style={isClicked ? { color: "" }:{ color: "green" }} // Set the text color to red
         >
         

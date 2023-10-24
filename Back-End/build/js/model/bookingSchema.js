@@ -24,11 +24,16 @@ const bookingSchema = new mongoose_1.Schema({
     paymentId: {
         type: String,
     },
-    paymentStatus: {},
+    paymentStatus: {
+        type: String
+    },
+    bookingStatus: {
+        type: String
+    },
     movieName: {
         type: String,
     },
-    theaterId: {
+    theatreId: {
         type: String,
     },
     screenName: {
@@ -44,7 +49,7 @@ const bookingSchema = new mongoose_1.Schema({
     bookedSeats: {
         type: [],
     },
-    theaterName: {
+    theatreName: {
         type: String,
     },
     totalAmount: {

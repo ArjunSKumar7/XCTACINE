@@ -19,4 +19,5 @@ router.post("/booking/stripeGateWay", userController_1.default.stripeGateWay);
 router.post("/booking/confirmation", userController_1.default.createBooking);
 router.put("/editprofile", multer_1.uploadProfilePic, userController_1.default.editProfile);
 router.get("/fetchuserbookings", userController_1.default.fetchUserBookings);
+router.post("/fetchbookedseats", userController_1.default.fetchBookedSeats);
 exports.default = router;

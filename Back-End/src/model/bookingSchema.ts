@@ -43,7 +43,7 @@ const bookingSchema = new Schema({
     
         
       },
-      theaterId: {
+      theatreId: {
         type: String,     
       },
       screenName: {
@@ -62,7 +62,7 @@ const bookingSchema = new Schema({
         type: [],
     
       },
-      theaterName: {
+      theatreName: {
         type: String,
     
       },

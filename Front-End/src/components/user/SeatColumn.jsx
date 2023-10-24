@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 
 function SeatColumn(props) {
+  console.log("props", props);
   const dispatch = useDispatch()
   const priorSelectedSeats= useSelector((store)=>store.user.userSelectedSeats)
   const priorSeatcount= useSelector((store)=>store.user.userSeatCount)
@@ -46,7 +47,7 @@ const handleSeatDeselect =(seatId)=>{
                 seatId={seatId}
                 onSeatSelect={handleSeatSelect}
                 onSeatDeselect={handleSeatDeselect}
-                // bookedArray={props.bookedArray}
+                bookedSeats={props?.bookedSeats}
               />
             );
           })

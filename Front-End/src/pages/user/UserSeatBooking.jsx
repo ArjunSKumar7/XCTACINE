@@ -4,7 +4,7 @@ import  TheatreScreen  from "../../components/user/TheatreScreen";
 import SeatColumn from "../../components/user/SeatColumn";
 import { Button } from "@material-tailwind/react";
 import { useSelector,useDispatch  } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import {setBookingOperation,} from "../../redux/userReducer"
 import { toast } from "react-toastify";
@@ -14,34 +14,41 @@ import {fetchBookedSeatsData} from "../../api/user/userApi"
 
 
 function UserSeatBooking() {
+  const[BookedSeats,setBookedSeats]=useState([])
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const bookingOperation = useSelector((store)=>store.user.bookingOperation);
-  console.log("bookingOperation",bookingOperation);
+  const details = useSelector((store)=>store.user.bookingOperation);
+  const bookingOperation=JSON.parse(details)
+
   const selectedSeats= useSelector((store)=>store.user.userSelectedSeats)
-  console.log("bookingOperation",bookingOperation);
+  console.log("bookingOperation",selectedSeats);
   const ticketCount= useSelector((store)=>store.user.userSeatCount)
   console.log("priorSeatcount", ticketCount)
 
 useEffect(()=>{
   async function fetchBookedSeats(){
 const data={
+         bookingStatus:"confirmed",
         date:bookingOperation?.showDate,
         show:bookingOperation?.selectedShow,
-        theater:bookingOperation?.selectedtheatre,
+        theatre:bookingOperation?.selectedtheatre,
         screen:bookingOperation?.screenId,
         movie:bookingOperation?.movieId
 }
 
     const bookedSeats= await fetchBookedSeatsData(data);
     console.log("bookedSeats",bookedSeats)
-    dispatch(setBookingOperation(bookedSeats))
+    return bookedSeats;
+   
   }
-  fetchBookedSeats();
+  fetchBookedSeats().then((data)=>{
+    console.log("data",data?.bookedSeats)
+    setBookedSeats(data?.bookedSeats)
+  })
 
 },[])
 
-
+console.log("BookedSeats",BookedSeats)
 
 const row=bookingOperation?.screenRows;
 const col=bookingOperation?.screenCols;
@@ -165,13 +172,14 @@ const bookingSubmitHandler = () => {
                   : null}
               </div>
               <div className="grid grid-flow-row">
+                {console.log("seatColumnArray",BookedSeats)}
                 {rowArray?.length > 0
                   ? rowArray?.map((item, rowIndex) => (
                       <SeatColumn
                         key={rowIndex}
                         rowNo={rowIndex + 1}
                         seatColumnArray={seatColumnArray}
-                        // bookedArray={bookedseats}
+                        bookedSeats={BookedSeats}
                       />
                     ))
                   : null}

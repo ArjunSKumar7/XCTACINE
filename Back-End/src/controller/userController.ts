@@ -271,11 +271,11 @@ const userController = {
               paymentId: bookingdata?.paymentId,
               paymentStatus: bookingdata?.paymentStatus,
               movieName: bookingdata?.movieName,
-              theaterId: bookingdata?.theaterId,
+              theatreId: bookingdata?.theatreId,
               screenName: bookingdata?.selectedScreen,
               screenId: bookingdata?.screenId,
               bookedSeats: bookingdata?.selectedSeats,
-              theaterName: bookingdata?.selectedtheatre,
+              theatreName: bookingdata?.selectedtheatre,
               totalTicketAmount: bookingdata?.totalTicketAmount,
               movieId: bookingdata?.movieId,
               bookingStatus: bookingdata?.bookingStatus,
@@ -330,12 +330,23 @@ const userController = {
     try {
       console.log(req.body)
       const aggregateData= await Booking.aggregate([
-        
+        {$match:{
+          
+            bookingStatus: req.body?.bookingStatus,
+            showDate: req.body?.date,
+            showTime: req.body?.show,
+            theatreName: req.body?.theatre,
+            screenId: req.body?.screen,
+            movieId: req.body?.movie,
+          
+        }}
       ])
+      const bookedSeats= aggregateData.map((obj) => obj.bookedSeats).flat()
+      res.json({bookedSeats})
       
     } catch (error) {
-      
-    }
+      res.json({ message: "fetchBookedSeats backend error:", error });
+      }
   }
 
 
