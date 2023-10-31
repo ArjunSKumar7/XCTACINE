@@ -196,15 +196,28 @@ const Signup = () => {
     },
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
-      console.log("signup values", values);
+     
       try {
+        console.log("signup values", values)
         const response = await signup("/auth/user/signup", values);
         console.log("signup response", response);
-        localStorage.setItem("userToken", response.token);
+        localStorage.setItem("userToken", response?.token);
         dispatch(setToken(response)); 
-
+if(response?.status ==="success"){
         navigate("/home");
         window.location.reload();
+}else{
+  toast.error(`${response?.status}`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+}
       } catch (error) {
         console.log("error");
       }

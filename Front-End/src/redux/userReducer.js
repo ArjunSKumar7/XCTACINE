@@ -72,10 +72,10 @@ const userSlice = createSlice({
   reducers: {
     setToken: (state, action) => {
       console.log("setToken", action.payload);
-      state.userToken = action?.payload.userToken;
-      state.userId = action?.payload.userId;
-      localStorage.setItem("userToken", action.payload.userToken);
-      localStorage.setItem("userId", action.payload.userId);
+      state.userToken = action?.payload.token;
+      state.userId = action?.payload.user?._id;
+      localStorage.setItem("userToken", action?.payload.token);
+      localStorage.setItem("userId",action?.payload.user?._id);
       // localStorage.removeItem("token")
     },
     userLogout: (state) => {

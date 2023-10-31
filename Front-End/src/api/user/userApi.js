@@ -3,6 +3,7 @@ import user_baseURL from "./userAxios";
 
 export const  signup = async (endpoint, values) => {
   try {
+    console.log("signup values", values);
     const response = await user_baseURL.post(endpoint, values);
     return response?.data;
   } catch (error) {

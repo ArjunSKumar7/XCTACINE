@@ -8,6 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const keys_1 = require("../config/keys");
 const generateJWT = (id) => {
     try {
+        console.log("id", id);
         if (keys_1.configKeys.JWT_SECRET_KEY) {
             const token = jsonwebtoken_1.default.sign({ id }, keys_1.configKeys.JWT_SECRET_KEY, {
                 expiresIn: keys_1.configKeys.JWT_EXPIRATION

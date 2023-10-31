@@ -62,18 +62,20 @@ const authController = {
 
   UserSignup: async (req: Request, res: Response) => {
     try {
+      console.log("req", req.body);
       const {
         Email,
         Name,
         Password,
         Mobile,
-      }: { Email: string; Name: string; Password: string,Mobile:string } = req.body;
+      }: { Email: string; Name: string; Password: string;Mobile:string } = req.body;
 
       let hashedPassword: string = await bcrypt.hash(Password, 10);
 
       const existingUser = await User.findOne({ Email: Email });
+      console.log("existingUser", existingUser);
       if (existingUser) {
-        return res.json({ userExist: true,token: "", message: "User already exists" });
+        return res.json({ userExist: true, message: "User already exists" });
       }
       else{
 
@@ -85,9 +87,10 @@ const authController = {
         Mobile,
       });
       delete newUserData._doc.Password;
-
+console.log("newUserData", newUserData._id.toString());
       const jwt = generateJWT(newUserData._id.toString());
-
+console.log("jwt", jwt);
+console.log("newUserData", newUserData);
       res.json({
         user: newUserData,
         created: true,
@@ -95,7 +98,7 @@ const authController = {
         status: "success",
       });
     } }catch (error) {
-      res.json({ user:"",status: "failed",token: "", message: "something went wrong   : ", error });
+      res.json({ user:"",status: `${error}`,token: "", message: "something went wrong   : ", error });
     }
   },
 

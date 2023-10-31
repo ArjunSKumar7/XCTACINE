@@ -5,6 +5,7 @@ export const generateJWT = (id:string) => {
   
   
     try {
+      console.log("id",id)
       if (configKeys.JWT_SECRET_KEY) {
         const token = jwt.sign({id}, configKeys.JWT_SECRET_KEY,{
           expiresIn: configKeys.JWT_EXPIRATION

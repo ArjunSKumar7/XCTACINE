@@ -77,11 +77,13 @@ const authController = {
     }),
     UserSignup: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log("req", req.body);
             const { Email, Name, Password, Mobile, } = req.body;
             let hashedPassword = yield bcryptjs_1.default.hash(Password, 10);
             const existingUser = yield userSchema_1.default.findOne({ Email: Email });
+            console.log("existingUser", existingUser);
             if (existingUser) {
-                return res.json({ userExist: true, token: "", message: "User already exists" });
+                return res.json({ userExist: true, message: "User already exists" });
             }
             else {
                 // Creating a new user
@@ -92,7 +94,10 @@ const authController = {
                     Mobile,
                 });
                 delete newUserData._doc.Password;
+                console.log("newUserData", newUserData._id.toString());
                 const jwt = (0, JwtAuth_1.generateJWT)(newUserData._id.toString());
+                console.log("jwt", jwt);
+                console.log("newUserData", newUserData);
                 res.json({
                     user: newUserData,
                     created: true,
@@ -102,7 +107,7 @@ const authController = {
             }
         }
         catch (error) {
-            res.json({ user: "", status: "failed", token: "", message: "something went wrong   : ", error });
+            res.json({ user: "", status: `${error}`, token: "", message: "something went wrong   : ", error });
         }
     }),
     TheatreLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
