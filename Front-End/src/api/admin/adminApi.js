@@ -81,3 +81,26 @@ export const addLocation = async (data) => {
     console.log("addLocation api error:",err)
   }
 }
+
+export const addBannerData = async (data,image) => {
+  console.log("addBannerData",data,image)
+  
+  try {
+    const formData = new FormData();
+    formData.append("bannerImage", image);
+    formData.append("bannerName", data.bannerName);
+    formData.append("bannerDescription", data.bannerDescription);
+    
+    const response = await admin_baseURL.post("/admin/addbanner",formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("addBannerDataresponse",response)
+    return response?.data
+    
+  } catch (error) {
+    console.log("addBannerData api error:", error);
+  
+  }
+}

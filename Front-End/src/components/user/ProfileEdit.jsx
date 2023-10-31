@@ -23,7 +23,7 @@ export function ProfileEdit(props) {
   // };
 
   console.log("props", props);
-
+  const user = useSelector((store) => store.user.userData);
   const userId = useSelector((store) => store.user.userId);
   console.log("userId", userId);
 

@@ -4,6 +4,7 @@ import User from "../model/userSchema";
 import Location from "../model/locationSchema";
 import Theatre from "../model/theaterSchema";
 import Booking from "../model/bookingSchema";
+import Banner from "../model/bannerSchema";
 import * as uuid from "uuid";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const userController = {
@@ -276,7 +277,7 @@ const userController = {
               screenId: bookingdata?.screenId,
               bookedSeats: bookingdata?.selectedSeats,
               theatreName: bookingdata?.selectedtheatre,
-              totalTicketAmount: bookingdata?.totalTicketAmount,
+              totalAmount: bookingdata?.totalTicketAmount,
               movieId: bookingdata?.movieId,
               bookingStatus: bookingdata?.bookingStatus,
             });
@@ -301,6 +302,10 @@ const userController = {
 
   editProfile: async (req: Request, res: Response) => {
     try {
+      console.log("params",req.body)
+      console.log("params",req.query)
+     
+      console.log("FILE",req.file)
       const user = await User.updateOne(
         { _id: req.query.userId },
         {
@@ -328,7 +333,7 @@ const userController = {
  
   fetchBookedSeats: async (req: Request, res: Response) => {
     try {
-      console.log(req.body)
+      
       const aggregateData= await Booking.aggregate([
         {$match:{
           
@@ -347,6 +352,37 @@ const userController = {
     } catch (error) {
       res.json({ message: "fetchBookedSeats backend error:", error });
       }
+  },
+
+
+  editProfilePic: async (req: Request, res: Response) => {
+    try {
+      
+      const profilePicPath=req.file?.path
+      console.log("profilePicPath",profilePicPath)
+      const user = await User.updateOne(
+        { _id: req.params.id },
+        {
+          $set: {
+            ProfilePic: profilePicPath
+          },
+        }
+      );
+      res.json({ message: "User Profile Pic updated successfully",status:200, user });
+      
+    } catch (error) {
+      res.json({ message: "editProfilePic backend error:", error });
+    }
+  },
+
+  fetchBanners: async (req: Request, res: Response) => {
+    try {
+      const response = await Banner.find({});
+      
+      res.json({ response });
+    } catch (error) {
+      res.json({ message: "fetchBanners backend error:", error });
+    }
   }
 
 

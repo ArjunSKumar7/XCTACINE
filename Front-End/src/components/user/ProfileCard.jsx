@@ -28,8 +28,9 @@ import { useSelector } from "react-redux";
       fetchData(userId).then((user) => {
         console.log("user", user?.userData);
         setUserData(user?.userData);
+        
       });
-    }, [userId]);
+    }, [userId, setUserData]);
 
 
     const [open, setOpen] = useState(false);

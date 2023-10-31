@@ -40,6 +40,7 @@ const userSchema_1 = __importDefault(require("../model/userSchema"));
 const locationSchema_1 = __importDefault(require("../model/locationSchema"));
 const theaterSchema_1 = __importDefault(require("../model/theaterSchema"));
 const bookingSchema_1 = __importDefault(require("../model/bookingSchema"));
+const bannerSchema_1 = __importDefault(require("../model/bannerSchema"));
 const uuid = __importStar(require("uuid"));
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const userController = {
@@ -299,7 +300,7 @@ const userController = {
                             screenId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.screenId,
                             bookedSeats: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.selectedSeats,
                             theatreName: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.selectedtheatre,
-                            totalTicketAmount: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.totalTicketAmount,
+                            totalAmount: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.totalTicketAmount,
                             movieId: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.movieId,
                             bookingStatus: bookingdata === null || bookingdata === void 0 ? void 0 : bookingdata.bookingStatus,
                         });
@@ -325,6 +326,9 @@ const userController = {
     }),
     editProfile: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log("params", req.body);
+            console.log("params", req.query);
+            console.log("FILE", req.file);
             const user = yield userSchema_1.default.updateOne({ _id: req.query.userId }, {
                 $set: {
                     Name: req.body.Name,
@@ -350,7 +354,6 @@ const userController = {
     fetchBookedSeats: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b, _c, _d, _e, _f;
         try {
-            console.log(req.body);
             const aggregateData = yield bookingSchema_1.default.aggregate([
                 { $match: {
                         bookingStatus: (_a = req.body) === null || _a === void 0 ? void 0 : _a.bookingStatus,
@@ -366,6 +369,31 @@ const userController = {
         }
         catch (error) {
             res.json({ message: "fetchBookedSeats backend error:", error });
+        }
+    }),
+    editProfilePic: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _g;
+        try {
+            const profilePicPath = (_g = req.file) === null || _g === void 0 ? void 0 : _g.path;
+            console.log("profilePicPath", profilePicPath);
+            const user = yield userSchema_1.default.updateOne({ _id: req.params.id }, {
+                $set: {
+                    ProfilePic: profilePicPath
+                },
+            });
+            res.json({ message: "User Profile Pic updated successfully", status: 200, user });
+        }
+        catch (error) {
+            res.json({ message: "editProfilePic backend error:", error });
+        }
+    }),
+    fetchBanners: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield bannerSchema_1.default.find({});
+            res.json({ response });
+        }
+        catch (error) {
+            res.json({ message: "fetchBanners backend error:", error });
         }
     })
 };

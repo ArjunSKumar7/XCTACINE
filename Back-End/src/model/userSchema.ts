@@ -17,7 +17,7 @@ const userSchema = new Schema({
     minlength: 6,
   },
   ProfilePic: {
-    type: Array,
+    type: String,
   },
 
   blockedStatus: {

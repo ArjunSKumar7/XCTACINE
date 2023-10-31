@@ -136,6 +136,12 @@ export const PaymentStatusReturn = async (bookingData) => {
 
 export const editProfile = async (values,userId) => {
   try {
+    // const formData = new FormData();
+    // formData.append("Name", values.Name);
+    // formData.append("Email", values.Email);
+    // formData.append("Mobile", values.Mobile);
+    // formData.append("ProfilePic", values.ProfilePic);
+    // console.log(typeof(values.ProfilePic))
     const response =await user_baseURL.put(`/user/editprofile?userId=${userId}`,values);
     return response?.data
   } catch (error) {
@@ -159,5 +165,31 @@ export const fetchBookedSeatsData = async (data) => {
     return response?.data
   } catch (error) {
     console.log("fetchBookedSeatsData api error:",error)
+  }
+}
+
+export const profilePicEdit = async (userId,image) => {
+  try {
+    console.log("userId",userId,"values",image);
+    console.log("typeof(image)",typeof(image));
+   const formData = new FormData();
+    formData.append("ProfilePic", image);
+    const response =await user_baseURL.patch(`/user/profilepicedit/${userId}`,formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response?.data
+  } catch (error) {
+    console.log("profilePicEdit api error:",error)
+  }
+}
+
+export const fetchBanners = async () => {
+  try {
+    const response =await user_baseURL.get(`/user/fetchBanners`);
+    return response?.data
+  } catch (error) {
+    console.log("fetchBanners api error:",error)
   }
 }

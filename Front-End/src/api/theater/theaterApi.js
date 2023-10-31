@@ -116,3 +116,12 @@ export const movieScreenAllocation =async(data)=>{
     console.log("fetchLocation api error:",error)
   }
 }
+
+export const fetchDashInfo = async (theatreId) => {
+  try {
+    const response =await theatre_baseURL.get(`/theatre/fetchdashinfo/${theatreId}`);
+    return response?.data
+  } catch (error) {
+    console.log("fetchDashInfo api error:",error)
+  }
+}

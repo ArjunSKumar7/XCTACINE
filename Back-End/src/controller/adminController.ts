@@ -1,6 +1,7 @@
 import User from "../model/userSchema";
 import Theatre from "../model/theaterSchema";
 import Location from "../model/locationSchema";
+import Banner from "../model/bannerSchema";
 
 import { Request, Response } from "express";
 
@@ -100,6 +101,37 @@ const admincontroller = {
       res.json({ status: 500, message: "addLocation backend error!", error });
     }
   },
+
+  addBanner: async (req: Request, res: Response) => {
+    console.log("addBanner", req.body);
+    try {
+      console.log("addBanner", req.body);
+      console.log("addBanner", req.file);
+      const bannerPath = req.file?.path;
+      const response = await Banner.create({
+        bannerImage: bannerPath,
+        bannerName: req.body.bannerName,
+        bannerDescription: req.body.bannerDescription,
+      })
+      res.status(200).json({
+        status: 200,
+        message: "Banner added successfully!",
+        response,
+      })
+      
+    } catch (error) {
+      console.log("addBanner backend error:", error);
+    }
+    
+  }
+
+
+
+
+
 };
+
+
+
 
 export default admincontroller;

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const userSchema_1 = __importDefault(require("../model/userSchema"));
 const theaterSchema_1 = __importDefault(require("../model/theaterSchema"));
 const locationSchema_1 = __importDefault(require("../model/locationSchema"));
+const bannerSchema_1 = __importDefault(require("../model/bannerSchema"));
 const admincontroller = {
     userlistfetch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -97,5 +98,27 @@ const admincontroller = {
             res.json({ status: 500, message: "addLocation backend error!", error });
         }
     }),
+    addBanner: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _b;
+        console.log("addBanner", req.body);
+        try {
+            console.log("addBanner", req.body);
+            console.log("addBanner", req.file);
+            const bannerPath = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
+            const response = yield bannerSchema_1.default.create({
+                bannerImage: bannerPath,
+                bannerName: req.body.bannerName,
+                bannerDescription: req.body.bannerDescription,
+            });
+            res.status(200).json({
+                status: 200,
+                message: "Banner added successfully!",
+                response,
+            });
+        }
+        catch (error) {
+            console.log("addBanner backend error:", error);
+        }
+    })
 };
 exports.default = admincontroller;

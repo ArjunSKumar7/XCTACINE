@@ -41,9 +41,8 @@ export function TheatreSideBar() {
   const [addMivieOpen, setaddMivieOpen] = useState(false);
   const [addScreenOpen, setaddScreenOpen] =useState(false);
 
-  const handleAddScreenOpen = () => {
-    console.log("openscreen")
-    setaddScreenOpen(!addScreenOpen);}
+  const handleAddScreenOpen = () => setaddScreenOpen(!addScreenOpen);
+
  
   const handleMovieAddOpen = () => setaddMivieOpen(!addMivieOpen);
 

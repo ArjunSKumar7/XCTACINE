@@ -4,7 +4,7 @@ import { setMovieHomeData,} from "../../redux/userReducer";
 import { moviesFetchUser } from "../../api/user/userApi";
 import { UserHomeCard } from "../../components/user/UserHomeCard";
 import { GuestNavBar } from "../../components/user/GuestNavBar";
-import Body from "../../components/user/Body";
+import {UserHomeCarousel} from "../../components/user/UserHomeCarousel"
 import { UserFooter } from "../../components/user/UserFooter";
 import { CircularPagination } from "../../components/CircularPagination";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +62,7 @@ navigate('/login')
   return (
     <>
       <GuestNavBar />
-      <Body />
+      <UserHomeCarousel />
       <div className="grid md:grid-cols-4 grid-flow-col md:grid-flow-row md:h-full overflow-y-auto gap-3">
         {movies.length > 0 ? (
           movies.map((movie, _id) => <UserHomeCard key={_id} data={movie}  handleHomeBookClick={handleHomeBookClick}/>)

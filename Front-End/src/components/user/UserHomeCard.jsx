@@ -35,7 +35,7 @@ export function UserHomeCard(props) {
 
 
   return (
-    
+    <div className="m-4">
     <section className="px-2 md:w-full    hover:shadow-2xl py-2 border flex flex-col bg-white hover:border-2 hover:bg-gray-200 border-gray-200 cursor-pointer rounded-md shadow-md ">
       {/* // <section className="px-2 py-2 md:grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4"> */}
       <div className="flex justify-center items-center relative">
@@ -93,5 +93,6 @@ export function UserHomeCard(props) {
         ))}
       </div>
     </section>
+    </div>
   );
 }

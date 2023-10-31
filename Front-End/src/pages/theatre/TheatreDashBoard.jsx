@@ -4,9 +4,13 @@ import {TheatreSideBar} from '../../components/theater/TheatreSideBar'
 import TheatreDashboardTopComponent from "../../components/theater/TheatreDashboardTopComponent"
 import TheatreDashboardGraph from "../../components/theater/TheatreDashboardGraph"
 import TheatreDashboardPieChart from "../../components/theater/TheatreDashboardPieChart"
+import {useSelector} from "react-redux"
+import { useEffect,useState } from "react"
+
 
 const TheatreDashBoard = (props) => {
-  console.log("props", props?.data?.theatreApprovalStatus);
+  console.log("props", props);
+ 
 
   return (
     <div className="h-screen overflow-hidden">

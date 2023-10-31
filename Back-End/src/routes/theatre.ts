@@ -13,6 +13,7 @@ import theatrecontoller from '../controller/theatreController'
     router.get ("/fetchlocation",theatrecontoller.fetchLocation)
     router.post("/moviescreenallocation",theatrecontoller.moviescreenallocation)
     router.delete("/deletescreen",theatrecontoller.deleteScreen)
+    router.get("/fetchdashinfo/:id",theatrecontoller.fetchDashInfo)
 
 
 export default router

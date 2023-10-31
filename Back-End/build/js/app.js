@@ -33,9 +33,9 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 database_1.default.connect();
 cloudinary_1.v2.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_API_KEY,
-    api_secret: process.env.CLOUD_API_SECRET
+    cloud_name: 'xctacine',
+    api_key: '794227963189558',
+    api_secret: 'Tx1xRWAb1iFHUGDK731SRCilxMA'
 });
 //routes
 app.use("/api/user", user_1.default);

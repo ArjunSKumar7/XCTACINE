@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   userLogout,
@@ -237,10 +238,12 @@ const navListItems = [
 ];
 
 function NavList() {
+  const locationhook = useLocation()
   const dispatch = useDispatch();
   const [UserName, setUserName] = useState("");
   const [searchText, setSearchText] = useState("");
   const [TheatreLocation, setTheatreLocation] = useState("");
+
 
 const userId=useSelector((store)=>store.user?.userId);
 
@@ -265,7 +268,7 @@ console.log("userId",userId);
       setUserName(name);
     })
 
-  },[])
+  },[userId])
 
   useEffect(() => {
     async function fetchData() {
@@ -296,7 +299,7 @@ console.log("userId",userId);
         >
           <MenuItem className="flex items-center gap-2 lg:rounded-full">
             {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
-            {label === "Account" ? (UserName ? UserName : "Guest") : label}
+            {label === "Guest" ? (UserName ? UserName : "Guest") : label}
           </MenuItem>
         </Typography>
       ))}
@@ -325,7 +328,7 @@ console.log("userId",userId);
       {/********************************searchbar *************************************************/}
 
       {/********************************LOCATION LIST *************************************************/}
-      <div className="relative flex w-full gap-4 md:w-max">
+      {(locationhook.pathname==="/"||locationhook.pathname==="/user"||locationhook.pathname==="/login"||locationhook.pathname==="/home")&&(<div className="relative flex w-full gap-4 md:w-max">
         <Select
           className="bg-gray-300 focus:outline-none    rounded text-black"
           label="Select Location"
@@ -354,13 +357,14 @@ console.log("userId",userId);
             <Option value="default">No data available</Option>
           )}
         </Select>
-      </div>
+      </div>)}
       {/********************************LOCATION LIST *************************************************/}
     </ul>
   );
 }
 
 export function UserNavBar() {
+ 
   const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);

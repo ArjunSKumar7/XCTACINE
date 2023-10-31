@@ -12,6 +12,8 @@
   import UserSeatBooking from "./pages/user/UserSeatBooking";
   import UserBookNowMovie from "./pages/user/UserBookNowMovie";
   import UserProfilePage from "./pages/user/UserProfilePage";
+  import UserPaymentPage from "./pages/user/UserPaymentPage"
+  import UserPaymentSuccess from "./pages/user/UserPaymentSuccess";
   import GuestHome from "./pages/user/GuestHome";
 
   //*******************************Theatre Pages*******************************/
@@ -28,8 +30,8 @@
   import AdminUserDetails from "./pages/admin/AdminUserDetails";
   import AdminTheatreDetails from "./pages/admin/AdminTheatreDetails";
   import AdminAddLocation from "./pages/admin/AdminAddLocation";
-  import UserPaymentPage from "./pages/user/UserPaymentPage"
-  import UserPaymentSuccess from "./pages/user/UserPaymentSuccess";
+  import AdminAddBanner from "./pages/admin/AdminAddBanner";
+
 
   function App() {
 
@@ -177,6 +179,8 @@
               element={adminToken ? <AdminAddLocation /> : <AdminLogin />}
             />
           </Routes>
+
+          
 
           {/*********************************************Admin Routes*********************************************************/}
         </Router>

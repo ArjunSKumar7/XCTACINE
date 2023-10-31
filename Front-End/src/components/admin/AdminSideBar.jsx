@@ -1,4 +1,4 @@
-import React from "react";
+import{ useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -8,9 +8,15 @@ import {
   ListItemPrefix,
   // ListItemSuffix,
   // Chip,
+  Dialog,
+  DialogHeader,
+  DialogBody,
   Accordion,
   AccordionHeader,
   AccordionBody,
+  Button,
+  DialogFooter,
+  dialog
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
@@ -21,15 +27,20 @@ import {
   // PowerIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import AddBannerForm from "../../components/admin/AdminBannerForm"
  
 export function AdminSideBar() {
-  const [open, setOpen] = React.useState(0);
+  const [open, setOpen] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
  
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
 
   const navigate = useNavigate();
+
+  const handleAddBannerOpen=()=>setDialogOpen(!dialogOpen)
+  
  
   return (
     <Card className=" rounded-none fixed h-[calc(100vh-2rem)]  p-4 shadow-xl shadow-blue-gray-900/5 top-16">
@@ -48,17 +59,14 @@ export function AdminSideBar() {
             />
           }
         >
-          <ListItem className="p-0" selected={open === 1}>
-            <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
-              <ListItemPrefix>
-                <PresentationChartBarIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
-                Dashboard
-              </Typography>
-            </AccordionHeader>
-          </ListItem>
-          <AccordionBody className="py-1">
+          <ListItem onClick={()=>{navigate("/admin/dashboard")}}>
+          <ListItemPrefix>
+            <PresentationChartBarIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Dashboard
+       
+        </ListItem>
+          {/* <AccordionBody className="py-1">
             <List className="p-0">
               <ListItem>
                 <ListItemPrefix>
@@ -79,7 +87,7 @@ export function AdminSideBar() {
                 Projects
               </ListItem>
             </List>
-          </AccordionBody>
+          </AccordionBody> */}
         </Accordion>
         <Accordion
           open={open === 2}
@@ -170,6 +178,68 @@ export function AdminSideBar() {
 
 
 
+        <Accordion
+          open={open === 3}
+          icon={
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${open === 3 ? "rotate-180" : ""}`}
+            />
+          }
+        >
+          <ListItem className="p-0" selected={open === 3}>
+            <AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 p-3">
+              <ListItemPrefix>
+                <ShoppingBagIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              <Typography color="blue-gray" className="mr-auto font-normal">
+                Banner
+              </Typography>
+            </AccordionHeader>
+          </ListItem>
+          <AccordionBody className="py-1">
+            <List className="p-0">
+              <ListItem onClick={handleAddBannerOpen}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Add Banner
+              </ListItem>
+              <ListItem onClick={()=>{navigate("/admin/addlocation")}}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Banner List
+              </ListItem>
+              {/* <ListItem>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Approvals44
+              </ListItem>
+              <ListItem>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Approvals55
+              </ListItem> */}
+            </List>
+          </AccordionBody>
+        </Accordion>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -202,6 +272,20 @@ export function AdminSideBar() {
           Log Out
         </ListItem> */}
       </List>
+
+
+ 
+
+
+ 
+
+      <Dialog open={dialogOpen} handler={handleAddBannerOpen}>
+        <DialogHeader>Add Banner</DialogHeader>
+        <DialogBody>
+        <AddBannerForm handleAddBannerOpen={handleAddBannerOpen}/>
+        </DialogBody>
+        </Dialog>
+
     </Card>
   );
 }

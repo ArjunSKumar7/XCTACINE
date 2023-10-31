@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const movieSchema_1 = __importDefault(require("../model/movieSchema"));
 const screenSchema_1 = __importDefault(require("../model/screenSchema"));
 const locationSchema_1 = __importDefault(require("../model/locationSchema"));
+const bookingSchema_1 = __importDefault(require("../model/bookingSchema"));
 const theatrecontroller = {
     addMovie: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
@@ -77,7 +78,11 @@ const theatrecontroller = {
             }
             else {
                 const movieDeleteResponse = yield movieSchema_1.default.updateOne({ movieId: movieId }, { $pull: { theatreId: theatreId } });
-                res.json({ message: "movie deleted", status: 200, movieDeleteResponse });
+                res.json({
+                    message: "movie deleted",
+                    status: 200,
+                    movieDeleteResponse,
+                });
             }
         }
         catch (err) {
@@ -104,7 +109,10 @@ const theatrecontroller = {
                     ticketPrice: (_1 = req.body) === null || _1 === void 0 ? void 0 : _1.ticketPrice,
                 });
                 const resposne = yield screenObj.save();
-                res.json({ message: "screen added successfully!", addedScreenObj: resposne, });
+                res.json({
+                    message: "screen added successfully!",
+                    addedScreenObj: resposne,
+                });
             }
         }
         catch (error) {
@@ -162,6 +170,27 @@ const theatrecontroller = {
         }
         catch (error) {
             res.json({ message: "moviescreenallocation backend error:", error });
+        }
+    }),
+    fetchDashInfo: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            console.log("fetchDashInfo", req.params.id);
+            const totalRevenue = yield bookingSchema_1.default.aggregate([
+                { $match: { theatreId: req.params.id, bookingStatus: "confirmed" } },
+                { $group: { _id: null, totalAmount: { $sum: "$totalAmount" } } },
+            ]);
+            const totalUsers = yield bookingSchema_1.default.aggregate([
+                { $match: { theatreId: req.params.id, bookingStatus: "confirmed" } },
+                { $group: { _id: "$userId" } },
+                { $group: { _id: "$userId", totalUsers: { $sum: 1 } } },
+            ]);
+            const totalBookings = yield bookingSchema_1.default.countDocuments({
+                theatreId: req.params.id,
+            });
+            res.json({ dashInfo: { totalRevenue, totalUsers, totalBookings } });
+        }
+        catch (error) {
+            res.json({ message: "fetchDashInfo backend error:", error });
         }
     }),
 };

@@ -1,23 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 const checkusertoken = () => {
-  const theatreToken = localStorage.getItem("theatreToken"); //CHANGED TOKEN TO USERTOKEN
+  const theatreToken = localStorage.getItem("theatreToken"); 
   if (theatreToken) {
     return theatreToken;
   } else {
     return "";
   }
 };
+
+
+
 const checkTheatreData = () => {
-  const theatreDetails = JSON.parse(localStorage.getItem("theatreDetails")); //CHANGED TOKEN TO USERTOKEN
-  console.log("theatreDetails", theatreDetails);
+  const theatreDetails = localStorage.getItem("theatreDetails"); 
   if (theatreDetails) {
-    return {
-      theatreName: theatreDetails.theatreName,
-      theatreId: theatreDetails.theatreId,
-      theatreApprovalStatus: theatreDetails.theatreApprovalStatus,
-    };
+    return JSON.parse(theatreDetails);
   } else {
-    return { theatreName: "", theatreId: "", theatreApprovalStatus: "" };
+    return "";
   }
 };
 

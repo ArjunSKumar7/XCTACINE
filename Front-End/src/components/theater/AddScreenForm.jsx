@@ -18,6 +18,7 @@ import { setScreenToList } from "../../redux/theatreReducer";
 
 
 export function AddScreenForm(props) {
+  console.log("props", props);
   const screenListForUpdation = useSelector(
     (store) => store.theatre.screenToList
 
@@ -273,6 +274,11 @@ const handleshowEnabled = (index) => {
           </div>
         </div>
       </form>
+      <div className="flex justify-center">
+            <Button  onClick={props?.handleAddScreenOpen} variant="gradient" color="teal">
+              <span>cancel</span>
+            </Button>
+          </div>
     </div>
   );
 }

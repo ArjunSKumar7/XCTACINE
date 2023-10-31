@@ -1,31 +1,31 @@
 import { ShoppingBagIcon,UserGroupIcon,FilmIcon } from "@heroicons/react/24/solid";
-import {useSelector} from "react-redux"
-import { useEffect,useState } from "react"
-import { fetchDashInfo } from "../../api/theater/theaterApi";
-function TheatreDashboardTopComponent() {
-  const theatreData = useSelector((store) => store.theatre.theatreDetails);
-  const[dashInfo,setDashInfo] = useState({})
-  console.log("theatreData", theatreData);
-  // console.log("props", props?.data?.theatreApprovalStatus);
-  useEffect(() => {
-    async function fetchInfo(){
-      const data =await fetchDashInfo(theatreData?.theatreId);
-      return data
-    }
+// import {useSelector} from "react-redux"
+// import { useEffect,useState } from "react"
+// import { fetchDashInfo } from "../../api/theater/theaterApi";
+function AdminDashBox() {
+//   const theatreData = useSelector((store) => store.theatre.theatreDetails);
+//   const[dashInfo,setDashInfo] = useState({})
+//   console.log("theatreData", theatreData);
+//   // console.log("props", props?.data?.theatreApprovalStatus);
+//   useEffect(() => {
+//     async function fetchInfo(){
+//       const data =await fetchDashInfo(theatreData?.theatreId);
+//       return data
+//     }
 
-    fetchInfo(theatreData?.theatreId).then((data)=>{
-      console.log("data",data)
-      setDashInfo(data?.dashInfo)
+//     fetchInfo(theatreData?.theatreId).then((data)=>{
+//       console.log("data",data)
+//       setDashInfo(data?.dashInfo)
 
-    })
-  },[theatreData?.theatreId])
+//     })
+//   },[theatreData?.theatreId])
 
-  const totalRevenue = dashInfo?.totalRevenue?.[0]?.totalAmount || 0;
-  const totalUsers = dashInfo?.totalUsers?.[0]?.totalUsers || 0;
-  const totalBookings =dashInfo.totalBookings || 0;
+//   const totalRevenue = dashInfo?.totalRevenue?.[0]?.totalAmount || 0;
+//   const totalUsers = dashInfo?.totalUsers?.[0]?.totalUsers || 0;
+//   const totalBookings =dashInfo.totalBookings || 0;
   return (
     <div>
-      <span  className="ml-96 p-10  text-2xl font-semibold text-red-900" >Theatre Dashboard</span>
+      <span  className="ml-96 p-10  text-2xl font-semibold text-red-900" >Admin Dashboard</span>
       <div className="flex  gap-4 mt-2 ">
         <div className="bg-white rounded-sm p-5 m-4 flex-1 border border-gray-200 flex items-center">
           <div className="rounded-full flex items-center justify-center bg-light-blue-400 h-12 w-12">
@@ -37,10 +37,10 @@ function TheatreDashboardTopComponent() {
             </span>
             <div className="flex items-center">
               <strong className="text-xl text-gray-700 font-semibold">
-              {totalRevenue.toLocaleString("en-IN", {
+              {/* {totalRevenue.toLocaleString("en-IN", {
           style: "currency",
           currency: "INR",
-        })}
+        })} */}
               </strong>
             </div>
           </div>
@@ -55,7 +55,7 @@ function TheatreDashboardTopComponent() {
             </span>
             <div className="flex items-center">
               <strong  className="text-xl text-gray-700 font-semibold">
-              {totalUsers}
+              {/* {totalUsers} */}
               </strong>
             </div>
           </div>
@@ -70,7 +70,7 @@ function TheatreDashboardTopComponent() {
             </span>
             <div className="flex items-center">
               <strong className="text-xl text-gray-700 font-semibold">
-              {totalBookings}
+              {/* {totalBookings} */}
               </strong>
             </div>
           </div>
@@ -95,4 +95,4 @@ function TheatreDashboardTopComponent() {
   );
 }
 
-export default TheatreDashboardTopComponent;
+export default AdminDashBox;

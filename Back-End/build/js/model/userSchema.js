@@ -16,7 +16,7 @@ const userSchema = new mongoose_1.Schema({
         minlength: 6,
     },
     ProfilePic: {
-        type: Array,
+        type: String,
     },
     blockedStatus: {
         type: Boolean,
