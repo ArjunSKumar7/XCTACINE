@@ -20,8 +20,8 @@ const server = http.createServer(app);
 app.use(morgan("dev"));
 
 const corsOptions = {
-  origin: ["http://localhost:5173"], // Replace this with your frontend's domain
-  // origin: ["https://xctacine.online"], // For production 
+  // origin: ["http://localhost:5173"], // Replace this with your frontend's domain
+  origin: ["https://xctacine.online"], // For production 
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true, // Enable sending cookies from the frontend to the backend
