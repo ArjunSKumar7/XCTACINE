@@ -62,7 +62,9 @@ navigate('/login')
   return (
     <>
       <GuestNavBar />
+      <div className=" h-96 mt-24 " >
       <UserHomeCarousel />
+      </div>
       <div className="grid md:grid-cols-4 grid-flow-col md:grid-flow-row md:h-full overflow-y-auto gap-3">
         {movies.length > 0 ? (
           movies.map((movie, _id) => <UserHomeCard key={_id} data={movie}  handleHomeBookClick={handleHomeBookClick}/>)
