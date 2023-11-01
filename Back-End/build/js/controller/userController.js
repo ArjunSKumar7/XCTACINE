@@ -135,7 +135,6 @@ const userController = {
             res.json({ message: "fecthMovieList backend error:", err });
         }
     }),
-    fetchcolumnsandrows: (req, res) => __awaiter(void 0, void 0, void 0, function* () { }),
     moviepagedata: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const movieId = req.query.movieId;
@@ -326,9 +325,6 @@ const userController = {
     }),
     editProfile: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log("params", req.body);
-            console.log("params", req.query);
-            console.log("FILE", req.file);
             const user = yield userSchema_1.default.updateOne({ _id: req.query.userId }, {
                 $set: {
                     Name: req.body.Name,
@@ -355,14 +351,16 @@ const userController = {
         var _a, _b, _c, _d, _e, _f;
         try {
             const aggregateData = yield bookingSchema_1.default.aggregate([
-                { $match: {
+                {
+                    $match: {
                         bookingStatus: (_a = req.body) === null || _a === void 0 ? void 0 : _a.bookingStatus,
                         showDate: (_b = req.body) === null || _b === void 0 ? void 0 : _b.date,
                         showTime: (_c = req.body) === null || _c === void 0 ? void 0 : _c.show,
                         theatreName: (_d = req.body) === null || _d === void 0 ? void 0 : _d.theatre,
                         screenId: (_e = req.body) === null || _e === void 0 ? void 0 : _e.screen,
                         movieId: (_f = req.body) === null || _f === void 0 ? void 0 : _f.movie,
-                    } }
+                    },
+                },
             ]);
             const bookedSeats = aggregateData.map((obj) => obj.bookedSeats).flat();
             res.json({ bookedSeats });
@@ -375,13 +373,16 @@ const userController = {
         var _g;
         try {
             const profilePicPath = (_g = req.file) === null || _g === void 0 ? void 0 : _g.path;
-            console.log("profilePicPath", profilePicPath);
             const user = yield userSchema_1.default.updateOne({ _id: req.params.id }, {
                 $set: {
-                    ProfilePic: profilePicPath
+                    ProfilePic: profilePicPath,
                 },
             });
-            res.json({ message: "User Profile Pic updated successfully", status: 200, user });
+            res.json({
+                message: "User Profile Pic updated successfully",
+                status: 200,
+                user,
+            });
         }
         catch (error) {
             res.json({ message: "editProfilePic backend error:", error });
@@ -395,6 +396,6 @@ const userController = {
         catch (error) {
             res.json({ message: "fetchBanners backend error:", error });
         }
-    })
+    }),
 };
 exports.default = userController;

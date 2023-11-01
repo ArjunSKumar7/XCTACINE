@@ -113,9 +113,7 @@ const Signup = () => {
 
     // onCaptchaVerify()
     const phoneNumber = `+91${formik?.values?.Mobile}`;
-    console.log("onSignUpSubmit", phoneNumber);
     const numberValidation = await findNumber(phoneNumber);
-    console.log("numberValidation", numberValidation);
     if (numberValidation?.message === "User already exists") {
       setOpen(false);
       toast.error(`${numberValidation?.message}`, {
@@ -136,7 +134,6 @@ const Signup = () => {
           // SMS sent. Prompt user to type the code from the message, then sign the
           // user in with confirmationResult.confirm(code).
           window.confirmationResult = confirmationResult;
-          console.log("onSignUpSubmit confirmationResult", confirmationResult);
           // ...
           alert("OTP sented");
         })
@@ -196,30 +193,46 @@ const Signup = () => {
     },
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
-     
       try {
-        console.log("signup values", values)
         const response = await signup("/auth/user/signup", values);
-        console.log("signup response", response);
-        localStorage.setItem("userToken", response?.token);
-        dispatch(setToken(response)); 
-if(response?.status ==="success"){
-        navigate("/home");
-        window.location.reload();
-}else{
-  toast.error(`${response?.status}`, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
-}
+        if (response?.status === 200) {
+          toast.success(`${response?.message}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          localStorage.setItem("userToken", response?.token);
+          dispatch(setToken(response));
+          navigate("/home");
+          window.location.reload();
+        } else {
+          toast.error(`${response?.message}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       } catch (error) {
-        console.log("error");
+        toast.error(`${error}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     },
   });
@@ -388,20 +401,25 @@ if(response?.status ==="success"){
           }
           containerProps={{ className: "-ml-2.5" }}
         /> */}
-    {ifVerified?<Button type="submit" className="mt-6" fullWidth>
-      Register
-    </Button>:<p className="text-center font-normal  ">Verify your number to register</p>}
-        </form>
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Already have an account?{" "}
-          <a
-            href="/"
-            className="font-medium text-blue-500 transition-colors hover:text-blue-700"
-          >
-            Sign In
-          </a>
-        </Typography>
-     
+        {ifVerified ? (
+          <Button type="submit" className="mt-6" fullWidth>
+            Register
+          </Button>
+        ) : (
+          <p className="text-center font-normal  ">
+            Verify your number to register
+          </p>
+        )}
+      </form>
+      <Typography color="gray" className="mt-4 text-center font-normal">
+        Already have an account?{" "}
+        <a
+          href="/"
+          className="font-medium text-blue-500 transition-colors hover:text-blue-700"
+        >
+          Sign In
+        </a>
+      </Typography>
     </Card>
   );
 };

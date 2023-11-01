@@ -22,10 +22,8 @@ export function ProfileEdit(props) {
   //   console.log("formData", formData);
   // };
 
-  console.log("props", props);
   const user = useSelector((store) => store.user.userData);
   const userId = useSelector((store) => store.user.userId);
-  console.log("userId", userId);
 
   const ProfileEditSchema = Yup.object().shape({
     Name: Yup.string().required("Required"),
@@ -56,10 +54,7 @@ export function ProfileEdit(props) {
     enableReinitialize: true, // Reinitialize the form when initialValues change
 
     onSubmit: async (values) => {
-      console.log("onSubmit function called");
-      console.log("values", values);
       const response = await editProfile(values, userId);
-      console.log("response", response);
 
       if (
         response?.user?.modifiedCount > 0 ||

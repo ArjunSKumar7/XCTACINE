@@ -100,7 +100,6 @@ const userController = {
     }
   },
 
-  fetchcolumnsandrows: async (req: Request, res: Response) => {},
 
   moviepagedata: async (req: Request, res: Response) => {
     try {
@@ -302,10 +301,6 @@ const userController = {
 
   editProfile: async (req: Request, res: Response) => {
     try {
-      console.log("params",req.body)
-      console.log("params",req.query)
-     
-      console.log("FILE",req.file)
       const user = await User.updateOne(
         { _id: req.query.userId },
         {
@@ -330,46 +325,44 @@ const userController = {
       res.json({ message: "fetchUserBookings backend error:", error });
     }
   },
- 
+
   fetchBookedSeats: async (req: Request, res: Response) => {
     try {
-      
-      const aggregateData= await Booking.aggregate([
-        {$match:{
-          
+      const aggregateData = await Booking.aggregate([
+        {
+          $match: {
             bookingStatus: req.body?.bookingStatus,
             showDate: req.body?.date,
             showTime: req.body?.show,
             theatreName: req.body?.theatre,
             screenId: req.body?.screen,
             movieId: req.body?.movie,
-          
-        }}
-      ])
-      const bookedSeats= aggregateData.map((obj) => obj.bookedSeats).flat()
-      res.json({bookedSeats})
-      
+          },
+        },
+      ]);
+      const bookedSeats = aggregateData.map((obj) => obj.bookedSeats).flat();
+      res.json({ bookedSeats });
     } catch (error) {
       res.json({ message: "fetchBookedSeats backend error:", error });
-      }
+    }
   },
-
 
   editProfilePic: async (req: Request, res: Response) => {
     try {
-      
-      const profilePicPath=req.file?.path
-      console.log("profilePicPath",profilePicPath)
+      const profilePicPath = req.file?.path;
       const user = await User.updateOne(
         { _id: req.params.id },
         {
           $set: {
-            ProfilePic: profilePicPath
+            ProfilePic: profilePicPath,
           },
         }
       );
-      res.json({ message: "User Profile Pic updated successfully",status:200, user });
-      
+      res.json({
+        message: "User Profile Pic updated successfully",
+        status: 200,
+        user,
+      });
     } catch (error) {
       res.json({ message: "editProfilePic backend error:", error });
     }
@@ -378,17 +371,12 @@ const userController = {
   fetchBanners: async (req: Request, res: Response) => {
     try {
       const response = await Banner.find({});
-      
+
       res.json({ response });
     } catch (error) {
       res.json({ message: "fetchBanners backend error:", error });
     }
-  }
-
-
-
-
-
+  },
 };
 
 export default userController;

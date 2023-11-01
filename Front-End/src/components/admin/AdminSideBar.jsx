@@ -205,12 +205,12 @@ export function AdminSideBar() {
                 </ListItemPrefix>
                 Add Banner
               </ListItem>
-              <ListItem onClick={()=>{navigate("/admin/addlocation")}}>
+              {/* <ListItem onClick={()=>{navigate("/admin/addlocation")}}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
                 Banner List
-              </ListItem>
+              </ListItem> */}
               {/* <ListItem>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />

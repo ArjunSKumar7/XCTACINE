@@ -58,7 +58,7 @@ function ProfileMenu() {
   const navigate = useNavigate();
   const signout = () => {
     dispatch(theatreLogout());
-    navigate("theatre/login");
+    navigate("/theatre/login");
 
   }
   

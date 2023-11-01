@@ -2,7 +2,6 @@ import React from 'react'
 import ScreenNameComponent from "../BookNowMovieList/ScreenNameComponent"
 
 function TheaterNameComponent(props) {
-    console.log("props", props);
   return (
     <div key={props?.screenData?._id} className="border px-4 py-4 rounded-md">
                       <h1 className="font-bold text-lg  text-gray-100">

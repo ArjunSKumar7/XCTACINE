@@ -12,6 +12,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 export function AdminLogin() {
   const dispatch = useDispatch();
@@ -36,9 +37,33 @@ export function AdminLogin() {
     onSubmit: async (values) => {
  
       const response = await login("/auth/admin/login", values);
-      dispatch(setAdminToken(response.token));
+      if(response?.status===200){
+        toast.success(`${response?.message}`,{
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        dispatch(setAdminToken(response.token));
       localStorage.setItem("adminToken",response.token);
       navigate("/admin/dashboard");
+      }else{
+        toast.error(`${response?.message}`,{
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      
     },
   });
 

@@ -18,13 +18,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 function AdminBannerForm(props) {
-  const[BannerImage, setBannerImage] = useState(null);
-  console.log("props", props);
+  const [BannerImage, setBannerImage] = useState(null);
+
   // const bannerSchema = Yup.object().shape({
   //   bannerName: Yup.string().min(15).required("Required"),
   //   bannerDescription: Yup.string().min(30).email("Invalid email").required("Required"),
-    
-  
+
   // });
 
   const formik = useFormik({
@@ -33,13 +32,10 @@ function AdminBannerForm(props) {
       bannerDescription: "",
       // bannerImage: null,
     },
-    onSubmit: async(values) => {
-      console.log("values",values);
-    console.log("bannerImage",BannerImage);
-      
-      const response = await addBannerData(values,BannerImage);
-      console.log("response", response);
-      if(response?.status===200){
+    onSubmit: async (values) => {
+      const response = await addBannerData(values, BannerImage);
+
+      if (response?.status === 200) {
         toast.success(`${response?.message}`, {
           position: "top-right",
           autoClose: 5000,
@@ -49,8 +45,8 @@ function AdminBannerForm(props) {
           draggable: true,
           progress: undefined,
           theme: "light",
-        })
-      }else{
+        });
+      } else {
         toast.error(`${response?.message}`, {
           position: "top-right",
           autoClose: 5000,
@@ -60,20 +56,18 @@ function AdminBannerForm(props) {
           draggable: true,
           progress: undefined,
           theme: "light",
-
-        })
+        });
       }
-      props?.handleAddBannerOpen()
-      },
-     
+      props?.handleAddBannerOpen();
+    },
   });
   const handleImageSubmit = (e) => {
     setBannerImage(e.target.files[0]);
-  }
+  };
   return (
     <div className="">
       <Card className="mx-auto w-full ">
-        <form onSubmit={formik.handleSubmit} >
+        <form onSubmit={formik.handleSubmit}>
           <CardBody className="flex flex-col gap-4">
             <Typography className="" variant="h6">
               Banner Name
@@ -82,7 +76,6 @@ function AdminBannerForm(props) {
               label="Banner Name"
               name="bannerName"
               type="text"
-              
               size="lg"
               {...formik.getFieldProps("bannerName")}
             />
@@ -99,14 +92,13 @@ function AdminBannerForm(props) {
             <Typography className="-mb-2" variant="h6">
               Banner Image
             </Typography>
-             <Input
+            <Input
               label=" BannerImage"
               name="bannerImage"
               type="file"
               size="lg"
               onChange={handleImageSubmit}
             />
-
 
             {/* <Typography className="-mb-2" variant="h6">
               Banner Image

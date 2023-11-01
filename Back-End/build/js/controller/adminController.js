@@ -39,32 +39,38 @@ const admincontroller = {
         try {
             const approvalStatus = req.body;
             yield theaterSchema_1.default.updateOne({ _id: approvalStatus.id }, { $set: { approvalStatus: approvalStatus.status } }).then(() => {
-                res.json({ approvalStatus: approvalStatus.status });
+                res.json({
+                    status: 200,
+                    message: "Theatre Status Changed",
+                    approvalStatus: approvalStatus.status,
+                });
             });
         }
         catch (err) {
-            console.log("theatreAppoval backend error:", err);
+            res.json({ status: 400, message: "error occured:" + err });
         }
     }),
     userApproval: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const approvalStatus = req.body;
             yield userSchema_1.default.updateOne({ _id: approvalStatus.id }, { $set: { blockedStatus: approvalStatus.status } }).then(() => {
-                res.json({ blockedStatus: approvalStatus.status });
+                res.json({
+                    status: 200,
+                    message: "User Status Changed",
+                    blockedStatus: approvalStatus.status,
+                });
             });
         }
         catch (err) {
-            console.log("userAppoval backend error:", err);
+            res.json({ status: 400, message: "error occured:" + err });
         }
     }),
     addLocation: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        console.log("addLocation", req.body);
         try {
             const locationToAdd = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.LocationField.toLowerCase();
             const locationWord = locationToAdd.replace(/\b\w/g, (match) => match.toUpperCase());
             const existingLocations = yield locationSchema_1.default.findOne({});
-            console.log("existingLocations", existingLocations);
             if (existingLocations === null || existingLocations === void 0 ? void 0 : existingLocations.location.length) {
                 if (existingLocations === null || existingLocations === void 0 ? void 0 : existingLocations.location.includes(locationWord)) {
                     res.json({
@@ -94,16 +100,12 @@ const admincontroller = {
             }
         }
         catch (error) {
-            console.log("addLocation backend error:", error);
             res.json({ status: 500, message: "addLocation backend error!", error });
         }
     }),
     addBanner: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _b;
-        console.log("addBanner", req.body);
         try {
-            console.log("addBanner", req.body);
-            console.log("addBanner", req.file);
             const bannerPath = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
             const response = yield bannerSchema_1.default.create({
                 bannerImage: bannerPath,
@@ -117,8 +119,11 @@ const admincontroller = {
             });
         }
         catch (error) {
-            console.log("addBanner backend error:", error);
+            res.json({
+                status: 500,
+                message: "addBanner backend error!" + error,
+            });
         }
-    })
+    }),
 };
 exports.default = admincontroller;

@@ -9,7 +9,6 @@ import { useEffect,useState } from "react"
 
 
 const TheatreDashBoard = (props) => {
-  console.log("props", props);
  
 
   return (

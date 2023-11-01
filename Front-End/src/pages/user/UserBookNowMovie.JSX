@@ -13,9 +13,7 @@ function UserBookNowMovie() {
   const dispatch = useDispatch();
   
   const movieId = useSelector((store) => store.user?.bookingOperation?.movieId);
-  console.log("movieId", movieId);
   const location = useSelector((store) => store.user?.locationSelected);
-  console.log("location", location);
 
   const [currentDate, setCurrentDate] = useState(moment());
   const [nextDate, setnextDate] = useState([]);
@@ -39,9 +37,7 @@ function UserBookNowMovie() {
 
   useEffect(() => {
     async function fetchData(movieId, location) {
-      console.log("movieId", movieId, "location", location);
       const response = await moviePageData(movieId, location);
-      console.log("response", response); 
       
       setmovieData(response?.movieDetails)
       setscreenData(response?.screenList)
@@ -120,7 +116,6 @@ dispatch(setSelectedDate(date.format('YYYY-MM-DD')))
         <h1 className="font-semibold text-xl text-gray-100">Shows Available</h1>
       </div>
         {/* mapcomponent */}
-        {console.log("screeData", screenData)}
         {screenData?.length > 0 ? (
           screenData?.map((screenData, index) => (
             <TheaterNameComponent key={index} screenData={screenData} movieData={movieData} />

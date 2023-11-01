@@ -19,7 +19,6 @@ function UserPaymentPage() {
 
     const [MovieData, setMovieData] = useState({})  ;
     const bookingMovieData = useSelector((store) => store.user.bookingOperation);
-    console.log("bookingMovieData", bookingMovieData);
     
 
 
@@ -31,7 +30,6 @@ function UserPaymentPage() {
             return response;
         }
         fetchData().then((response) => {
-            console.log("response", response);
             setMovieData(response?.bookingMovieData);
         })
     

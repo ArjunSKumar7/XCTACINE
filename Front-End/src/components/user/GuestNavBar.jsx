@@ -236,14 +236,11 @@ function NavList() {
    
     async function fetchData() {
       const response = await getLocation();
-      console.log("theatre response", response);
       return response;
     }
 
     fetchData().then((data) => {
-      console.log("data", data?.locationList);
       data?.locationList?.push("No Location Selected");
-      console.log("theatreLocatonarr", data?.locationList);
       setTheatreLocation(data?.locationList);
     });
   }, []);

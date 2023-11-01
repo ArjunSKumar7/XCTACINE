@@ -8,25 +8,22 @@ import { generateJWT, verifyjwt } from "../authService/JwtAuth";
 
 const authController = {
   userLogin: async (req: Request, res: Response) => {
-   
     try {
       const { Email, Password }: { Email: string; Password: string } = req.body;
-
       const userData = await User.findOne({ Email: Email });
       if (!userData) {
         res.json({
+          status: 400,
           created: false,
-          status: "user not found/exist",
+          message: "user not found/exist",
         });
       }
-
-
-
       if (userData) {
-        if(userData.blockedStatus){
+        if (userData.blockedStatus) {
           res.json({
+            status: 400,
             created: false,
-            status: "user blocked",
+            message: "user blocked",
           });
         }
         if (userData.Password) {
@@ -40,65 +37,66 @@ const authController = {
               user: userData,
               created: true,
               token: token,
-              status: "success",
+              status: 200,
+              message: "success",
             });
           } else {
             res.json({
+              status: 400,
               created: false,
               token: "",
-              status: "password not matched",
+              message: "password not matched",
             });
           }
         }
       }
     } catch (err: any) {
       res.json({
-        status: "failed",
+        message: `something went wrong: ${err}`,
+        status: 400,
         token: "",
-        message:err,
       });
     }
   },
 
   UserSignup: async (req: Request, res: Response) => {
     try {
-      console.log("req", req.body);
       const {
         Email,
         Name,
         Password,
         Mobile,
-      }: { Email: string; Name: string; Password: string;Mobile:string } = req.body;
-
+      }: { Email: string; Name: string; Password: string; Mobile: string } =
+        req.body;
       let hashedPassword: string = await bcrypt.hash(Password, 10);
-
       const existingUser = await User.findOne({ Email: Email });
-      console.log("existingUser", existingUser);
       if (existingUser) {
         return res.json({ userExist: true, message: "User already exists" });
+      } else {
+        // Creating a new user
+        const newUserData: any = await User.create({
+          Email,
+          Name,
+          Password: hashedPassword,
+          Mobile,
+        });
+        delete newUserData._doc.Password;
+        const jwt = generateJWT(newUserData._id.toString());
+        res.json({
+          status: 200,
+          user: newUserData,
+          created: true,
+          token: jwt,
+          message: "success! User LoggedIn",
+        });
       }
-      else{
-
-      // Creating a new user
-      const newUserData: any = await User.create({
-        Email,
-        Name,
-        Password: hashedPassword,
-        Mobile,
-      });
-      delete newUserData._doc.Password;
-console.log("newUserData", newUserData._id.toString());
-      const jwt = generateJWT(newUserData._id.toString());
-console.log("jwt", jwt);
-console.log("newUserData", newUserData);
+    } catch (error) {
       res.json({
-        user: newUserData,
-        created: true,
-        token: jwt,
-        status: "success",
+        user: "",
+        message: `something went wrong: ${error}`,
+        token: "",
+        status: 400,
       });
-    } }catch (error) {
-      res.json({ user:"",status: `${error}`,token: "", message: "something went wrong   : ", error });
     }
   },
 
@@ -107,11 +105,12 @@ console.log("newUserData", newUserData);
       const { Email, Password }: { Email: string; Password: string } = req.body;
 
       const theatreData = await Theatre.findOne({ Email: Email });
-      
+
       if (!theatreData) {
         return res.json({
+          status: 400,
           created: false,
-          status: "user not found/exist",
+          messsage: "user not found/exist",
         });
       }
 
@@ -121,76 +120,83 @@ console.log("newUserData", newUserData);
           theatreData.Password
         );
         if (validPassword) {
-          const { Password, ...theatreWithoutPassword } = theatreData.toObject(); // Exclude Password field
+          const { Password, ...theatreWithoutPassword } =
+            theatreData.toObject(); // Exclude Password field
           const token = generateJWT(theatreData._id.toString());
           res.json({
+            status: 200,
             theatre: theatreWithoutPassword,
             created: true,
             token: token,
-            status: "success",
+            message: "Success Theatre LoggedIn",
           });
         } else {
           res.json({
+            status: 400,
             created: false,
             token: "",
-            status: "password not matched",
+            message: "password not matched",
           });
         }
       }
     } catch (err: any) {
       return res.json({
-        status: "failed",
+        status: 400,
         token: "",
-        message: err.message,
+        message: `something went wrong: ${err}`,
       });
     }
   },
 
   TheatreSignUp: async (req: Request, res: Response) => {
-    console.log("req", req.body);
     try {
       const {
         Email,
         Name,
         Location,
         Password,
-      }: { Email: string; Name: string; Location: string; Password: string } = req.body;
+      }: { Email: string; Name: string; Location: string; Password: string } =
+        req.body;
 
       let hashedPassword: string = await bcrypt.hash(Password, 10);
 
       const existingtheatre = await Theatre.findOne({ Email: Email });
       if (existingtheatre) {
         return res.json({
+          status: 400,
           theatreExist: true,
           message: "Theatre already exists",
         });
+      } else {
+        const newTheatreData: any = await Theatre.create({
+          Email,
+          Name,
+          Location,
+          Password: hashedPassword,
+        });
+        delete newTheatreData._doc.Password;
+
+        const jwt = generateJWT(newTheatreData._id.toString());
+
+        res.json({
+          status: 200,
+          theatre: newTheatreData,
+          created: true,
+          token: jwt,
+          message: "success! Theatre LoggedIn",
+        });
       }
-      else{
-
-      const newTheatreData: any = await Theatre.create({
-        Email,
-        Name,
-        Location,
-        Password: hashedPassword,
-      });
-      delete newTheatreData._doc.Password;
-
-      const jwt = generateJWT(newTheatreData._id.toString());
-
+    } catch (error) {
       res.json({
-        theatre: newTheatreData,
-        created: true,
-        token: jwt,
-        status: "success",
+        status: 400,
+        token: "",
+        message: "password not matched",
       });
-    } }catch (error) {
-      res.json({ status: "failed", token: "", message: "password not matched" });
     }
   },
 
   adminLogin: async (req: Request, res: Response) => {
     try {
-      
       const { Email, Password }: { Email: string; Password: string } = req.body;
       const adminFile = await Admin.findOne({ Email: Email });
 
@@ -205,65 +211,73 @@ console.log("newUserData", newUserData);
               admin: adminFile,
               created: true,
               token: jwt,
-              status: "success",
+              status: 200,
+              message: "success! Admin LoggedIn",
             });
           } else {
-            return (
-              res
-                // .status(401)
-                .json({
-                  login_status: false,
-                  token: "",
-                  message: "invalid admin credentials",
-                })
-            );
+            return res.json({
+              status: 400,
+              login_status: false,
+              token: "",
+              message: "invalid admin credentials",
+            });
           }
         });
       } else {
         return res.json({
+          status: 400,
           login_status: false,
           token: "",
           message: "invalid admin username or password",
         });
       }
     } catch (error) {
-      console.log("backendloginerror", error);
+      res.json({
+        status: 400,
+        loginStatus: false,
+        message: `something went wrong: ${error}`,
+      });
     }
   },
 
-
-
-
   usergLogin: async (req: Request, res: Response) => {
-   
     try {
-      const { Email, Name }: { Email: string; Name: string } = req.body;
+      const { Email, Name,}: { Email: string; Name: string } = req.body;
       const userFile = await User.findOne({ Email: Email });
       if (userFile) {
         const user_id = userFile._id.toString();
         const jwt = generateJWT(user_id);
         res.json({
+          status: 200,
           user: userFile,
           created: true,
           token: jwt,
-          status: "success",
+          message: "success ! User LoggedIn",
         });
       } else {
+        const defaultMobile=1111111111;
         const newGUserData = await User.create({
           Email,
           Name,
-        });
+          Mobile:defaultMobile
        
+        });
+
         const jwt = generateJWT(newGUserData._id.toString());
         res.json({
+          status: 200,
           user: newGUserData,
           created: true,
           token: jwt,
-          status: "success",
+          message: "success ! User LoggedIn",
         });
       }
     } catch (error) {
-      res.json({ error,loginStatus: false, message: "login failed" });
+      res.json({
+        status: 400,
+        loginStatus: false,
+        message: `something went wrong: ${error}`,
+      });
     }
   },
 };

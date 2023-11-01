@@ -6,11 +6,9 @@ export function UserHomeCarousel() {
   useEffect(() => {
     async function fetchData() {
       const response = await fetchBanners()
-      console.log("response", response)
       return response
     }
     fetchData().then((data) => {
-      console.log("data", data)
       setBanners(data.response)
   
     })
@@ -20,10 +18,8 @@ export function UserHomeCarousel() {
     
     <Carousel
       className="rounded-none">
-        {console.log(banners)}
       {banners.length > 0 ?(
         banners.map((banner,Index)=>(
-          console.log("banner", banner),
           <img
           key={Index}
           src={banner?.bannerImage}
@@ -57,3 +53,46 @@ export function UserHomeCarousel() {
 
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+// import React from "react";
+// import { Carousel } from "react-responsive-carousel";
+// import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+// import { fetchBanners } from "../../api/user/userApi";
+
+// export function UserHomeCarousel() {
+//   const [banners, setBanners] = React.useState([]);
+
+//   React.useEffect(() => {
+//     async function fetchData() {
+//       const response = await fetchBanners();
+//       console.log("response", response);
+//       return response;
+//     }
+
+//     fetchData().then((data) => {
+//       console.log("data", data);
+//       setBanners(data.response);
+//     });
+//   }, []);
+
+//   return (
+//     <Carousel autoPlay interval={6000} infiniteLoop>
+//       {banners.map((banner, index) => (
+//         <div key={index}>
+//           <img src={banner?.bannerImage} alt="bannerImage" />
+//         </div>
+//       ))}
+//     </Carousel>
+//   );
+// }

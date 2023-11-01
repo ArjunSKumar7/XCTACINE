@@ -51,26 +51,22 @@ const TABLE_HEAD = [
 export function TheatreScreenList() {
   //for getting theatreId from added movies
   const theatreData = useSelector((store) => store.theatre.theatreDetails);
-  console.log("theatreId", theatreData);
 
   const dispatch = useDispatch();
   // const [MovieToList, setMovieToList] = useState("");
   useEffect(() => {
     async function fetchData() {
       const response = await ScreenListDataFetch(theatreData?.theatreId);
-      console.log("response", response);
       return response;
     }
 
     fetchData().then((data) => {
-      console.log("data", data);
 
       dispatch(setScreenToList(data?.screenList));
     });
   }, []);
 
   const theatreScreenList = useSelector((store) => store.theatre.screenToList);
-  console.log("theatremovieslist", theatreScreenList);
 
   return (
     <Card className="h-full mt-16 rounded-none ">
@@ -130,7 +126,6 @@ export function TheatreScreenList() {
             </tr>
           </thead>
           <tbody>
-            {console.log("MovieToList", theatreScreenList)}
             {theatreScreenList
               ? theatreScreenList.map(
                   ({ _id, screenName, rows, columns, shows,ticketPrice,selectedDates,movieTitle }, index) => {

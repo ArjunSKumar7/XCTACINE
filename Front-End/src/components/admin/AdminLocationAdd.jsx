@@ -50,7 +50,6 @@ function AdminLocationAdd() {
     validationSchema: LocationSchema,
     onSubmit: async (values) => {
       const LocationApiResponse = await addLocation(values);
-      console.log("apiResponse", LocationApiResponse);
       if (LocationApiResponse.status === 200&&201) {
         toast.success(`${LocationApiResponse.message}`, {
           position: "top-right",
@@ -93,7 +92,7 @@ function AdminLocationAdd() {
         </Button>
       </form>
 
-      <Card className=" mt-12 overflow-auto">
+      {/* <Card className=" mt-12 overflow-auto">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -158,7 +157,7 @@ function AdminLocationAdd() {
             ))}
           </tbody>
         </table>
-      </Card>
+      </Card> */}
     </div>
   );
 }

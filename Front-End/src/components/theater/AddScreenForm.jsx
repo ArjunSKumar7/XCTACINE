@@ -12,34 +12,34 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import  {addScreen } from "../../api/theater/theaterApi";
+import { addScreen } from "../../api/theater/theaterApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setScreenToList } from "../../redux/theatreReducer";
 
-
 export function AddScreenForm(props) {
-  console.log("props", props);
   const screenListForUpdation = useSelector(
     (store) => store.theatre.screenToList
-
   );
-  console.log("screenListForUpdation", screenListForUpdation);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showEnabled, setShowEnabled] = useState([false, false, false, false, false, false]);
-  // const screenListForUpdation = useSelector(
-  //   (store) => store.theater.allScreenList
-  // );
+  const [showEnabled, setShowEnabled] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
   const theatreInfo = useSelector((store) => store.theatre.theatreDetails);
-  console.log("theaterInfo", theatreInfo);
 
   const formik = useFormik({
     initialValues: {
       screenName: "",
-      ticketPrice:0,
+      ticketPrice: 0,
       Rows: 0,
       Columns: 0,
-      shows:[],
+      shows: [],
       show1: "00:00",
       show2: "00:00",
       show3: "00:00",
@@ -52,15 +52,9 @@ export function AddScreenForm(props) {
 
         .max(25, "Must be 25 characters or less")
         .required("Required"),
-      ticketPrice: 
-        Yup.number()
-        .required("Required"),
-      Rows: 
-      Yup.number()
-      .required("Required"),
-      Columns:
-        Yup.number()
-        .required("Required"),
+      ticketPrice: Yup.number().required("Required"),
+      Rows: Yup.number().required("Required"),
+      Columns: Yup.number().required("Required"),
 
       show1: Yup.string()
         .matches(
@@ -107,7 +101,6 @@ export function AddScreenForm(props) {
           enabledShowFields[`show${i}`] = values[`show${i}`];
         }
       }
-    console.log("enabledShowFields", enabledShowFields);
       // Add enabled show fields to the values object
       values = {
         ...values,
@@ -117,58 +110,45 @@ export function AddScreenForm(props) {
       values.theatreName = theatreInfo.theatreName;
 
       values.shows = [enabledShowFields];
-      console.log("screenvalues",values);
       const response = await addScreen(values);
-      console.log("response", response);
-      if(response?.message==="screen added successfully!"){
-        const screenListForUpdationCopy = JSON.stringify(screenListForUpdation)   
-        const resultCopy = JSON.parse(screenListForUpdationCopy)
-        const updatedScrnList = [
-          ...resultCopy,
-          response?.addedScreenObj,
-        ];
+      if (response?.message === "screen added successfully!") {
+        const screenListForUpdationCopy = JSON.stringify(screenListForUpdation);
+        const resultCopy = JSON.parse(screenListForUpdationCopy);
+        const updatedScrnList = [...resultCopy, response?.addedScreenObj];
 
-          dispatch(setScreenToList(updatedScrnList));//updatedScrnList
-          toast.success(` ${response?.message}`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          navigate("/theatre/screenlist");
-        }else{
-          toast.error(` ${response.message} !!`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-        props?.handleAddScreenOpen();
-      },
-      });
+        dispatch(setScreenToList(updatedScrnList)); //updatedScrnList
+        toast.success(` ${response?.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate("/theatre/screenlist");
+      } else {
+        toast.error(` ${response.message} !!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      props?.handleAddScreenOpen();
+    },
+  });
 
-    
-      
-
-      
-       
-
-
-const handleshowEnabled = (index) => {
-  const newShowEnabled = [...showEnabled];
-  newShowEnabled[index] = !newShowEnabled[index];
-  setShowEnabled(newShowEnabled);
-}
-
+  const handleshowEnabled = (index) => {
+    const newShowEnabled = [...showEnabled];
+    newShowEnabled[index] = !newShowEnabled[index];
+    setShowEnabled(newShowEnabled);
+  };
 
   return (
     <div className="m-2" style={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -203,8 +183,6 @@ const handleshowEnabled = (index) => {
                 : null}
             </p>
           </div>
-
-
 
           <div className="flex space-x-4">
             <div className="w-80">
@@ -248,7 +226,8 @@ const handleshowEnabled = (index) => {
                   disabled={!enabled}
                 />
                 <p className=" text-xs ml-2 text-red-800">
-                  {formik.touched[`show${index + 1}`] && formik.errors[`show${index + 1}`]
+                  {formik.touched[`show${index + 1}`] &&
+                  formik.errors[`show${index + 1}`]
                     ? formik.errors[`show${index + 1}`]
                     : null}
                 </p>
@@ -265,8 +244,6 @@ const handleshowEnabled = (index) => {
             ))}
           </div>
 
-        
-
           <div className="flex justify-center">
             <Button type="submit" variant="gradient" color="teal">
               <span>Submit</span>
@@ -275,10 +252,14 @@ const handleshowEnabled = (index) => {
         </div>
       </form>
       <div className="flex justify-center">
-            <Button  onClick={props?.handleAddScreenOpen} variant="gradient" color="teal">
-              <span>cancel</span>
-            </Button>
-          </div>
+        <Button
+          onClick={props?.handleAddScreenOpen}
+          variant="gradient"
+          color="teal"
+        >
+          <span>cancel</span>
+        </Button>
+      </div>
     </div>
   );
 }

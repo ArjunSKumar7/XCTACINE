@@ -3,12 +3,10 @@
   import { useState } from "react";
 
   function SeatButton(props) {
-    console.log("props", props);
     
     const [isClicked, setIsClicked] = useState(false);
 
     function seatSelectHandle(selSeatId) {
-  console.log("selSeatId",selSeatId)
       setIsClicked(!isClicked);
       if (!isClicked) {
         

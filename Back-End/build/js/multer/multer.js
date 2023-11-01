@@ -10,30 +10,46 @@ const cloudinary_1 = require("cloudinary");
 const profilePic = {
     cloudinary: cloudinary_1.v2,
     params: {
-        folder: 'ProfilePic',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'svg', 'webp', 'gif', 'jfif', 'webp'],
+        folder: "ProfilePic",
+        allowed_formats: [
+            "jpg",
+            "jpeg",
+            "png",
+            "svg",
+            "webp",
+            "gif",
+            "jfif",
+            "webp",
+        ],
         public_id: (req, file) => {
-            console.log('cloudinary  filee', file, req.body);
-            const originalname = file.originalname.split('.');
+            const originalname = file.originalname.split(".");
             return `image-${Date.now()}-${originalname[0]}`;
-        }
-    }
+        },
+    },
 };
 const profilePicStorage = new multer_storage_cloudinary_1.CloudinaryStorage(profilePic);
-const uploadProfilePic = (0, multer_1.default)({ storage: profilePicStorage }).single('ProfilePic');
+const uploadProfilePic = (0, multer_1.default)({ storage: profilePicStorage }).single("ProfilePic");
 exports.uploadProfilePic = uploadProfilePic;
 const bannerImage = {
     cloudinary: cloudinary_1.v2,
     params: {
-        folder: 'BannerImage',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'svg', 'webp', 'gif', 'jfif', 'webp'],
+        folder: "BannerImage",
+        allowed_formats: [
+            "jpg",
+            "jpeg",
+            "png",
+            "svg",
+            "webp",
+            "gif",
+            "jfif",
+            "webp",
+        ],
         public_id: (req, file) => {
-            console.log('cloudinary  filee', file, req.body);
-            const originalname = file.originalname.split('.');
+            const originalname = file.originalname.split(".");
             return `image-${Date.now()}-${originalname[0]}`;
-        }
-    }
+        },
+    },
 };
 const bannerImageStorage = new multer_storage_cloudinary_1.CloudinaryStorage(bannerImage);
-const uploadBannerImage = (0, multer_1.default)({ storage: bannerImageStorage }).single('bannerImage');
+const uploadBannerImage = (0, multer_1.default)({ storage: bannerImageStorage }).single("bannerImage");
 exports.uploadBannerImage = uploadBannerImage;

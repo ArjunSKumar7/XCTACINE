@@ -7,7 +7,6 @@ import {
   } from "@material-tailwind/react";
    
   export function ApprovalBox(props) {
-    console.log("props",props)
     
     return (
       <Card className="mt-6 w-96 bg-gray-300 ">

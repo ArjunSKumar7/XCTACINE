@@ -11,18 +11,15 @@ const AdminTheatreDetails = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await theatredetailsfetch();
-      console.log("theatredetailsfetch", response);
       return response;
     }
 
     fetchData().then(data => {
-      console.log("data", data);
       setTheatreDetails(data?.theatreDetails);
 
     });
   }, []);
  
-console.log("TheatreDetails",TheatreDetails)
   return (
     <div>
       <AdminNavBar />

@@ -88,7 +88,6 @@ const TABLE_ROWS = [
 ];
  
 export function AdminUserList(props) {
-  console.log("prps",props.data)
   return (
     <Card className="h-full mt-16 rounded-none ">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -120,12 +119,12 @@ export function AdminUserList(props) {
               ))}
             </TabsHeader> */}
           </Tabs>
-          <div className="w-full md:w-72">
+          {/* <div className="w-full md:w-72">
             <Input
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
             />
-          </div>
+          </div> */}
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
@@ -152,19 +151,16 @@ export function AdminUserList(props) {
             </tr>
           </thead>
           <tbody>
-            { console.log("prps",props.data)}
-            {  console.log("Data prop type:", typeof props.data)}
- 
             
             {(props?.data?.map(
-              ({ _id, Name, Email, online,blockedStatus}, index) => {
+              ({ _id, Name, Email, online,blockedStatus,ProfilePic}, index) => {
                 const isLast = index === props?.data?.length - 1;
                 const classes = isLast
                   ? "p-4" 
                   : "p-4 border-b border-blue-gray-50";
  
                 return (
-                 <AdminUserTable key={_id} id={_id} Name={Name} Email={Email}  online={online}  classes={classes} blockedStatus={blockedStatus}/>
+                 <AdminUserTable key={_id} id={_id} Name={Name} Email={Email}  online={online}  classes={classes} blockedStatus={blockedStatus} ProfilePic={ProfilePic}/>
                 );
               },
             ))}

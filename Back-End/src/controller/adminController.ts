@@ -33,10 +33,14 @@ const admincontroller = {
         { _id: approvalStatus.id },
         { $set: { approvalStatus: approvalStatus.status } }
       ).then(() => {
-        res.json({ approvalStatus: approvalStatus.status });
+        res.json({
+          status: 200,
+          message: "Theatre Status Changed",
+          approvalStatus: approvalStatus.status,
+        });
       });
     } catch (err) {
-      console.log("theatreAppoval backend error:", err);
+      res.json({ status: 400, message: "error occured:" + err });
     }
   },
 
@@ -47,23 +51,24 @@ const admincontroller = {
         { _id: approvalStatus.id },
         { $set: { blockedStatus: approvalStatus.status } }
       ).then(() => {
-        res.json({ blockedStatus: approvalStatus.status });
+        res.json({
+          status: 200,
+          message: "User Status Changed",
+          blockedStatus: approvalStatus.status,
+        });
       });
     } catch (err) {
-      console.log("userAppoval backend error:", err);
+      res.json({ status: 400, message: "error occured:" + err });
     }
   },
 
   addLocation: async (req: Request, res: Response) => {
-    console.log("addLocation", req.body);
     try {
       const locationToAdd = req?.body?.LocationField.toLowerCase();
-
       const locationWord = locationToAdd.replace(/\b\w/g, (match: string) =>
         match.toUpperCase()
       );
       const existingLocations = await Location.findOne({});
-      console.log("existingLocations", existingLocations);
       if (existingLocations?.location.length) {
         if (existingLocations?.location.includes(locationWord)) {
           res.json({
@@ -74,9 +79,9 @@ const admincontroller = {
           const response = await Location.findOneAndUpdate(
             {},
             {
-              $addToSet: { location: locationWord }, 
+              $addToSet: { location: locationWord },
             },
-            { upsert: true, new: true } 
+            { upsert: true, new: true }
           );
 
           res.status(200).json({
@@ -97,41 +102,31 @@ const admincontroller = {
         });
       }
     } catch (error) {
-      console.log("addLocation backend error:", error);
       res.json({ status: 500, message: "addLocation backend error!", error });
     }
   },
 
   addBanner: async (req: Request, res: Response) => {
-    console.log("addBanner", req.body);
     try {
-      console.log("addBanner", req.body);
-      console.log("addBanner", req.file);
       const bannerPath = req.file?.path;
       const response = await Banner.create({
         bannerImage: bannerPath,
         bannerName: req.body.bannerName,
         bannerDescription: req.body.bannerDescription,
-      })
+      });
       res.status(200).json({
         status: 200,
         message: "Banner added successfully!",
         response,
-      })
-      
+      });
     } catch (error) {
-      console.log("addBanner backend error:", error);
+      res.json({
+        status: 500,
+        message: "addBanner backend error!"+error,
+        
+      })
     }
-    
-  }
-
-
-
-
-
+  },
 };
-
-
-
 
 export default admincontroller;

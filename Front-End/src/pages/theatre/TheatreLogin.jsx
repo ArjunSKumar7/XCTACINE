@@ -2,9 +2,10 @@ import { useFormik } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { login } from "../../api/theater/theaterApi";
-import { setTheatreToken,setTheatreDetails } from "../../redux/theatreReducer";
+import { setTheatreToken, setTheatreDetails } from "../../redux/theatreReducer";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import {
   Card,
@@ -35,27 +36,51 @@ export function TheatreLogin() {
     },
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
-      console.log(values);
       const response = await login("/auth/theatre/login", values);
-      console.log("login response", response.theatre);
-      const theatreDetails={
-        theatreName:response?.theatre?.Name,
-        theatreId:response?.theatre?._id,
-        theatreApprovalStatus:response?.theatre?.approvalStatus,
-        theatreLocation:response?.theatre?.Location
+      if (response?.status === 200) {
+        const theatreDetails = {
+          theatreName: response?.theatre?.Name,
+          theatreId: response?.theatre?._id,
+          theatreApprovalStatus: response?.theatre?.approvalStatus,
+          theatreLocation: response?.theatre?.Location,
+        };
+        dispatch(setTheatreDetails(theatreDetails));
+        dispatch(setTheatreToken(response?.token));
+        localStorage.setItem("theatreToken", response?.token);
+        localStorage.setItem("theatreDetails", JSON.stringify(theatreDetails));
 
+        navigate("/theatre/dashboard");
+        toast.success(`${response?.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.error(`${response?.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
-      dispatch(setTheatreDetails(theatreDetails))   
-      dispatch(setTheatreToken(response?.token));
-      localStorage.setItem("theatreToken", response?.token);  
-      localStorage.setItem("theatreDetails",JSON.stringify(theatreDetails));
-  
-      navigate("/theatre/dashboard");
     },
   });
 
   return (
-    <Card className="flex flex-col items-center justify-center pt-16 w-100" color="transparent" shadow={false}>
+    <Card
+      className="flex flex-col items-center justify-center pt-16 w-100"
+      color="transparent"
+      shadow={false}
+    >
       <Typography variant="h4" color="blue-gray">
         Theatre Log In
       </Typography>
@@ -122,9 +147,6 @@ export function TheatreLogin() {
           </a>
         </Typography>
       </form>
-      
-
-
     </Card>
   );
 }
@@ -132,4 +154,5 @@ export function TheatreLogin() {
 const Error = styled.span`
   font-size: 12px;
   color: red;
-  position: relative;`
+  position: relative;
+`;

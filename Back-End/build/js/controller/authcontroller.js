@@ -35,15 +35,17 @@ const authController = {
             const userData = yield userSchema_1.default.findOne({ Email: Email });
             if (!userData) {
                 res.json({
+                    status: 400,
                     created: false,
-                    status: "user not found/exist",
+                    message: "user not found/exist",
                 });
             }
             if (userData) {
                 if (userData.blockedStatus) {
                     res.json({
+                        status: 400,
                         created: false,
-                        status: "user blocked",
+                        message: "user blocked",
                     });
                 }
                 if (userData.Password) {
@@ -54,14 +56,16 @@ const authController = {
                             user: userData,
                             created: true,
                             token: token,
-                            status: "success",
+                            status: 200,
+                            message: "success",
                         });
                     }
                     else {
                         res.json({
+                            status: 400,
                             created: false,
                             token: "",
-                            status: "password not matched",
+                            message: "password not matched",
                         });
                     }
                 }
@@ -69,19 +73,17 @@ const authController = {
         }
         catch (err) {
             res.json({
-                status: "failed",
+                message: `something went wrong: ${err}`,
+                status: 400,
                 token: "",
-                message: err,
             });
         }
     }),
     UserSignup: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log("req", req.body);
             const { Email, Name, Password, Mobile, } = req.body;
             let hashedPassword = yield bcryptjs_1.default.hash(Password, 10);
             const existingUser = yield userSchema_1.default.findOne({ Email: Email });
-            console.log("existingUser", existingUser);
             if (existingUser) {
                 return res.json({ userExist: true, message: "User already exists" });
             }
@@ -94,20 +96,23 @@ const authController = {
                     Mobile,
                 });
                 delete newUserData._doc.Password;
-                console.log("newUserData", newUserData._id.toString());
                 const jwt = (0, JwtAuth_1.generateJWT)(newUserData._id.toString());
-                console.log("jwt", jwt);
-                console.log("newUserData", newUserData);
                 res.json({
+                    status: 200,
                     user: newUserData,
                     created: true,
                     token: jwt,
-                    status: "success",
+                    message: "success! User LoggedIn",
                 });
             }
         }
         catch (error) {
-            res.json({ user: "", status: `${error}`, token: "", message: "something went wrong   : ", error });
+            res.json({
+                user: "",
+                message: `something went wrong: ${error}`,
+                token: "",
+                status: 400,
+            });
         }
     }),
     TheatreLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -116,8 +121,9 @@ const authController = {
             const theatreData = yield theaterSchema_1.default.findOne({ Email: Email });
             if (!theatreData) {
                 return res.json({
+                    status: 400,
                     created: false,
-                    status: "user not found/exist",
+                    messsage: "user not found/exist",
                 });
             }
             if (theatreData) {
@@ -126,37 +132,39 @@ const authController = {
                     const _a = theatreData.toObject(), { Password } = _a, theatreWithoutPassword = __rest(_a, ["Password"]); // Exclude Password field
                     const token = (0, JwtAuth_1.generateJWT)(theatreData._id.toString());
                     res.json({
+                        status: 200,
                         theatre: theatreWithoutPassword,
                         created: true,
                         token: token,
-                        status: "success",
+                        message: "Success Theatre LoggedIn",
                     });
                 }
                 else {
                     res.json({
+                        status: 400,
                         created: false,
                         token: "",
-                        status: "password not matched",
+                        message: "password not matched",
                     });
                 }
             }
         }
         catch (err) {
             return res.json({
-                status: "failed",
+                status: 400,
                 token: "",
-                message: err.message,
+                message: `something went wrong: ${err}`,
             });
         }
     }),
     TheatreSignUp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("req", req.body);
         try {
             const { Email, Name, Location, Password, } = req.body;
             let hashedPassword = yield bcryptjs_1.default.hash(Password, 10);
             const existingtheatre = yield theaterSchema_1.default.findOne({ Email: Email });
             if (existingtheatre) {
                 return res.json({
+                    status: 400,
                     theatreExist: true,
                     message: "Theatre already exists",
                 });
@@ -171,15 +179,20 @@ const authController = {
                 delete newTheatreData._doc.Password;
                 const jwt = (0, JwtAuth_1.generateJWT)(newTheatreData._id.toString());
                 res.json({
+                    status: 200,
                     theatre: newTheatreData,
                     created: true,
                     token: jwt,
-                    status: "success",
+                    message: "success! Theatre LoggedIn",
                 });
             }
         }
         catch (error) {
-            res.json({ status: "failed", token: "", message: "password not matched" });
+            res.json({
+                status: 400,
+                token: "",
+                message: "password not matched",
+            });
         }
     }),
     adminLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -196,22 +209,23 @@ const authController = {
                             admin: adminFile,
                             created: true,
                             token: jwt,
-                            status: "success",
+                            status: 200,
+                            message: "success! Admin LoggedIn",
                         });
                     }
                     else {
-                        return (res
-                            // .status(401)
-                            .json({
+                        return res.json({
+                            status: 400,
                             login_status: false,
                             token: "",
                             message: "invalid admin credentials",
-                        }));
+                        });
                     }
                 });
             }
             else {
                 return res.json({
+                    status: 400,
                     login_status: false,
                     token: "",
                     message: "invalid admin username or password",
@@ -219,39 +233,51 @@ const authController = {
             }
         }
         catch (error) {
-            console.log("backendloginerror", error);
+            res.json({
+                status: 400,
+                loginStatus: false,
+                message: `something went wrong: ${error}`,
+            });
         }
     }),
     usergLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { Email, Name } = req.body;
+            const { Email, Name, } = req.body;
             const userFile = yield userSchema_1.default.findOne({ Email: Email });
             if (userFile) {
                 const user_id = userFile._id.toString();
                 const jwt = (0, JwtAuth_1.generateJWT)(user_id);
                 res.json({
+                    status: 200,
                     user: userFile,
                     created: true,
                     token: jwt,
-                    status: "success",
+                    message: "success ! User LoggedIn",
                 });
             }
             else {
+                const defaultMobile = 1111111111;
                 const newGUserData = yield userSchema_1.default.create({
                     Email,
                     Name,
+                    Mobile: defaultMobile
                 });
                 const jwt = (0, JwtAuth_1.generateJWT)(newGUserData._id.toString());
                 res.json({
+                    status: 200,
                     user: newGUserData,
                     created: true,
                     token: jwt,
-                    status: "success",
+                    message: "success ! User LoggedIn",
                 });
             }
         }
         catch (error) {
-            res.json({ error, loginStatus: false, message: "login failed" });
+            res.json({
+                status: 400,
+                loginStatus: false,
+                message: `something went wrong: ${error}`,
+            });
         }
     }),
 };

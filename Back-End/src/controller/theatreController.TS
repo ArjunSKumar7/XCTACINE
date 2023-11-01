@@ -125,7 +125,6 @@ const theatrecontroller = {
 
   deleteScreen: async (req: Request, res: Response) => {
     try {
-      console.log("req", req.query);
       const screenId = req.query.screenId;
       const screenDeleteResponse = await Screen.deleteOne({ _id: screenId });
       res.json({ message: "screen deleted", screenDeleteResponse });
@@ -170,7 +169,6 @@ const theatrecontroller = {
 
   fetchDashInfo: async (req: Request, res: Response) => {
     try {
-      console.log("fetchDashInfo", req.params.id);
       const totalRevenue = await Booking.aggregate([
         { $match: { theatreId: req.params.id, bookingStatus: "confirmed" } },
         { $group: { _id: null, totalAmount: { $sum: "$totalAmount" } } },

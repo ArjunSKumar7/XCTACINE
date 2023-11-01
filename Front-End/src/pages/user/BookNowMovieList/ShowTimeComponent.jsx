@@ -10,15 +10,12 @@ import { toast } from "react-toastify";
 import {setBookingOperation,setSelectedDate} from "../../../redux/userReducer"
 
 function ShowMapComponent(props) {
-    console.log("props", props.theatreName);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const showDate = useSelector((store) => store.user.selectedDate);
   async function showTimeClickHandle(time) {
-    console.log("time", time);
     const data = JSON.parse(localStorage.getItem("bookingOperation"));
-    console.log("dataaaaa", data);
 
     data.theatreId=props.theatreId
     data.showDate = showDate;
@@ -33,7 +30,6 @@ function ShowMapComponent(props) {
     
     if (showDate !== "") {
       localStorage.setItem("bookingOperation", JSON.stringify(data));
-console.log("data1",data)
       dispatch(setBookingOperation(data));
       navigate("/seatbooking");
       dispatch(setSelectedDate(""));

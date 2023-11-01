@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import {theatreAppoval} from '../../api/admin/adminApi'
+import {toast} from 'react-toastify'
   import {
    
     Typography,
@@ -13,14 +14,34 @@ import {theatreAppoval} from '../../api/admin/adminApi'
    import {ToggleButton} from '../toggle'
 
 const AdminTheatreTable= (props) => {
-    console.log("props", props);
-
-
 const [isSwitchOn, setIsSwitchOn] = useState(props?.approvalStatus);
 const toggleHandle =async()=>{
   await theatreAppoval({id:props?.id,status:!isSwitchOn}).then((response)=>{
-    console.log("response",response)
-    setIsSwitchOn(response.approvalStatus)
+    if(response?.status===200){
+      setIsSwitchOn(response.approvalStatus)
+      toast.success(`${response?.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    }else{
+      toast.error(`${response?.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    }
+    
   }).catch((err)=>{
     console.log("err",err)
   })

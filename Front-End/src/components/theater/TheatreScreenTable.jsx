@@ -18,26 +18,21 @@ import { toast } from "react-toastify";
   
   
   function TheatreScreenTable(props) {
-    console.log("props", props);
     const dispatch = useDispatch()
 
     const screenList = useSelector(
       (store) => store.theatre.screenToList
   
     );
-    console.log("screenList", screenList);
 
-    console.log("props", props);
     const [open, setOpen] = useState(false);
 
    const theatreScreenListDelete = async() => {
     try{
-      console.log("theatrescreencalled")
       const updatedScreenList = screenList.filter((screen)=>screen._id!==props?.screenId)
       dispatch(setScreenToList(updatedScreenList))
     const resposne=await deleteTheatreScreen(props?.screenId)
 
-    console.log(resposne);
     if (resposne?.message === "screen deleted") {
       toast.success(`${resposne.message}`, {
         position: "top-right",
@@ -68,7 +63,6 @@ import { toast } from "react-toastify";
   }
     const handleOpen = () => setOpen(!open);
 
-      console.log("props", props);
     return (
       <tr key={props.screenId}>
       <td className={props.classes}>

@@ -20,7 +20,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
- import {ToggleButton} from '../toggle'
+import { ToggleButton } from "../toggle";
 const TABS = [
   {
     label: "All",
@@ -35,9 +35,9 @@ const TABS = [
     value: "unmonitored",
   },
 ];
- 
-const TABLE_HEAD = ['Theatre',"Status","Action"];
- 
+
+const TABLE_HEAD = ["Theatre", "Status", "Action"];
+
 // const TABLE_ROWS = ["Theatre",]
 //   {
 //     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
@@ -85,9 +85,8 @@ const TABLE_HEAD = ['Theatre',"Status","Action"];
 //     date: "04/10/21",
 //   },
 // ];
- 
+
 export function AdminTheatreList(props) {
-  console.log("prps",props.data)
   return (
     <Card className="h-full mt-16 rounded-none ">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -97,7 +96,7 @@ export function AdminTheatreList(props) {
               Registered Theatre List
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-             Approve/Dissapprove
+              Approve/Dissapprove
             </Typography>
           </div>
           {/* <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -119,12 +118,12 @@ export function AdminTheatreList(props) {
               ))}
             </TabsHeader>
           </Tabs> */}
-          <div className=" mb-8 w-full md:w-72 ml-auto">
+          {/* <div className=" mb-8 w-full md:w-72 ml-auto">
             <Input
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
             />
-          </div>
+          </div> */}
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
@@ -151,24 +150,28 @@ export function AdminTheatreList(props) {
             </tr>
           </thead>
           <tbody>
-            { console.log("prps",props?.data)}
-            {  console.log("Data prop type:", typeof props?.data)}
- 
-            
-            {props?.data ? (props?.data.map(
-              
-              ({ _id,Name, Email, approvalStatus }, index) => {
-                console.log("_id:", _id);
-                const isLast = index === props?.data.length- 1;
-                const classes = isLast
-                  ? "p-4" 
-                  : "p-4 border-b border-blue-gray-50";
- 
-                return (
-                 <AdminTheatreTable key={_id} id={_id} Name={Name} Email={Email}  classes={classes} isLast={isLast} approvalStatus={approvalStatus}/>
-                );
-              },
-            )):null}
+            {props?.data
+              ? props?.data.map(
+                  ({ _id, Name, Email, approvalStatus }, index) => {
+                    const isLast = index === props?.data.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
+
+                    return (
+                      <AdminTheatreTable
+                        key={_id}
+                        id={_id}
+                        Name={Name}
+                        Email={Email}
+                        classes={classes}
+                        isLast={isLast}
+                        approvalStatus={approvalStatus}
+                      />
+                    );
+                  }
+                )
+              : null}
           </tbody>
         </table>
       </CardBody>

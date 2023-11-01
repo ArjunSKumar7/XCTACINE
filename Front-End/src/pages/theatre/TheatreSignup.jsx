@@ -20,6 +20,7 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const TheatreSignup = () => {
   const dispatch = useDispatch();
@@ -54,32 +55,53 @@ const TheatreSignup = () => {
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
       formik.setField;
-      console.log("theatre values", values);
       const response = await signup("/auth/theatre/signup", values);
-      console.log("theatre response", response);
-      const theatreDetails = {
-        theatreName: response?.theatre?.Name,
-        theatreId: response?.theatre?._id,
-        theatreApprovalStatus: response?.theatre?.approvalStatus,
-        theatreLocation: response?.theatre?.Location,
-      };
-      dispatch(setTheatreDetails(theatreDetails));
-      dispatch(setTheatreToken(response?.token));
-      localStorage.setItem("theatreDetails", JSON.stringify(theatreDetails));
-      localStorage.setItem("theatreToken", response?.token);
-      navigate("/theatre/login");
+      if(response?.status===200){
+        toast.success(`${response?.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        const theatreDetails = {
+          theatreName: response?.theatre?.Name,
+          theatreId: response?.theatre?._id,
+          theatreApprovalStatus: response?.theatre?.approvalStatus,
+          theatreLocation: response?.theatre?.Location,
+        };
+        dispatch(setTheatreDetails(theatreDetails));
+        dispatch(setTheatreToken(response?.token));
+        localStorage.setItem("theatreDetails", JSON.stringify(theatreDetails));
+        localStorage.setItem("theatreToken", response?.token);
+        navigate("/theatre/login");
+      }
+      else{
+        toast.error(`${response?.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      
     },
   });
 
   useEffect(() => {
     async function fetchData() {
       const response = await fetchLocation();
-      console.log("theatre response", response);
       return response;
     }
 
     fetchData().then((data) => {
-      console.log("data", data?.locationList);
       dispatch(setLocationList(data?.locationList));
       setLocationData(data?.locationList);
     });

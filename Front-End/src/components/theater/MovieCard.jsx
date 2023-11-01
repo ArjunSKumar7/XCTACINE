@@ -17,16 +17,13 @@ export function MovieCard(props) {
   const navigate = useNavigate();
   const addMovie = props?.data;
   const existingMovieList = useSelector((store) => store.theatre.movieToList);
-  console.log("existingMovieList", existingMovieList);
   const theatreData = useSelector((store) => store.theatre.theatreDetails);
-  console.log("theatreDataObj", theatreData);
   async function handleAddMovie(addMovie) {
     const response = await addMovieData(
       "/theatre/addmovie",
       addMovie,
       theatreData
     );
-    console.log("response", response);
 
     // if (response?.message === "Movie already exists for this theatre.") {
     //   toast.success(`${response?.message}`, {
@@ -71,10 +68,8 @@ export function MovieCard(props) {
       navigate("/theatre/movielist");
     }
 
-    console.log("response", response);
   }
 
-  console.log("props", props);
   const moviepath = `https://image.tmdb.org/t/p/w500${props?.data?.poster_path}  `;
   return (
     <Card className="w-60 h-80 m-2 ">

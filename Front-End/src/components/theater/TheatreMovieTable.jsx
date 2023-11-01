@@ -19,12 +19,10 @@ import { toast } from "react-toastify";
   
   function TheatreMovieTable(props) {
     const theatreId = useSelector((store) => store.theatre.theatreDetails?.theatreId);
-    console.log("theatreDataObj", theatreId);
     const dispatch = useDispatch()
 
     const theatreMoviesList = useSelector((store)=>store.theatre.movieToList)
 
-    console.log("props", props);
     const [open, setOpen] = useState(false);
 
    const theatreMovieListDelete = async() => {
@@ -34,7 +32,6 @@ import { toast } from "react-toastify";
       
     const resposne=await deleteTheatreMovie(props.movieId,theatreId)
 
-    console.log(resposne);
    if(resposne.status===200){
     toast.success(`${resposne.message}`, {
       position: "top-right",
@@ -65,7 +62,6 @@ import { toast } from "react-toastify";
   }
     const handleOpen = () => setOpen(!open);
 
-      console.log("props", props);
     return (
       <tr key={props.movieId}>
       <td className={props.classes}>

@@ -92,26 +92,22 @@ const TABLE_ROWS = [
 export function TheatreMovieList() {
   //for getting theatreId from added movies
   const theatreData = useSelector((store) => store.theatre.theatreDetails);
-  console.log("theatreId", theatreData);
 
   const dispatch = useDispatch();
   // const [MovieToList, setMovieToList] = useState("");
   useEffect(() => {
     async function fetchData() {
       const response = await movieListDataFetch(theatreData?.theatreId);
-      console.log("response", response);
       return response;
     }
 
     fetchData().then((data) => {
-      console.log("data", data);
 
       dispatch(setMovieToList(data?.movieList));
     });
   }, []);
 
   const theatremovieslist = useSelector((store) => store.theatre.movieToList);
-  console.log("theatremovieslist", theatremovieslist);
 
   return (
       <Card className="h-full mt-16 rounded-none ">
@@ -173,7 +169,6 @@ export function TheatreMovieList() {
               </tr>
             </thead>
             <tbody>
-              {console.log("MovieToList", theatremovieslist)}
               {theatremovieslist
                 ? theatremovieslist.map(
                     (

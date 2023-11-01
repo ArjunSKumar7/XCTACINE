@@ -48,7 +48,6 @@ export function AddMovieForm() {
           import.meta.env.VITE_TMDB_API_KEY
         }`
       ).then((response)=>{
-        console.log("respinse",response)
         setMovieData(response?.data?.results)
 
       })

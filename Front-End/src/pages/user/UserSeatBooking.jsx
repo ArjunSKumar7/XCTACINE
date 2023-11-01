@@ -1,6 +1,5 @@
 
 import { UserNavBar } from "../../components/user/UserNavBar";
-import  TheatreScreen  from "../../components/user/TheatreScreen";
 import SeatColumn from "../../components/user/SeatColumn";
 import { Button } from "@material-tailwind/react";
 import { useSelector,useDispatch  } from "react-redux";
@@ -20,9 +19,7 @@ function UserSeatBooking() {
   const bookingOperation = useSelector((store)=>store.user.bookingOperation);
 
   const selectedSeats= useSelector((store)=>store.user.userSelectedSeats)
-  console.log("bookingOperation",selectedSeats);
   const ticketCount= useSelector((store)=>store.user.userSeatCount)
-  console.log("priorSeatcount", ticketCount)
 
 useEffect(()=>{
   async function fetchBookedSeats(){
@@ -36,18 +33,15 @@ const data={
 }
 
     const bookedSeats= await fetchBookedSeatsData(data);
-    console.log("bookedSeats",bookedSeats)
     return bookedSeats;
    
   }
   fetchBookedSeats().then((data)=>{
-    console.log("data",data?.bookedSeats)
     setBookedSeats(data?.bookedSeats)
   })
 
 },[])
 
-console.log("BookedSeats",BookedSeats)
 
 const row=bookingOperation?.screenRows;
 const col=bookingOperation?.screenCols;
@@ -56,7 +50,6 @@ const col=bookingOperation?.screenCols;
 const rowArray=Array.from({length:row},(_,index)=>index);
 const colArray=Array.from({length:col},(_,index)=>index);
 const seatNameArr = Array.from({ length: row }, (_, index) => index); //array to print the alphabets for rows
-console.log("rowArray",rowArray)
 
 const formattedPricePerTicket = bookingOperation?.ticketPrice?.toLocaleString("en-IN", {
   style: "currency",
@@ -73,7 +66,6 @@ function seatArrange(columns) {
   }
 }
 seatArrange(col)
-console.log(seatColumnArray );
   
 
 
@@ -85,7 +77,6 @@ const bookingSubmitHandler = () => {
     ticketCount:ticketCount
 
    }
-   console.log("bookingOperation",bookingdata)
    localStorage.setItem("bookingOperation",JSON.stringify(bookingdata))
    dispatch(setBookingOperation(bookingdata))
    navigate('/payment')
@@ -171,7 +162,6 @@ const bookingSubmitHandler = () => {
                   : null}
               </div>
               <div className="grid grid-flow-row">
-                {console.log("seatColumnArray",BookedSeats)}
                 {rowArray?.length > 0
                   ? rowArray?.map((item, rowIndex) => (
                       <SeatColumn

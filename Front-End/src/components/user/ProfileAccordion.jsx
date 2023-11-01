@@ -6,7 +6,6 @@ import {
 } from "@material-tailwind/react";
  
 export function ProfileAccordion(props) {
-  console.log("props", props);
   const [open, setOpen] = React.useState(1);
  
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
@@ -23,7 +22,10 @@ export function ProfileAccordion(props) {
          Upcoming Booked Shows
         </AccordionHeader>
         <AccordionBody className="pt-0 text-base font-normal">
-          {props?.upcomingBookings?.lenght>0?(props?.upcomingBookings?.map((booking,index) => (
+         
+            {props?.upcomingBookings?.length > 0 ? (props?.upcomingBookings?.map((booking, index) => (
+
+            
             <div key={index}>
                     <h3>{booking.movieName}</h3>
                     <h4>{"Theatre: "+booking.theaterName+","+"Date: "+booking.showDate}</h4>
@@ -33,7 +35,7 @@ export function ProfileAccordion(props) {
          
         </AccordionBody>
       </Accordion>
-      <Accordion open={open === 2} className="mb-2 rounded-lg border border-blue-gray-100 px-4">
+      {/* <Accordion open={open === 2} className="mb-2 rounded-lg border border-blue-gray-100 px-4">
         <AccordionHeader
           onClick={() => handleOpen(2)}
           className={`border-b-0 transition-colors ${
@@ -62,7 +64,7 @@ export function ProfileAccordion(props) {
           growing. We&apos;re constantly making mistakes. We&apos;re constantly trying to express
           ourselves and actualize our dreams.
         </AccordionBody>
-      </Accordion>
+      </Accordion> */}
     </>
   );
 }

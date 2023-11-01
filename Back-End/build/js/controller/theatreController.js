@@ -131,7 +131,6 @@ const theatrecontroller = {
     }),
     deleteScreen: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log("req", req.query);
             const screenId = req.query.screenId;
             const screenDeleteResponse = yield screenSchema_1.default.deleteOne({ _id: screenId });
             res.json({ message: "screen deleted", screenDeleteResponse });
@@ -174,7 +173,6 @@ const theatrecontroller = {
     }),
     fetchDashInfo: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log("fetchDashInfo", req.params.id);
             const totalRevenue = yield bookingSchema_1.default.aggregate([
                 { $match: { theatreId: req.params.id, bookingStatus: "confirmed" } },
                 { $group: { _id: null, totalAmount: { $sum: "$totalAmount" } } },

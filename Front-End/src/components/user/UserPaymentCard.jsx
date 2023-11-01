@@ -45,7 +45,6 @@ import {stripeGateWay,} from "../../api/user/userApi"
        };
        const response =await stripeGateWay(bookingData)
        //null
-       console.log("response",response)
        localStorage.setItem("stripeId", response?.paymentId);
        localStorage.setItem("bookingOperation",JSON.stringify(bookingData))
        localStorage.setItem("uniqueId",response?.uniqueId);
@@ -56,7 +55,6 @@ import {stripeGateWay,} from "../../api/user/userApi"
 // const stripe =await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
     },
     handleRazorpayPayment=async()=>{
-      console.log("razorpay")
       const bookingData={
         ...bookingDetails,
         gateway:"razorpay",

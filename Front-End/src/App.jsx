@@ -37,14 +37,11 @@
 
     const uniqueId = useSelector((store) => store.user?.uniqueId);
     const userToken = useSelector((state) => state.user.userToken);
-    console.log("userToken", userToken);
     const theatreToken = useSelector((state) => state.theatre.theatreToken);
 
     const adminToken = useSelector((state) => state.admin.adminToken);
     const theatredata = useSelector((state) => state.theatre.theatreDetails);
-    console.log("theatredata", theatredata);
 
-    console.log("theatredataxxx", theatredata);
     
 
     return (

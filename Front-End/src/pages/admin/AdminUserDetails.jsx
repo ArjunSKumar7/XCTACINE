@@ -10,9 +10,7 @@ const AdminUserDetails = () => {
 
   useEffect(() => {
     async function fetchData() {
-      // console.log("userdetailsfetch");
       const response = await userdetailsfetch();
-      // console.log("userdetailsfetchresponsepage", response);
       return response;
     }
     fetchData().then((data) => {
@@ -20,7 +18,6 @@ const AdminUserDetails = () => {
     });
   }, []);
 
-  console.log("userDetails", userDetails);
 
   return (
     <div>

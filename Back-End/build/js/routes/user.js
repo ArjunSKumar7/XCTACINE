@@ -11,7 +11,6 @@ router.get('/usermovielist', userController_1.default.moviesFetchUser);
 router.get("/findNumber", userController_1.default.findNumber);
 router.get("/moviename-search", userController_1.default.getMoviesBySearch);
 router.get("/fetchtheatrelocation", userController_1.default.getLocation);
-router.get("/fetchcolumnsandrows", userController_1.default.fetchcolumnsandrows);
 router.get("/moviepagedata", userController_1.default.moviepagedata);
 router.get("/fetchuserdata", userController_1.default.fetchUserData);
 router.get("/bookingmoviefetch", userController_1.default.fetchBookingMovie);

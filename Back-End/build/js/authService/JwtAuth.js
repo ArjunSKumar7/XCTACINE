@@ -25,7 +25,6 @@ exports.generateJWT = generateJWT;
 const verifyjwt = (token) => {
     if (keys_1.configKeys.JWT_SECRET_KEY) {
         const verifyjwtaaaa = jsonwebtoken_1.default.verify(token, keys_1.configKeys.JWT_SECRET_KEY);
-        console.log("verifyjwtaaaa", verifyjwtaaaa);
         return verifyjwtaaaa;
     }
 };

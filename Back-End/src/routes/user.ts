@@ -11,7 +11,6 @@ import {uploadProfilePic} from "../multer/multer"
     router.get("/findNumber",userController.findNumber)
     router.get("/moviename-search",userController.getMoviesBySearch)
     router.get("/fetchtheatrelocation",userController.getLocation)
-    router.get("/fetchcolumnsandrows",userController.fetchcolumnsandrows)
     router.get("/moviepagedata",userController.moviepagedata)
     router.get("/fetchuserdata",userController.fetchUserData)
     router.get("/bookingmoviefetch",userController.fetchBookingMovie)

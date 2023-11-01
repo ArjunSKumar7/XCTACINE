@@ -247,7 +247,6 @@ function NavList() {
 
 const userId=useSelector((store)=>store.user?.userId);
 
-console.log("userId",userId);
   const storedLocation = useSelector((store) => store.user.locationSelected);
 
   const searchUserMovies = async (e) => {
@@ -264,7 +263,6 @@ console.log("userId",userId);
       
     }
     fetchUserName(userId).then((name)=>{
-      console.log("name",name);
       setUserName(name);
     })
 
@@ -273,14 +271,11 @@ console.log("userId",userId);
   useEffect(() => {
     async function fetchData() {
       const response = await getLocation();
-      console.log("theatre response", response);
       return response;
     }
 
     fetchData().then((data) => {
-      console.log("data", data?.locationList);
       data?.locationList?.push("No Location Selected");
-      console.log("theatreLocatonarr", data?.locationList);
       setTheatreLocation(data?.locationList);
     });
   }, []);
@@ -381,14 +376,15 @@ export function UserNavBar() {
       <div className="relative mx-auto flex items-center text-blue-gray-900">
         <Typography
           as="a"
-          href="#"
+          href="/"
           className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
         >
           Xctacine
         </Typography>
         <img
+        
           src="https://res.cloudinary.com/dbsgcwkhd/image/upload/v1694432315/android-chrome-512x512_kj47v1.png"
-          alt="Your Logo"
+          alt="Xctacine"
           className="  mr-4 ml-2 cursor-pointer py-1.5 lg:w-12 lg:h-16  xl:w-12 xl:h-22 sm:w-9  h-9"
         />
         <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">

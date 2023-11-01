@@ -9,12 +9,10 @@ const admin_baseURL = axios.create({
     "Content-Type": "application/json", // Set the content type to JSON
   },
 });
-// console.log("baseURL",baseURL)
 
 admin_baseURL.interceptors.request.use(
   (config) => {
     const adminToken = localStorage.getItem("adminToken");
-    // console.log("adminAxios",adminToken)
     if (adminToken) {
       config.headers["Authorization"] = `Bearer ${adminToken}`;
     } else {

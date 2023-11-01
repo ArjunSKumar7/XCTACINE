@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 export function UserHomeCard(props) {
-  console.log("props", props);
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   const handleCardClick = (index) => {

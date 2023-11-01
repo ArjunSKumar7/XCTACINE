@@ -10,11 +10,9 @@ import { loadStripe } from '@stripe/stripe-js';
 function UserPaymentSuccess() {
   const navigate=useNavigate()
   const { uuId } = useParams()
-  console.log("payment",uuId)
     const bookingData= useSelector((store)=>store.user.bookingOperation);
     const paymentId= useSelector((store)=>store.user.stripeId)
    
-    console.log("bookingdata",paymentId)
 
     async function confirmPayment(){
         const booking ={
@@ -35,7 +33,6 @@ function UserPaymentSuccess() {
 
       useEffect(()=>{
         confirmPayment().then((response)=>{
-          console.log("response",response)
           if(response?.status==200){
             toast.success(`${response?.message}`, {
                 position: "top-right",
