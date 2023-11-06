@@ -42,6 +42,24 @@ export function AlertBox(props) {
               <span>Confirm</span>
             </Button>
           )}
+          {props?.adminBannerListDelete && (
+            <Button
+              variant="gradient"
+              color="green"
+              onClick={props?.adminBannerListDelete}
+            >
+              <span>Confirm</span>
+            </Button>
+          )}
+          {props?.adminLocationListDelete && (
+            <Button
+              variant="gradient"
+              color="green"
+              onClick={props?.adminLocationListDelete}
+            >
+              <span>Confirm</span>
+            </Button>
+          )}
         </DialogFooter>
       </Dialog>
     </>

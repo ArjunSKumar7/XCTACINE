@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BarChart,
   Bar,
@@ -9,230 +8,84 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-
-const data = [
-  {
-    name: 'Jan',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Feb',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Mar',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Apr',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'May',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Jun',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Jul',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    name: 'Aug',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    name: 'Sep',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    name: 'Oct',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-
-  },
-  {
-    name: 'Nov',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    name: 'Dec',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  }
-];
-
-const data2 = [
-    {
-      name: 'Jan',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Feb',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Mar',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Apr',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'May',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Jun',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Jul',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: 'Aug',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: 'Sep',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: 'Oct',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-  
-    },
-    {
-      name: 'Nov',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: 'Dec',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    }
-  ];
+import { useState, useEffect } from 'react';
+import { adminGraphInfo } from '../../api/admin/adminApi';
 
 function AdminDashGraph() {
+  const [UsergraphData, setUserGraphData] = useState([]);
+  const [TheatregraphData, setTheatreGraphData] = useState([]);
+
+  useEffect(() => {
+    async function fetchInfo() {
+      const data = await adminGraphInfo();
+      setUserGraphData(data?.userData[0].result);
+      setTheatreGraphData(data?.theatreData[0].result);
+    }
+    fetchInfo();
+  }, [setUserGraphData,setTheatreGraphData]);
+
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+
   return (
     <div>
-    <div>
-     
-    <div className='mt-[4rem]'>
-    <h1 className='flex item-center justify-center text-orange-300'>User graph </h1>
-    <ResponsiveContainer  height={300}>
-      
-      <BarChart
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="pv" fill="#8884d8" />
-        <Bar dataKey="uv" fill="#82ca9d" />
-      </BarChart>
-    </ResponsiveContainer>
+      <div>
+        <div className='mt-[4rem]'>
+          <h1 className='flex item-center justify-center text-orange-300'>User graph</h1>
+          <ResponsiveContainer height={300}>
+            <BarChart
+              data={monthNames.map((monthName, index) => ({
+                name: monthName,
+                UserCounts: UsergraphData.find(item => item.month === index + 1)?.data[0].usercount || 0,
+              }))}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="UserCounts" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div>
+        <div className='mt-[4rem]'>
+          <h1 className='flex item-center justify-center text-orange-300'>Theatre graph</h1>
+          <ResponsiveContainer height={300}>
+            <BarChart
+               data={monthNames.map((monthName, index) => ({
+                name: monthName,
+                TheatreCounts: TheatregraphData.find(item => item.month === index + 1)?.data[0].theatrecount || 0,
+              }))}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="TheatreCounts" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
-    </div>
-
-
-    <div>
-     
-     <div className='mt-[4rem]'>
-     <h1 className='flex item-center justify-center text-orange-300'>Theatre graph </h1>
-     <ResponsiveContainer  height={300}>
-       
-       <BarChart
-         data={data2}
-         margin={{
-           top: 5,
-           right: 30,
-           left: 20,
-           bottom: 5,
-         }}
-       >
-         <CartesianGrid strokeDasharray="3 3" />
-         <XAxis dataKey="name" />
-         <YAxis />
-         <Tooltip />
-         <Legend />
-         <Bar dataKey="pv" fill="#8884d8" />
-         <Bar dataKey="uv" fill="#82ca9d" />
-       </BarChart>
-     </ResponsiveContainer>
-     </div>
-     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-  )
+  );
 }
 
-export default AdminDashGraph
+export default AdminDashGraph;

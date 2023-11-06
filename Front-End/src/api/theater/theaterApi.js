@@ -113,3 +113,13 @@ export const fetchDashInfo = async (theatreId) => {
     console.log("fetchDashInfo api error:",error)
   }
 }
+
+export const theatreGraphInfo =async (theatreId)=>{
+  try {
+    const response = await theatre_baseURL.get(`/theatre/fetchGraphInfo?theatreId=${theatreId}`)
+    return response?.data
+    
+  } catch (error) {
+    console.log(`fetchDashInfo api error:${error}`)
+  }
+}

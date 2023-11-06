@@ -30,7 +30,9 @@ const theatreSchema = new mongoose_1.Schema({
     approvalStatus: {
         type: Boolean,
         default: false
-    }
+    },
+}, {
+    timestamps: true,
 });
 const Theatre = (0, mongoose_1.model)('TheatreSchema', theatreSchema);
 exports.default = Theatre;

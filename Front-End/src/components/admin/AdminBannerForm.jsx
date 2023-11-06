@@ -16,8 +16,13 @@ import { addBannerData } from "../../api/admin/adminApi";
 import * as Yup from "yup";
 import { useState } from "react";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {setBannerToList} from "../../redux/adminReducer"
 function AdminBannerForm(props) {
+  const dispatch = useDispatch();
+  const navigate =useNavigate()
+  const existingBanners = useSelector((store) => store.admin.bannerToList);
   const [BannerImage, setBannerImage] = useState(null);
 
   // const bannerSchema = Yup.object().shape({
@@ -34,7 +39,7 @@ function AdminBannerForm(props) {
     },
     onSubmit: async (values) => {
       const response = await addBannerData(values, BannerImage);
-
+      console.log("response", response);
       if (response?.status === 200) {
         toast.success(`${response?.message}`, {
           position: "top-right",
@@ -59,8 +64,13 @@ function AdminBannerForm(props) {
         });
       }
       props?.handleAddBannerOpen();
+      const updatedBannerList = [...existingBanners, response?.response];
+      dispatch(setBannerToList(updatedBannerList));
+      navigate("/admin/bannerlist");
     },
   });
+  const locationList = useSelector((store) => store.admin.locationToList);
+  console.log(locationList);
   const handleImageSubmit = (e) => {
     setBannerImage(e.target.files[0]);
   };

@@ -9,6 +9,8 @@ const checkusertoken = () => {
 };
 const initialState = {
   adminToken: checkusertoken(),
+  bannerToList: [],
+  locationToList: [],
 };
 
 const adminSlice = createSlice({
@@ -17,15 +19,28 @@ const adminSlice = createSlice({
   reducers: {
     setAdminToken: (state, action) => {
       state.adminToken = action.payload;
-
       localStorage.setItem("adminToken", action.token);
     },
     adminLogout: (state) => {
       state.adminToken = null;
       localStorage.removeItem("adminToken");
     },
+    setBannerToList: (state, action) => {
+      state.bannerToList = action.payload;
+    },
+
+    setLocationToList: (state, action) => {
+      state.locationToList = action.payload;
+    },
+
   },
+
 });
 
-export const { setAdminToken, adminLogout } = adminSlice.actions;
+export const {
+  setAdminToken,
+  adminLogout,
+  setBannerToList,
+  setLocationToList,
+} = adminSlice.actions;
 export default adminSlice.reducer;

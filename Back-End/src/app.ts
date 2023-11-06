@@ -36,6 +36,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// Custom error handling middleware
+
+
 
 db.connect();
 

@@ -5,8 +5,9 @@ export const signup = async (endpoint, values) => {
     const response = await admin_baseURL .post(endpoint, values);
     return response?.data;
   } catch (error) {
-    console.error("Signup error:", error);
-    throw error;
+    const err = new Error("Signup error");
+    err.status = 500;
+    throw err;
   }
 };
 
@@ -90,5 +91,70 @@ export const addBannerData = async (data,image) => {
   } catch (error) {
     console.log("addBannerData api error:", error);
   
+  }
+}
+
+export const getBannerData = async () => {
+  try {
+    const response = await admin_baseURL.get("/admin/fetchbanner");
+    return response?.data
+  } catch (error) {
+    console.log("getBannerData api error:", error);
+  }
+}
+
+export const deleteBanner= async (data) => {
+  try {
+    const response = await admin_baseURL.delete(`/admin/deletebanner?bannerId=${data}`);
+    return response?.data
+  } catch (error) {
+    console.log("deleteBanner api error:", error);
+  }
+}
+export const bannerStateChange = async (id,state) => {
+  console.log(id,state)
+  try {
+    const response = await admin_baseURL.patch("/admin/bannerstatechange",id,state);
+    return response?.data
+  } catch (error) {
+    console.log("bannerStateChange api error:", error);
+  }
+}
+
+export const fetchLocations = async () => {
+  try {
+    const response = await admin_baseURL.get("/admin/fetchlocation");
+    return response?.data
+  } catch (error) {
+    console.log("fetchLocations api error:", error);
+  }
+}
+
+export const deleteLocation = async (id) => {
+  try {
+    const response = await admin_baseURL.delete(`/admin/deletelocation?locationId=${id}`);
+    return response?.data
+  } catch (error) {
+    console.log("deleteLocation api error:", error);
+  }
+}
+
+
+export const adminGraphInfo = async () => {
+  try {
+    const response = await admin_baseURL.get("/admin/fetchgraphinfo");
+    return response?.data
+  } catch (error) {
+    console.log("adminGraphInfo api error:", error);
+  }
+}
+
+export const fetchDashBoxInfo = async()=>{
+  try {
+    const response =await admin_baseURL.get("/admin/fetchdashboxinfo")
+    return response?.data
+
+  } catch (error) {
+    console.log("adminfetchDashBoxInfo api error:", error);
   }
 }

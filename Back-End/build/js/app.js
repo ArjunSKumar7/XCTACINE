@@ -31,6 +31,7 @@ app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
+// Custom error handling middleware
 database_1.default.connect();
 cloudinary_1.v2.config({
     cloud_name: 'xctacine',

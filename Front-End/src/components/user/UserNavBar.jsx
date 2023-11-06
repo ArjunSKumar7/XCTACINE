@@ -7,6 +7,7 @@ import {
   userLogout,
   setSearchedMovie,
   setLocationSelected,
+  setProfiePic,
 } from "../../redux/userReducer";
 import { getMoviesBySearch, getLocation,fetchUserData } from "../../api/user/userApi";
 import {
@@ -42,6 +43,7 @@ import {
 // profile menu component
 
 function ProfileMenu() {
+  const profilePic=useSelector((store)=>store.user.profilePic)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const navigate = useNavigate();
@@ -95,7 +97,7 @@ function ProfileMenu() {
             size="sm"
             alt="tania andrew"
             className="border border-gray-900 p-0.5"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            src={profilePic ?(profilePic):"https://res.cloudinary.com/xctacine/image/upload/v1698833898/avatar_image_mjvvgs.png"}
           />
           <ChevronDownIcon
             strokeWidth={2.5}
@@ -259,12 +261,12 @@ const userId=useSelector((store)=>store.user?.userId);
   useEffect(()=>{
     async function fetchUserName(){
       const user=await fetchUserData(userId);
-      return user?.userData?.Name
+      setUserName(user?.userData?.Name);
+      dispatch(setProfiePic(user?.userData?.ProfilePic))
+      
       
     }
-    fetchUserName(userId).then((name)=>{
-      setUserName(name);
-    })
+    fetchUserName(userId)
 
   },[userId])
 

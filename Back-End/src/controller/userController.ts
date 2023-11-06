@@ -293,11 +293,14 @@ const userController = {
             error,
           });
         }
+      }else{
+        res.json({ status:400, message: "Payment failed" });
       }
     } catch (error) {
       res.json({ message: "createBooking backend error:", error });
     }
   },
+ 
 
   editProfile: async (req: Request, res: Response) => {
     try {
@@ -370,7 +373,7 @@ const userController = {
 
   fetchBanners: async (req: Request, res: Response) => {
     try {
-      const response = await Banner.find({});
+      const response = await Banner.find({bannerState: true});
 
       res.json({ response });
     } catch (error) {

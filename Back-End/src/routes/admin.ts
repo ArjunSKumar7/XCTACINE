@@ -12,6 +12,13 @@ import { uploadBannerImage } from '../multer/multer'
     router.put("/userlist/approval",admincontroller.userApproval)
     router.post("/addlocation",admincontroller.addLocation)
     router.post("/addbanner",uploadBannerImage,admincontroller.addBanner)
+    router.get("/fetchbanner",admincontroller.fetchBanner)
+    router.delete("/deletebanner",admincontroller.deleteBanner)
+    router.patch("/bannerstatechange",admincontroller.bannerStateChange)
+    router.get("/fetchlocation",admincontroller.fetchLocation)
+    router.delete("/deletelocation",admincontroller.deleteLocation)
+    router.get("/fetchgraphinfo",admincontroller.adminGraphInfo)
+    router.get("/fetchdashboxinfo",admincontroller.fetchdashboxinfo)
 
 
 export default router

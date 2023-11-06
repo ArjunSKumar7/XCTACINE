@@ -1,8 +1,14 @@
 import { Input, Card, Typography, Button } from "@material-tailwind/react";
 import { Field, useFormik } from "formik";
 import * as Yup from "yup";
-import { addLocation } from "../../api/admin/adminApi";
+import { addLocation,fetchLocations } from "../../api/admin/adminApi";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useSelector,useDispatch } from "react-redux";
+import{setLocationToList}from "../../redux/adminReducer"
+
+// import AdminLocationTable from "./AdminLocationTable";
+
 
 const TABLE_HEAD = ["Name", "Job", "Employed", ""];
 
@@ -35,6 +41,8 @@ const TABLE_ROWS = [
 ];
 
 function AdminLocationAdd() {
+
+  const dispatch = useDispatch();
   const LocationSchema = Yup.object().shape({
     LocationField: Yup.string()
       .required("Required")
@@ -75,8 +83,23 @@ function AdminLocationAdd() {
       }
     },
   });
+  
+  useEffect(() => {
+    
+    async function fetchData() {
+      const response = await fetchLocations();
+      return response;
+    }
+    fetchData().then((data) => {
+      console.log(data);
+      dispatch(setLocationToList(data?.locationData));      
+    });
+  },[dispatch])
+  const locationList = useSelector((store) => store.admin.locationToList);
+  console.log(locationList);
 
   return (
+
     <div className="ms-[19.9rem] w-[calc(98vw-20rem)] h-auto">
       <form
         className="w-72 mt-32 ml-6 rounded-none flex gap-2 "
@@ -93,70 +116,7 @@ function AdminLocationAdd() {
       </form>
 
       {/* <Card className=" mt-12 overflow-auto">
-        <table className="w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
-                  >
-                    {head}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {TABLE_ROWS.map(({ name, job, date }, index) => (
-              <tr key={name} className="even:bg-blue-gray-50/50">
-                <td className="p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {name}
-                  </Typography>
-                </td>
-                <td className="p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {job}
-                  </Typography>
-                </td>
-                <td className="p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {date}
-                  </Typography>
-                </td>
-                <td className="p-4">
-                  <Typography
-                    as="a"
-                    href="#"
-                    variant="small"
-                    color="blue-gray"
-                    className="font-medium"
-                  >
-                    Edit
-                  </Typography>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+       <AdminLocationTable locationList={locationList}/>
       </Card> */}
     </div>
   );

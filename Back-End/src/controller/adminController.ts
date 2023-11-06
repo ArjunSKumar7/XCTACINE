@@ -2,6 +2,7 @@ import User from "../model/userSchema";
 import Theatre from "../model/theaterSchema";
 import Location from "../model/locationSchema";
 import Banner from "../model/bannerSchema";
+import Booking from "../model/bookingSchema";
 
 import { Request, Response } from "express";
 
@@ -127,6 +128,186 @@ const admincontroller = {
       })
     }
   },
+
+  fetchBanner: async (req: Request, res: Response) => {
+    try {
+      const bannerData = await Banner.find();
+      res.json({bannerData });
+    } catch (err) {
+      res.json({
+        status: 500,
+        message: "fetchBanner backend error!"+err,
+        
+      })
+    }
+  },
+
+  deleteBanner: async (req: Request, res: Response) => {
+    try {
+      const bannerId = req.query.bannerId;
+      const bannerDeleteResponse = await Banner.deleteOne({ _id: bannerId });
+      res.json({ status: 200, message: "Banner deleted", bannerDeleteResponse });
+    } catch (err) {
+      res.json({ status: 500, message: `deleteBanner backend error:${err}`});
+    }
+  },
+  bannerStateChange: async (req: Request, res: Response) => {
+    try {
+      const bannerState=req.body.state
+      const response= await Banner.updateOne({_id:req.body.id},{$set:{bannerState:bannerState}}).then((response)=>{
+        if(response.modifiedCount>0){
+        res.json({ status: 200, message: "Banner state changed",bannerState: bannerState});
+        }else{
+          res.json({ status: 400, message: "Banner state not changed"});
+        }
+      });
+     
+      
+    } catch (error) {
+      res.json({ status: 500, message: `bannerStateChange backend error:${error}`});
+    }
+  },
+  fetchLocation: async (req: Request, res: Response) => {
+    try {
+      const locationData = await Location.find({});
+      res.json({ locationData });
+    } catch (err) {
+      res.json({ status: 500, message: `fetchLocation backend error:${err}`});
+    }
+  },
+
+  deleteLocation: async (req: Request, res: Response) => {
+    try {
+      const response=await Location.deleteOne({_id:req.query.id})
+    } catch (error) {
+      
+    }
+  },
+
+  adminGraphInfo: async (req: Request, res: Response) => {
+    try {
+      const response1 = await Booking.aggregate([
+         
+        {
+          $match: {
+            $or: [{ bookingStatus: "confirmed" }, { bookingStatus: "cancelled" }]
+          }
+        },
+        {
+          $project: {
+            month: { $month: '$bookedDate' }, // Extract the month from bookedDate
+            userId: 1,
+          },
+        },
+        {
+          $group: {
+            _id: {
+              month: "$month",
+            },
+            userCount: {
+              $addToSet: "$userId",
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            month: "$_id.month",
+            data: [{ usercount: { $size: "$userCount" } }]
+           
+            },
+           
+        },
+        {
+          $sort: {
+            month: 1
+          }
+        },
+        {
+          $group:{
+            _id: null,
+            result: { $push: "$$ROOT" }
+          }
+        },
+        {
+          $project:{
+            _id: 0,
+            result: 1,
+          }
+        }
+
+      ]);
+      const response2 = await Theatre.aggregate([
+         
+       
+        {
+          $group: {
+            _id: {
+              month: { $month: "$createdAt" },
+            },
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+      month: "$_id.month",
+      data: [{ theatrecount: "$count" }],
+            },
+           
+        },
+       
+        {
+          $group:{
+            _id: null,
+            result: { $push: "$$ROOT" },
+          }
+        },
+        {
+          $project:{
+            _id: 0,
+            result: 1,
+          }
+        }
+
+      ]);
+      // const resultArr=response1
+    
+      // // console.log('response aggregation chart data', response);
+      // const result = Array.from({ length: 12 }, (_, index) => {
+      //   const monthData = response1.find(item => item.month === (index + 1));
+      //   return monthData ? monthData : { data: null, month: index + 1 };
+      // })
+      // .map((item,index) => ({
+      //   data: item.data,
+      //   month: item.data ? item.month : index+1
+      // }));
+  
+  
+  
+  
+  
+      res.json({status:200,userData:response1,theatreData:response2})
+    
+    } catch (error) {
+      res.json({ status: 500, message: `adminGraphInfo backend error:${error}`});
+    }
+  },
+
+  fetchdashboxinfo:async (req: Request, res: Response) => {
+    try {
+      const usersCount= await User.countDocuments({})
+      const theatresCount =await Theatre.countDocuments({})
+      res.json({status:200,usersCount,theatresCount})
+      
+    } catch (error) {
+      res.json({ status: 500, message: `fetchdashboxinfo backend error:${error}`});
+    }
+
+  },
+
+
+
 };
 
 export default admincontroller;

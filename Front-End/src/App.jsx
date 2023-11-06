@@ -3,8 +3,6 @@
   import { useSelector } from "react-redux";
   import { ToastContainer } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
-  import { useState } from "react";
-  // import {useNavigate} from 'react-router-dom';
   //*********************************User Pages***********************************************/
   import UserHome from "../src/pages/user/UserHome";
   import { LoginForm } from "./pages/user/UserLogin";
@@ -14,6 +12,7 @@
   import UserProfilePage from "./pages/user/UserProfilePage";
   import UserPaymentPage from "./pages/user/UserPaymentPage"
   import UserPaymentSuccess from "./pages/user/UserPaymentSuccess";
+  import UserPaymentFailed from "./pages/user/UserPaymentFailed"
   import GuestHome from "./pages/user/GuestHome";
 
   //*******************************Theatre Pages*******************************/
@@ -30,8 +29,7 @@
   import AdminUserDetails from "./pages/admin/AdminUserDetails";
   import AdminTheatreDetails from "./pages/admin/AdminTheatreDetails";
   import AdminAddLocation from "./pages/admin/AdminAddLocation";
-  import AdminAddBanner from "./pages/admin/AdminAddBanner";
-
+import AdminBannerDetails from "./pages/admin/AdminBannerDetails"
 
   function App() {
 
@@ -96,6 +94,13 @@
             <Route
               path={`/stripe/payment/success/${uniqueId}`}
               element={userToken ? <UserPaymentSuccess /> : <LoginForm />}
+            />
+          </Routes>
+
+          <Routes>
+            <Route
+              path={`/stripe/payment/cancel/${uniqueId}`}
+              element={userToken ? <UserPaymentFailed /> : <LoginForm />}
             />
           </Routes>
 
@@ -167,6 +172,12 @@
             <Route
               path="/admin/theatrelist"
               element={adminToken ? <AdminTheatreDetails /> : <AdminLogin />}
+            />
+          </Routes>
+          <Routes>
+            <Route
+              path="/admin/bannerlist"
+              element={adminToken ? <AdminBannerDetails /> : <AdminLogin />}
             />
           </Routes>
 

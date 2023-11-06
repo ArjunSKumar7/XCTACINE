@@ -197,6 +197,72 @@ const theatrecontroller = {
       res.json({ message: "fetchDashInfo backend error:", error });
     }
   },
+
+  fetchGraphInfo: async (req: Request, res: Response) => {
+    try {
+      const response = await Booking.aggregate([
+         {$match:{theatreId:req.query.theatreId}},
+        {
+          $match: {
+            $or: [{ bookingStatus: "confirmed" }, { bookingStatus: "cancelled" }]
+          }
+        },
+        {
+          $group: {
+            _id: {
+              month: { $month:"$createdAt"},
+              status: "$bookingStatus"
+            },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $group: {
+            _id: { month: "$_id.month" },
+            data: {
+              $push: { status: "$_id.status", count: "$count" }
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            month:{ $toInt: "$_id.month" },
+             data: 1
+           
+            },
+           
+        },
+        {
+          $sort: {
+            month: 1
+          }
+        }
+      ]);
+    
+      // console.log('response aggregation chart data', response);
+      const result = Array.from({ length: 12 }, (_, index) => {
+        const monthData = response.find(item => item.month === (index + 1));
+        return monthData ? monthData : { data: null, month: index + 1 };
+      })
+      // .map((item,index) => ({
+      //   data: item.data,
+      //   month: item.data ? item.month : index+1
+      // }));
+  
+  
+  
+  
+  
+      res.json({status:200,response})
+    
+    } catch (error) {
+      res.json({ status: 500, message: `adminGraphInfo backend error:${error}`});
+    }
+  }
+
+
+
 };
 
 export default theatrecontroller;

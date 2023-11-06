@@ -1,28 +1,21 @@
-import { ShoppingBagIcon,UserGroupIcon,FilmIcon } from "@heroicons/react/24/solid";
+import { ShoppingBagIcon,UserGroupIcon,} from "@heroicons/react/24/solid";
 // import {useSelector} from "react-redux"
-// import { useEffect,useState } from "react"
-// import { fetchDashInfo } from "../../api/theater/theaterApi";
+import { useEffect,useState } from "react"
+import { fetchDashBoxInfo } from "../../api/admin/adminApi";
 function AdminDashBox() {
-//   const theatreData = useSelector((store) => store.theatre.theatreDetails);
-//   const[dashInfo,setDashInfo] = useState({})
-//   console.log("theatreData", theatreData);
-//   // console.log("props", props?.data?.theatreApprovalStatus);
-//   useEffect(() => {
-//     async function fetchInfo(){
-//       const data =await fetchDashInfo(theatreData?.theatreId);
-//       return data
-//     }
+  const[dashInfo,setDashInfo] = useState({})
+  useEffect(() => {
+    async function fetchInfo(){
+      const data =await fetchDashBoxInfo();
+     console.log(data)
+     setDashInfo(data)
+    }
 
-//     fetchInfo(theatreData?.theatreId).then((data)=>{
-//       console.log("data",data)
-//       setDashInfo(data?.dashInfo)
+    fetchInfo()
+  },[])
 
-//     })
-//   },[theatreData?.theatreId])
-
-//   const totalRevenue = dashInfo?.totalRevenue?.[0]?.totalAmount || 0;
-//   const totalUsers = dashInfo?.totalUsers?.[0]?.totalUsers || 0;
-//   const totalBookings =dashInfo.totalBookings || 0;
+  const totalUsers = dashInfo?.usersCount|| 0;
+  const totalTheatres = dashInfo?.theatresCount|| 0;
   return (
     <div>
       <span  className="ml-96 p-10  text-2xl font-semibold text-red-900" >Admin Dashboard</span>
@@ -33,14 +26,11 @@ function AdminDashBox() {
           </div>
           <div className="pl-6">
             <span className="text-sm text-gray-500 font-light ">
-              Total Sales
+              Total Users
             </span>
             <div className="flex items-center">
               <strong className="text-xl text-gray-700 font-semibold">
-              {/* {totalRevenue.toLocaleString("en-IN", {
-          style: "currency",
-          currency: "INR",
-        })} */}
+              {totalUsers}
               </strong>
             </div>
           </div>
@@ -51,45 +41,16 @@ function AdminDashBox() {
           </div>
           <div className="pl-6">
             <span className="text-sm text-gray-500 font-light ">
-              Total Customers
+              Total Theatres
             </span>
             <div className="flex items-center">
               <strong  className="text-xl text-gray-700 font-semibold">
-              {/* {totalUsers} */}
+              {totalTheatres}
               </strong>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-sm p-5 m-4 flex-1 border border-gray-200 flex items-center">
-          <div className="rounded-full flex items-center justify-center bg-light-green-600 h-12 w-12">
-            <FilmIcon className="h-6 w-6 rounded-full" />
-          </div>
-          <div className="pl-6">
-            <span className="text-sm text-gray-500 font-light ">
-              Total No.of Bookings
-            </span>
-            <div className="flex items-center">
-              <strong className="text-xl text-gray-700 font-semibold">
-              {/* {totalBookings} */}
-              </strong>
-            </div>
-          </div>
-        </div>
-        {/* <div className="bg-white rounded-sm p-5 m-4 flex-1 border border-gray-200 flex items-center">
-          <div className="rounded-full flex items-center justify-center bg-light-blue-400 h-12 w-12">
-            <ShoppingBagIcon className="h-6 w-6 rounded-full" />
-          </div>
-          <div className="pl-6">
-            <span className="text-sm text-gray-500 font-light ">
-              Total Sales
-            </span>
-            <div className="flex items-center">
-              <strong className="text-xl text-gray-700 font-semibold">
-                12,000
-              </strong>
-            </div>
-          </div>
-        </div> */}
+       
       </div>
     </div>
   );

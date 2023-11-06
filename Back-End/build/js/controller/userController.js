@@ -318,6 +318,9 @@ const userController = {
                     });
                 }
             }
+            else {
+                res.json({ status: 400, message: "Payment failed" });
+            }
         }
         catch (error) {
             res.json({ message: "createBooking backend error:", error });
@@ -390,7 +393,7 @@ const userController = {
     }),
     fetchBanners: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const response = yield bannerSchema_1.default.find({});
+            const response = yield bannerSchema_1.default.find({ bannerState: true });
             res.json({ response });
         }
         catch (error) {

@@ -142,6 +142,18 @@ export const PaymentStatusReturn = async (bookingData) => {
   }
 };
 
+export const PaymentStatusReturnCancel = async (bookingData) => {
+  try {
+    const response = await user_baseURL.post(
+      `/user/booking/confirmation`,
+      bookingData
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("PaymentStatusReturnCancel api error:", error);
+  }
+}
+
 export const editProfile = async (values, userId) => {
   try {
     const response = await user_baseURL.put(

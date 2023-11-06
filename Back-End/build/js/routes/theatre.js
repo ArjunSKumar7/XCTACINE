@@ -15,4 +15,5 @@ router.get("/fetchlocation", theatreController_1.default.fetchLocation);
 router.post("/moviescreenallocation", theatreController_1.default.moviescreenallocation);
 router.delete("/deletescreen", theatreController_1.default.deleteScreen);
 router.get("/fetchdashinfo/:id", theatreController_1.default.fetchDashInfo);
+router.get("/fetchGraphInfo", theatreController_1.default.fetchGraphInfo);
 exports.default = router;
