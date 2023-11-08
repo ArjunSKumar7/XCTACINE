@@ -38,7 +38,7 @@ function AdminDashGraph() {
             <BarChart
               data={monthNames.map((monthName, index) => ({
                 name: monthName,
-                UserCounts: UsergraphData.find(item => item.month === index + 1)?.data[0].usercount || 0,
+                UserCounts:UsergraphData?( UsergraphData?.find(item => item.month === index + 1)?.data[0].usercount || 0):0,
               }))}
               margin={{
                 top: 5,
@@ -65,7 +65,7 @@ function AdminDashGraph() {
             <BarChart
                data={monthNames.map((monthName, index) => ({
                 name: monthName,
-                TheatreCounts: TheatregraphData.find(item => item.month === index + 1)?.data[0].theatrecount || 0,
+                TheatreCounts: TheatregraphData?(TheatregraphData.find(item => item.month === index + 1)?.data[0].theatrecount || 0):0,
               }))}
               margin={{
                 top: 5,

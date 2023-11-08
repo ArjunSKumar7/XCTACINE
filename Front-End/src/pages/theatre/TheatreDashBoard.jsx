@@ -24,9 +24,9 @@ const TheatreDashBoard = (props) => {
         <div className="w-5/6">
         <TheatreDashboardGraph /> 
         </div>
-        <div className="w-3/6"> 
+        {/* <div className="w-3/6"> 
         <TheatreDashboardPieChart/>
-        </div>
+        </div> */}
 
 
 </div>
