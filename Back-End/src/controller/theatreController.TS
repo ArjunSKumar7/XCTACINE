@@ -2,6 +2,7 @@ import { Request, Response, response } from "express";
 import Movie from "../model/movieSchema";
 import Screen from "../model/screenSchema";
 import Location from "../model/locationSchema";
+import Theatre from "../model/theaterSchema";
 import { ObjectId } from "mongoose";
 
 import mongoose from "mongoose";
@@ -146,17 +147,20 @@ const theatrecontroller = {
   moviescreenallocation: async (req: Request, res: Response) => {
     try {
       const data = req.body;
+      console.log(data);
       const movie = await Movie.findOne({ movieId: data.movieId });
+      console.log(movie?.movieTitle);
       const response = await Screen.updateOne(
         { _id: data.screenId },
         {
           $set: {
             movieId: data.movieId,
             movieTitle: movie?.movieTitle,
-            selectedDates: data.selectedDates,
+            // selectedDates: data.selectedDates,
           },
         }
       );
+      console.log("backendres",response);
       if (response.modifiedCount > 0) {
         res.json({ message: "moviescreenallocation successfully!", response });
       } else {
@@ -182,17 +186,7 @@ const theatrecontroller = {
       const totalBookings = await Booking.countDocuments({
         theatreId: req.params.id,
       });
-
-
-
-
-
-
-
-
-
-      
-      res.json({ dashInfo: { totalRevenue, totalUsers, totalBookings } });
+ res.json({ dashInfo: { totalRevenue, totalUsers, totalBookings } });
     } catch (error) {
       res.json({ message: "fetchDashInfo backend error:", error });
     }
@@ -257,9 +251,44 @@ const theatrecontroller = {
       res.json({status:200,response})
     
     } catch (error) {
-      res.json({ status: 500, message: `adminGraphInfo backend error:${error}`});
+      res.json({ status: 500, message: `TheatreGraphInfo backend error:${error}`});
     }
-  }
+  },
+  fetchBookings: async (req: Request, res: Response) => {
+    try {
+      const page= parseInt(req.query.page as string);
+      const limit= parseInt(req.query.limit as string);
+      const totalBookingCount = await Booking.countDocuments({
+        theatreId: req.query?.theatreId,
+      })
+      const totalPages= Math.ceil(totalBookingCount/limit);
+      const skip = Math.abs((page - 1) * limit);
+
+      const bookings = await Booking.find({ theatreId: req.query?.theatreId }).skip(skip).limit(limit).sort({ showDate: -1 });
+      res.json({ bookings,totalPages });
+    } catch (error) {
+      res.json({ status: 500, message: `fetchBookings backend error:${error}` });
+    }
+  },
+
+  fetchShowManagement: async (req: Request, res: Response) => {
+    try {
+      const shows = await Screen.find({ theatreId: req.query?.theatreId });
+      res.json({ shows });
+    } catch (error) {
+      res.json({ status: 500, message: `fetchShowManagement backend error:${error}` });
+    }
+  },
+
+  checkTheatreBlocked: async (req: Request, res: Response,Id: string) => {
+    try {
+      const response = await Theatre.findOne({ _id: Id });
+      const blockStatus =response?.approvalStatus
+      return blockStatus;
+    } catch (error) {
+      res.json({ message: "checkTheatreBlocked backend error:", error });
+    }
+  },
 
 
 

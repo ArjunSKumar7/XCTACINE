@@ -189,6 +189,14 @@ export function TheatreSideBar() {
        
         </ListItem>
 
+         <ListItem onClick={()=>{navigate("/theatre/bookinglist")}}>
+          <ListItemPrefix>
+            <TicketIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Bookings
+       
+        </ListItem>
+
 
 
 

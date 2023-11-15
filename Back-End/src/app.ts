@@ -12,7 +12,11 @@ import adminRoute from "./routes/admin";
 import theatreRoute from "./routes/theatre";
 import serverConfig from "./config/serverConfig";
 import authMiddlewares from "./middlewares/authMiddlewares";
+import accessCheckMiddleware from "./middlewares/accessCheckMiddleware";
 import {v2 as cloudinary} from 'cloudinary';
+const userRole = process.env.USER_ROLE as string;
+const adminRole = process.env.ADMIN_ROLE as string;
+const theatreRole = process.env.THEATER_ROLE as string;
 
 const app: Application = express();
 const server = http.createServer(app);
@@ -56,9 +60,9 @@ cloudinary.config({
 
 //routes
 
-app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
-app.use("/api/theatre", theatreRoute);
-app.use("/api/admin",authMiddlewares.tokenCheckMiddleware, adminRoute);
+app.use("/api/user", authMiddlewares(userRole),accessCheckMiddleware.checkUserBlock,userRoute);
+app.use("/api/theatre",authMiddlewares(theatreRole),accessCheckMiddleware.checkTheatreBlock, theatreRoute);
+app.use("/api/admin",authMiddlewares(adminRole), adminRoute);
 
 serverConfig(server);

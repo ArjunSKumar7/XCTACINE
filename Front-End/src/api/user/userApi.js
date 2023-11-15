@@ -213,3 +213,23 @@ export const fetchBanners = async () => {
     console.log("fetchBanners api error:", error);
   }
 };
+
+export const fetchBookings = async (userId) => {
+  try {
+    const response = await user_baseURL.get(`/user/fetchbookings?userId=${userId}`);
+    return response?.data;
+  } catch (error) {
+    console.log("fetchBookings api error:", error);
+  }
+
+}
+
+
+export const fetchProfileBookings = async (userId,page,limit) => {
+  try {
+    const response = await user_baseURL.get(`/user/fetchprofilebookings?userId=${userId}&page=${page}&limit=${limit}`);
+    return response?.data;
+  } catch (error) {
+    console.log("fetchProfileBookings api error:", error);
+  }
+}

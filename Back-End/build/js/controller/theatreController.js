@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const movieSchema_1 = __importDefault(require("../model/movieSchema"));
 const screenSchema_1 = __importDefault(require("../model/screenSchema"));
 const locationSchema_1 = __importDefault(require("../model/locationSchema"));
+const theaterSchema_1 = __importDefault(require("../model/theaterSchema"));
 const bookingSchema_1 = __importDefault(require("../model/bookingSchema"));
 const theatrecontroller = {
     addMovie: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -152,14 +153,17 @@ const theatrecontroller = {
     moviescreenallocation: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const data = req.body;
+            console.log(data);
             const movie = yield movieSchema_1.default.findOne({ movieId: data.movieId });
+            console.log(movie === null || movie === void 0 ? void 0 : movie.movieTitle);
             const response = yield screenSchema_1.default.updateOne({ _id: data.screenId }, {
                 $set: {
                     movieId: data.movieId,
                     movieTitle: movie === null || movie === void 0 ? void 0 : movie.movieTitle,
-                    selectedDates: data.selectedDates,
+                    // selectedDates: data.selectedDates,
                 },
             });
+            console.log("backendres", response);
             if (response.modifiedCount > 0) {
                 res.json({ message: "moviescreenallocation successfully!", response });
             }
@@ -242,8 +246,45 @@ const theatrecontroller = {
             res.json({ status: 200, response });
         }
         catch (error) {
-            res.json({ status: 500, message: `adminGraphInfo backend error:${error}` });
+            res.json({ status: 500, message: `TheatreGraphInfo backend error:${error}` });
         }
-    })
+    }),
+    fetchBookings: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _2, _3;
+        try {
+            const page = parseInt(req.query.page);
+            const limit = parseInt(req.query.limit);
+            const totalBookingCount = yield bookingSchema_1.default.countDocuments({
+                theatreId: (_2 = req.query) === null || _2 === void 0 ? void 0 : _2.theatreId,
+            });
+            const totalPages = Math.ceil(totalBookingCount / limit);
+            const skip = Math.abs((page - 1) * limit);
+            const bookings = yield bookingSchema_1.default.find({ theatreId: (_3 = req.query) === null || _3 === void 0 ? void 0 : _3.theatreId }).skip(skip).limit(limit).sort({ showDate: -1 });
+            res.json({ bookings, totalPages });
+        }
+        catch (error) {
+            res.json({ status: 500, message: `fetchBookings backend error:${error}` });
+        }
+    }),
+    fetchShowManagement: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _4;
+        try {
+            const shows = yield screenSchema_1.default.find({ theatreId: (_4 = req.query) === null || _4 === void 0 ? void 0 : _4.theatreId });
+            res.json({ shows });
+        }
+        catch (error) {
+            res.json({ status: 500, message: `fetchShowManagement backend error:${error}` });
+        }
+    }),
+    checkTheatreBlocked: (req, res, Id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield theaterSchema_1.default.findOne({ _id: Id });
+            const blockStatus = response === null || response === void 0 ? void 0 : response.approvalStatus;
+            return blockStatus;
+        }
+        catch (error) {
+            res.json({ message: "checkTheatreBlocked backend error:", error });
+        }
+    }),
 };
 exports.default = theatrecontroller;

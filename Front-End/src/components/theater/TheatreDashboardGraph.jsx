@@ -119,7 +119,7 @@ function TheatreDashboardGraph() {
       <BarChart
           data={monthNames.map((monthName, index) => ({
             name: monthName,
-            Bookings: graphData.find(item => item.month === index + 1)?.data[0].count || 0,
+            Bookings: graphData ? (graphData.find(item => item.month === index + 1)?.data[0].count): 0,
           }))}
         margin={{
           top: 5,

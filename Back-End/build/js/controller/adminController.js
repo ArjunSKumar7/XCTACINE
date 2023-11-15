@@ -39,6 +39,7 @@ const admincontroller = {
     theatreAppoval: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const approvalStatus = req.body;
+            console.log("approvalStatusback", req.body);
             yield theaterSchema_1.default.updateOne({ _id: approvalStatus.id }, { $set: { approvalStatus: approvalStatus.status } }).then(() => {
                 res.json({
                     status: 200,

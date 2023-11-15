@@ -15,6 +15,8 @@ import theatrecontoller from '../controller/theatreController'
     router.delete("/deletescreen",theatrecontoller.deleteScreen)
     router.get("/fetchdashinfo/:id",theatrecontoller.fetchDashInfo)
     router.get ("/fetchGraphInfo",theatrecontoller.fetchGraphInfo)
+    router.get ("/fetchbookings",theatrecontoller.fetchBookings)
+    router.get ("/fetchshowmanagement",theatrecontoller.fetchShowManagement)
 
 
 export default router

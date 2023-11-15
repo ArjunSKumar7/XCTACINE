@@ -21,4 +21,5 @@ router.get("/fetchuserbookings", userController_1.default.fetchUserBookings);
 router.post("/fetchbookedseats", userController_1.default.fetchBookedSeats);
 router.patch("/profilepicedit/:id", multer_1.uploadProfilePic, userController_1.default.editProfilePic);
 router.get("/fetchBanners", userController_1.default.fetchBanners);
+router.get("/fetchprofilebookings", userController_1.default.fetchProfileBookings);
 exports.default = router;

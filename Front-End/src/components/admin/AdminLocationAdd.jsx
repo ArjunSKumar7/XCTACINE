@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useSelector,useDispatch } from "react-redux";
 import{setLocationToList}from "../../redux/adminReducer"
 
-// import AdminLocationTable from "./AdminLocationTable";
+import AdminLocationTable from "./AdminLocationTable";
 
 
 const TABLE_HEAD = ["Name", "Job", "Employed", ""];
@@ -115,9 +115,9 @@ function AdminLocationAdd() {
         </Button>
       </form>
 
-      {/* <Card className=" mt-12 overflow-auto">
+      <Card className=" mt-12 overflow-auto">
        <AdminLocationTable locationList={locationList}/>
-      </Card> */}
+      </Card>
     </div>
   );
 }

@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import { UserNavBar } from '../../components/user/UserNavBar';
 import { UserFooter } from '../../components/user/UserFooter';
 import { ProfileCard } from '../../components/user/ProfileCard';
 import { ProfileAccordion } from '../../components/user/ProfileAccordion';
-import { useSelector } from 'react-redux';
-import { fetchUserBookings } from '../../api/user/userApi';
+// import { useSelector } from 'react-redux';
+// import { fetchUserBookings } from '../../api/user/userApi';
 
 function UserProfilePage() {
-  const userId=useSelector((store)=>store.user.userId)
+//   const userId=useSelector((store)=>store.user.userId)
 
-  const [upcomingBookings, setUpcomingBookings] = useState([]);
+//   const [upcomingBookings, setUpcomingBookings] = useState([]);
 
-useEffect(() => {
-  async function fetchData(){
-    const response =await fetchUserBookings(userId);
-    const currentDate = new Date();
+// useEffect(() => {
+//   async function fetchData(){
+//     const response =await fetchUserBookings(userId);
+//     const currentDate = new Date();
 
-    // Filter bookings where the show date is greater than the current date
-    const upcomingBookings = response.response.filter(booking => {
-      const showDate = new Date(booking.showDate);
-      return showDate > currentDate;
-    });
+//     // Filter bookings where the show date is greater than the current date
+//     const upcomingBookings = response.response.filter(booking => {
+//       const showDate = new Date(booking.showDate);
+//       return showDate > currentDate;
+//     });
 
-    // Set the upcoming bookings in a new state
-    setUpcomingBookings(upcomingBookings);
-  }
-  fetchData()
-},[])
+//     // Set the upcoming bookings in a new state
+//     setUpcomingBookings(upcomingBookings);
+//   }
+//   fetchData()
+// },[])
 
 
   return (
@@ -41,8 +41,8 @@ useEffect(() => {
 
         {/* Other Components */}
         {/* Include other components here between the ProfileCard and UserFooter */}
-        <div  className='pt-28 ml-2 '>
-      <ProfileAccordion upcomingBookings={upcomingBookings} />  
+        <div  className='pt-28 ml-2 w-full m-2'>
+      <ProfileAccordion  />  
       </div>
       </div>
       

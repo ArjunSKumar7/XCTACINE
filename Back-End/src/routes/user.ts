@@ -21,5 +21,6 @@ import {uploadProfilePic} from "../multer/multer"
     router.post("/fetchbookedseats",userController.fetchBookedSeats)
     router.patch("/profilepicedit/:id",uploadProfilePic,userController.editProfilePic)
     router.get("/fetchBanners",userController.fetchBanners)
+    router.get("/fetchprofilebookings",userController.fetchProfileBookings)
 
 export default router

@@ -11,22 +11,25 @@ import { toast } from "react-toastify";
 import ShowManagementList from "../../components/theater/ShowManagementList";
 
 function TheatreShowManagementInput(props) {
+  const [refreshList, setRefreshList] = useState(false);
   const [screenSelected, setScreenSelected] = useState("");
   const [movieSelected, setMovieSelected] = useState("");
 
   const handleSubmit = async () => {
-    if (
-      (screenSelected && movieSelected !== "") ||
-      undefined ||
-      (screenSelected && movieSelected === "No data available")
-    ) {
+    if ((screenSelected && movieSelected !== "") ||(screenSelected && movieSelected !== "No data available")
+  //   ||
+  //   (movieSelected!=="No data available"||''||undefined)||
+  //  ( screenSelected!=="No data available"||''||undefined)
+    )  {
       const data = {
         screenId: screenSelected,
         movieId: movieSelected,
-        selectedDates: datevalue,
+        // selectedDates: datevalue,
       };
 
       const response = await movieScreenAllocation(data);
+      console.log(response);
+      if(response?.response?.modifiedCount>0){
       toast.success(`movie screen allocation added `, {
         position: "top-right",
         autoClose: 5000,
@@ -37,7 +40,24 @@ function TheatreShowManagementInput(props) {
         progress: undefined,
         theme: "light",
       });
-    } else {
+      setRefreshList(!refreshList);
+    }else{
+      toast.error(
+        `${"already allocated "+response?.message} `,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    }
+  }
+    else {
       toast.error(
         `please select screen and movie if no data available please add data accordingly `,
         {
@@ -122,7 +142,10 @@ function TheatreShowManagementInput(props) {
           </div>
         </CardBody>
       </Card>
-      <ShowManagementList />
+      <div className="mt-4 h-80" >
+      <ShowManagementList refreshList={refreshList} />
+      </div>
+    
     </>
   );
 }

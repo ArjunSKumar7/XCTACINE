@@ -8,6 +8,7 @@ import {
   movieListDataFetch,
 } from "../../api/theater/theaterApi";
 import { setScreenToList, setMovieToList } from "../../redux/theatreReducer";
+import ShowManagementList from "../../components/theater/ShowManagementList"
 
 function TheatreShowMangement() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function TheatreShowMangement() {
       <div className=" fixed  ms-[22rem]   w-[calc(100vw-25rem)] m-24 ">
         <TheatreShowMangementInput screen={screenData} movie={movieData} />
       </div>
+    
     </div>
   );
 }

@@ -30,6 +30,7 @@ const admincontroller = {
   theatreAppoval: async (req: Request, res: Response) => {
     try {
       const approvalStatus = req.body;
+      console.log("approvalStatusback",req.body);
       await Theatre.updateOne(
         { _id: approvalStatus.id },
         { $set: { approvalStatus: approvalStatus.status } }

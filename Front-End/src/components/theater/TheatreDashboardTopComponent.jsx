@@ -5,8 +5,6 @@ import { fetchDashInfo } from "../../api/theater/theaterApi";
 function TheatreDashboardTopComponent() {
   const theatreData = useSelector((store) => store.theatre.theatreDetails);
   const[dashInfo,setDashInfo] = useState({})
-  console.log("theatreData", theatreData);
-  // console.log("props", props?.data?.theatreApprovalStatus);
   useEffect(() => {
     async function fetchInfo(){
       const data =await fetchDashInfo(theatreData?.theatreId);
@@ -14,7 +12,6 @@ function TheatreDashboardTopComponent() {
     }
 
     fetchInfo(theatreData?.theatreId).then((data)=>{
-      console.log("data",data)
       setDashInfo(data?.dashInfo)
 
     })
@@ -22,7 +19,7 @@ function TheatreDashboardTopComponent() {
 
   const totalRevenue = dashInfo?.totalRevenue?.[0]?.totalAmount || 0;
   const totalUsers = dashInfo?.totalUsers?.[0]?.totalUsers || 0;
-  const totalBookings =dashInfo.totalBookings || 0;
+  const totalBookings =dashInfo?.totalBookings || 0;
   return (
     <div>
       <span  className="ml-96 p-10  text-2xl font-semibold text-red-900" >Theatre Dashboard</span>

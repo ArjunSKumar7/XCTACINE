@@ -16,7 +16,11 @@ const admin_1 = __importDefault(require("./routes/admin"));
 const theatre_1 = __importDefault(require("./routes/theatre"));
 const serverConfig_1 = __importDefault(require("./config/serverConfig"));
 const authMiddlewares_1 = __importDefault(require("./middlewares/authMiddlewares"));
+const accessCheckMiddleware_1 = __importDefault(require("./middlewares/accessCheckMiddleware"));
 const cloudinary_1 = require("cloudinary");
+const userRole = process.env.USER_ROLE;
+const adminRole = process.env.ADMIN_ROLE;
+const theatreRole = process.env.THEATER_ROLE;
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 app.use((0, morgan_1.default)("dev"));
@@ -39,8 +43,8 @@ cloudinary_1.v2.config({
     api_secret: 'Tx1xRWAb1iFHUGDK731SRCilxMA'
 });
 //routes
-app.use("/api/user", user_1.default);
 app.use("/api/auth", auth_1.default);
-app.use("/api/theatre", theatre_1.default);
-app.use("/api/admin", authMiddlewares_1.default.tokenCheckMiddleware, admin_1.default);
+app.use("/api/user", (0, authMiddlewares_1.default)(userRole), accessCheckMiddleware_1.default.checkUserBlock, user_1.default);
+app.use("/api/theatre", (0, authMiddlewares_1.default)(theatreRole), accessCheckMiddleware_1.default.checkTheatreBlock, theatre_1.default);
+app.use("/api/admin", (0, authMiddlewares_1.default)(adminRole), admin_1.default);
 (0, serverConfig_1.default)(server);

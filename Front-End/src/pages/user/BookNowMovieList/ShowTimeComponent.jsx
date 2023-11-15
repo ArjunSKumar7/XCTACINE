@@ -16,7 +16,7 @@ function ShowMapComponent(props) {
   const showDate = useSelector((store) => store.user.selectedDate);
   async function showTimeClickHandle(time) {
     const data = JSON.parse(localStorage.getItem("bookingOperation"));
-
+   
     data.theatreId=props.theatreId
     data.showDate = showDate;
     data.selectedtheatre = props.theatreName;
@@ -46,24 +46,22 @@ function ShowMapComponent(props) {
       });
     }
   }
-//   return (
-//     <Button
-//       size="sm"
-//       color={""}
-//       className="me-1 bg-black"
-//       key={props.index}
-//       variant="outlined"
-//       onClick={() => {
-//         showTimeClickHandle(props.time[`show${props.index + 1}`]);
-//       }}
-//     >
-//       {props.time[`show${props.index + 1}`]}
-//     </Button>
-//   );
+  const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const filteredTimes = Object.keys(props?.time).filter((key) => {
+    const timeString = props?.time[key];
+    return isTimeAfterCurrent(timeString, currentTime);
+  });
+
+  function isTimeAfterCurrent(timeString, currentTimeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const [currentHours, currentMinutes] = currentTimeString.split(':').map(Number);
+    return hours > currentHours || (hours === currentHours && minutes > currentMinutes);
+  }
+
 
   return (
     <div>
-      {Object.keys(props.time).map((key, index) => (
+      {filteredTimes.map((key, index) => (
         <Button
           key={index}
           size="sm"
@@ -71,10 +69,10 @@ function ShowMapComponent(props) {
           className="me-1 bg-black"
           variant="outlined"
           onClick={() => {
-            showTimeClickHandle(props.time[key]);
+            showTimeClickHandle(props?.time[key]);
           }}
         >
-          {props.time[key]}
+          {props?.time[key]}
         </Button>
       ))}
     </div>

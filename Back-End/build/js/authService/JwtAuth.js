@@ -6,13 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyjwt = exports.generateJWT = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const keys_1 = require("../config/keys");
-const generateJWT = (id) => {
+const generateJWT = (id, role) => {
     try {
-        console.log("id", id);
+        const jwtPayload = { id: id, role: role };
         if (keys_1.configKeys.JWT_SECRET_KEY) {
-            const token = jsonwebtoken_1.default.sign({ id }, keys_1.configKeys.JWT_SECRET_KEY, {
+            const token = jsonwebtoken_1.default.sign(jwtPayload, keys_1.configKeys.JWT_SECRET_KEY, {
                 expiresIn: keys_1.configKeys.JWT_EXPIRATION
             });
+            console.log("token", token);
             return token;
         }
     }

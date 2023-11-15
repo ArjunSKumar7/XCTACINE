@@ -27,4 +27,10 @@ admin_baseURL.interceptors.request.use(
   }
 );
 
+// admin_baseURL.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   }
+// )
+
 export default admin_baseURL;

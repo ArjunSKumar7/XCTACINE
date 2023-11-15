@@ -49,6 +49,7 @@ const theatreSlice = createSlice({
       theatreLogout: (state) => {
       state.theatreToken = null;
       localStorage.removeItem("theatreToken");
+      localStorage.removeItem('theatreBookListPage')
       localStorage.removeItem("theatreDetails");
     },
     setMovieToList: (state, action) => {

@@ -141,7 +141,7 @@ const userController = {
             const location = req.query.location;
             const movieDetails = yield movieSchema_1.default.findOne({ movieId: movieId });
             const moviepageaggregation = yield theaterSchema_1.default.aggregate([
-                { $match: { Location: location, blockedStatus: false } },
+                { $match: { Location: location, approvalStatus: false } },
                 { $addFields: { _id: { $toString: "$_id" } } },
                 {
                     $lookup: {
@@ -400,5 +400,29 @@ const userController = {
             res.json({ message: "fetchBanners backend error:", error });
         }
     }),
+    checkUserBlocked: (req, res, Id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const response = yield userSchema_1.default.findOne({ _id: Id });
+            const blockStatus = response === null || response === void 0 ? void 0 : response.blockedStatus;
+            return blockStatus;
+        }
+        catch (error) {
+            res.json({ message: "checkUserBlocked backend error:", error });
+        }
+    }),
+    fetchProfileBookings: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const page = parseInt(req.query.page);
+            const limit = parseInt(req.query.limit);
+            const skip = Math.abs((page - 1) * limit);
+            const totalProfilebookingCount = yield bookingSchema_1.default.countDocuments({ userId: req.query.userId });
+            const totalPages = Math.ceil(totalProfilebookingCount / limit);
+            const profileBookings = yield bookingSchema_1.default.find({ userId: req.query.userId }).sort({ showDate: -1 }).skip(skip).limit(limit);
+            res.json({ profileBookings, totalPages });
+        }
+        catch (error) {
+            res.json({ message: "fetchProfileBookings backend error:", error });
+        }
+    })
 };
 exports.default = userController;

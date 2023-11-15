@@ -29,4 +29,11 @@ user_baseURL.interceptors.request.use(
   }
 );
 
+// user_baseURL.interceptors.response.use(
+//   (response)=>{
+//     console.log("response in resposnse interceptor", response);
+//     return response;
+//   }
+// )
+
 export default user_baseURL;
