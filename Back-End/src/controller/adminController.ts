@@ -180,8 +180,9 @@ const admincontroller = {
   deleteLocation: async (req: Request, res: Response) => {
     try {
       const response=await Location.deleteOne({_id:req.query.id})
+      res.json({ status: 200, message: "Location deleted", response });
     } catch (error) {
-      
+      res.json({ status: 500, message: `deleteLocation backend error:${error}`});
     }
   },
 
@@ -272,18 +273,7 @@ const admincontroller = {
         }
 
       ]);
-      // const resultArr=response1
-    
-      // // console.log('response aggregation chart data', response);
-      // const result = Array.from({ length: 12 }, (_, index) => {
-      //   const monthData = response1.find(item => item.month === (index + 1));
-      //   return monthData ? monthData : { data: null, month: index + 1 };
-      // })
-      // .map((item,index) => ({
-      //   data: item.data,
-      //   month: item.data ? item.month : index+1
-      // }));
-  
+     
   
   
   

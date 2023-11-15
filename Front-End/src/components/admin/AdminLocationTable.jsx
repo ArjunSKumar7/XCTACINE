@@ -5,15 +5,41 @@ import {  TrashIcon } from "@heroicons/react/24/solid";
 import { AlertBox } from "../../components/AlertBox"
 import { deleteLocation } from "../../api/admin/adminApi"
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function AdminLocationTable(props) {
     const [open, setOpen] = useState(false);
-    console.log(props?.locationList[0].location);
     
 const TABLE_HEAD = ["Location","Action"];
 const adminLocationListDelete = async (id, location) => {
     console.log("aaa",id, location);
     const response = await deleteLocation(id);
+  if(response?.status === 200){
+    props?.refresh
+    toast.success(`${response?.message}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    })
+  } 
+  else{
+    toast.error(`${response?.message}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    })
+  }
+
 }
 
 const handleOpen = () => setOpen(!open);

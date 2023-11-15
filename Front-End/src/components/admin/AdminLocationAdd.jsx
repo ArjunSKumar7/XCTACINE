@@ -3,7 +3,7 @@ import { Field, useFormik } from "formik";
 import * as Yup from "yup";
 import { addLocation,fetchLocations } from "../../api/admin/adminApi";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector,useDispatch } from "react-redux";
 import{setLocationToList}from "../../redux/adminReducer"
 
@@ -41,6 +41,10 @@ const TABLE_ROWS = [
 ];
 
 function AdminLocationAdd() {
+  const [refreshList, setRefreshList] = useState(false);
+  function refresh() {
+    setRefreshList(!refreshList);
+  }
 
   const dispatch = useDispatch();
   const LocationSchema = Yup.object().shape({
@@ -59,6 +63,7 @@ function AdminLocationAdd() {
     onSubmit: async (values) => {
       const LocationApiResponse = await addLocation(values);
       if (LocationApiResponse.status === 200&&201) {
+        refresh();
         toast.success(`${LocationApiResponse.message}`, {
           position: "top-right",
           autoClose: 5000,
@@ -94,7 +99,7 @@ function AdminLocationAdd() {
       console.log(data);
       dispatch(setLocationToList(data?.locationData));      
     });
-  },[dispatch])
+  },[dispatch,refreshList]);
   const locationList = useSelector((store) => store.admin.locationToList);
   console.log(locationList);
 
@@ -116,7 +121,7 @@ function AdminLocationAdd() {
       </form>
 
       <Card className=" mt-12 overflow-auto">
-       <AdminLocationTable locationList={locationList}/>
+       <AdminLocationTable locationList={locationList} function={refresh}/>
       </Card>
     </div>
   );
