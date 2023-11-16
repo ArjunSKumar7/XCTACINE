@@ -30,8 +30,7 @@ const GuestHome = () => {
   };
 
   async function fetchAllMovies(locationValue) {
-    console.log(movieResponse);
-
+    const movieResponse = await moviesFetchguest(locationValue, page, 8);
     if (movieResponse) {
       dispatch(setMovieHomeData(movieResponse.movieList));
       setTotalPages(movieResponse.totalPages); // Update total pages
