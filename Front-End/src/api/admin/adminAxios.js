@@ -30,6 +30,24 @@ admin_baseURL.interceptors.request.use(
 // admin_baseURL.interceptors.response.use(
 //   (response) => {
 //     return response;
+//   },(error) => {
+
+//     if (error.response) {
+//       const status = error.response.status;
+//       if (status === 404) {
+//        window.location.href = '/404'
+//       }
+//     } else if (error.request) {
+//       window.location.href = '/404'
+//       console.error('Network Error:', error.request);
+//       window.location.href = '/404'
+
+//     } else {
+//       window.location.href = '/500
+//       console.error('Error:', error.message);
+//     }
+   
+//     return Promise.reject(error);
 //   }
 // )
 

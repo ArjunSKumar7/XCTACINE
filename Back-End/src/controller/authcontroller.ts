@@ -129,7 +129,7 @@ const authController = {
           const { Password, ...theatreWithoutPassword } =
             theatreData.toObject(); // Exclude Password field
           const token = generateJWT(theatreData._id.toString(),theatreRole);
-          res.json({
+          res.status(200).json({
             status: 200,
             theatre: theatreWithoutPassword,
             created: true,

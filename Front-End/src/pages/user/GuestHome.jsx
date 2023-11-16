@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setMovieHomeData } from "../../redux/userReducer";
-import { moviesFetchUser } from "../../api/user/userApi";
+import { moviesFetchguest } from "../../api/guest/guestApi";
 import { UserHomeCard } from "../../components/user/UserHomeCard";
 import { GuestNavBar } from "../../components/user/GuestNavBar";
 import { UserHomeCarousel } from "../../components/user/UserHomeCarousel";
@@ -30,7 +30,7 @@ const GuestHome = () => {
   };
 
   async function fetchAllMovies(locationValue) {
-    const movieResponse = await moviesFetchUser(locationValue, page, 8);
+    console.log(movieResponse);
 
     if (movieResponse) {
       dispatch(setMovieHomeData(movieResponse.movieList));

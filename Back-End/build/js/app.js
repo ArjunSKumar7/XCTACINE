@@ -14,6 +14,7 @@ const user_1 = __importDefault(require("./routes/user"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const admin_1 = __importDefault(require("./routes/admin"));
 const theatre_1 = __importDefault(require("./routes/theatre"));
+const guest_1 = __importDefault(require("./routes/guest"));
 const serverConfig_1 = __importDefault(require("./config/serverConfig"));
 const authMiddlewares_1 = __importDefault(require("./middlewares/authMiddlewares"));
 const accessCheckMiddleware_1 = __importDefault(require("./middlewares/accessCheckMiddleware"));
@@ -44,6 +45,7 @@ cloudinary_1.v2.config({
 });
 //routes
 app.use("/api/auth", auth_1.default);
+app.use("/api/guest", guest_1.default);
 app.use("/api/user", (0, authMiddlewares_1.default)(userRole), accessCheckMiddleware_1.default.checkUserBlock, user_1.default);
 app.use("/api/theatre", (0, authMiddlewares_1.default)(theatreRole), accessCheckMiddleware_1.default.checkTheatreBlock, theatre_1.default);
 app.use("/api/admin", (0, authMiddlewares_1.default)(adminRole), admin_1.default);

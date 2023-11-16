@@ -10,6 +10,7 @@ import userRoute from "./routes/user";
 import authRoute from "./routes/auth";
 import adminRoute from "./routes/admin";
 import theatreRoute from "./routes/theatre";
+import guestRoute from "./routes/guest"
 import serverConfig from "./config/serverConfig";
 import authMiddlewares from "./middlewares/authMiddlewares";
 import accessCheckMiddleware from "./middlewares/accessCheckMiddleware";
@@ -61,6 +62,7 @@ cloudinary.config({
 //routes
 
 app.use("/api/auth", authRoute);
+app.use("/api/guest",guestRoute);
 app.use("/api/user", authMiddlewares(userRole),accessCheckMiddleware.checkUserBlock,userRoute);
 app.use("/api/theatre",authMiddlewares(theatreRole),accessCheckMiddleware.checkTheatreBlock, theatreRoute);
 app.use("/api/admin",authMiddlewares(adminRole), adminRoute);
