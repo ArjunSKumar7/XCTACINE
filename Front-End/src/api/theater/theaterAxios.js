@@ -1,8 +1,8 @@
 import axios from "axios";
 import {theatreLogout} from "../../redux/theatreReducer"
 
-const BaseUrl = "http://localhost:3000/api";
-// const BaseUrl = "https://xctacine.online/api";
+// const BaseUrl = "http://localhost:3000/api";
+const BaseUrl = "https://xctacine.online/api";
 
 const theatre_baseURL = axios.create({
   baseURL: BaseUrl,
