@@ -21,19 +21,19 @@ const admincontroller = {
     userlistfetch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const usersData = yield userSchema_1.default.find();
-            res.json({ usersDetails: usersData });
+            res.status(200).json({ usersDetails: usersData });
         }
         catch (err) {
-            res.json({ message: err });
+            res.status(400).json({ message: err });
         }
     }),
     theatrelistfetch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const theatreData = yield theaterSchema_1.default.find();
-            res.json({ theatreDetails: theatreData });
+            res.status(200).json({ theatreDetails: theatreData });
         }
         catch (err) {
-            res.json({ message: err });
+            res.status(400).json({ message: err });
         }
     }),
     theatreAppoval: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,7 +41,7 @@ const admincontroller = {
             const approvalStatus = req.body;
             console.log("approvalStatusback", req.body);
             yield theaterSchema_1.default.updateOne({ _id: approvalStatus.id }, { $set: { approvalStatus: approvalStatus.status } }).then(() => {
-                res.json({
+                res.status(200).json({
                     status: 200,
                     message: "Theatre Status Changed",
                     approvalStatus: approvalStatus.status,
@@ -49,14 +49,14 @@ const admincontroller = {
             });
         }
         catch (err) {
-            res.json({ status: 400, message: "error occured:" + err });
+            res.status(400).json({ status: 400, message: "error occured:" + err });
         }
     }),
     userApproval: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const approvalStatus = req.body;
             yield userSchema_1.default.updateOne({ _id: approvalStatus.id }, { $set: { blockedStatus: approvalStatus.status } }).then(() => {
-                res.json({
+                res.status(200).json({
                     status: 200,
                     message: "User Status Changed",
                     blockedStatus: approvalStatus.status,
@@ -64,7 +64,7 @@ const admincontroller = {
             });
         }
         catch (err) {
-            res.json({ status: 400, message: "error occured:" + err });
+            res.status(400).json({ status: 400, message: "error occured:" + err });
         }
     }),
     addLocation: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -75,7 +75,7 @@ const admincontroller = {
             const existingLocations = yield locationSchema_1.default.findOne({});
             if (existingLocations === null || existingLocations === void 0 ? void 0 : existingLocations.location.length) {
                 if (existingLocations === null || existingLocations === void 0 ? void 0 : existingLocations.location.includes(locationWord)) {
-                    res.json({
+                    res.status(400).json({
                         status: 400,
                         message: "Location already exists",
                     });
@@ -94,15 +94,15 @@ const admincontroller = {
                 const response = yield locationSchema_1.default.findOneAndUpdate({}, { $addToSet: { location: locationWord } }, // Use $addToSet to avoid duplicates
                 { upsert: true, new: true } // Create a new document if it doesn't exist
                 );
-                res.status(201).json({
-                    status: 201,
+                res.status(200).json({
+                    status: 200,
                     message: "Location added successfully!",
                     response,
                 });
             }
         }
         catch (error) {
-            res.json({ status: 500, message: "addLocation backend error!", error });
+            res.status(400).json({ status: 500, message: "addLocation backend error!", error });
         }
     }),
     addBanner: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -121,7 +121,7 @@ const admincontroller = {
             });
         }
         catch (error) {
-            res.json({
+            res.status(400).json({
                 status: 500,
                 message: "addBanner backend error!" + error,
             });
@@ -130,10 +130,10 @@ const admincontroller = {
     fetchBanner: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const bannerData = yield bannerSchema_1.default.find();
-            res.json({ bannerData });
+            res.status(200).json({ bannerData });
         }
         catch (err) {
-            res.json({
+            res.status(400).json({
                 status: 500,
                 message: "fetchBanner backend error!" + err,
             });
@@ -143,10 +143,10 @@ const admincontroller = {
         try {
             const bannerId = req.query.bannerId;
             const bannerDeleteResponse = yield bannerSchema_1.default.deleteOne({ _id: bannerId });
-            res.json({ status: 200, message: "Banner deleted", bannerDeleteResponse });
+            res.status(200).json({ status: 200, message: "Banner deleted", bannerDeleteResponse });
         }
         catch (err) {
-            res.json({ status: 500, message: `deleteBanner backend error:${err}` });
+            res.status(400).json({ status: 500, message: `deleteBanner backend error:${err}` });
         }
     }),
     bannerStateChange: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -154,15 +154,15 @@ const admincontroller = {
             const bannerState = req.body.state;
             const response = yield bannerSchema_1.default.updateOne({ _id: req.body.id }, { $set: { bannerState: bannerState } }).then((response) => {
                 if (response.modifiedCount > 0) {
-                    res.json({ status: 200, message: "Banner state changed", bannerState: bannerState });
+                    res.status(200).json({ status: 200, message: "Banner state changed", bannerState: bannerState });
                 }
                 else {
-                    res.json({ status: 400, message: "Banner state not changed" });
+                    res.status(400).json({ status: 400, message: "Banner state not changed" });
                 }
             });
         }
         catch (error) {
-            res.json({ status: 500, message: `bannerStateChange backend error:${error}` });
+            res.status(400).json({ status: 500, message: `bannerStateChange backend error:${error}` });
         }
     }),
     fetchLocation: (req, res) => __awaiter(void 0, void 0, void 0, function* () {

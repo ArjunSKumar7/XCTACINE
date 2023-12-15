@@ -31,7 +31,6 @@ const JwtAuth_1 = require("../authService/JwtAuth");
 const userRole = process.env.USER_ROLE;
 const adminRole = process.env.ADMIN_ROLE;
 const theatreRole = process.env.THEATER_ROLE;
-console.log(userRole);
 const authController = {
     userLogin: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {

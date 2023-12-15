@@ -19,7 +19,6 @@ const authMiddlewares = (role) => {
                 token = req.headers.authorization.split(" ")[1];
             }
             const response = (0, JwtAuth_1.verifyjwt)(token);
-            console.log("authmiddleware", response);
             if (response && response.role === role) {
                 next();
             }
