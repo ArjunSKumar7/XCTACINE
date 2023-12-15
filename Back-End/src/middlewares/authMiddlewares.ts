@@ -14,7 +14,6 @@ const authMiddlewares =(role:string) => {
     }
   
       const response = verifyjwt(token as string) as JwtPayload;
-      console.log("authmiddleware",response)
       if (response && response.role === role) {
         next();
       } else {

@@ -11,9 +11,9 @@ const admincontroller = {
     try {
       const usersData = await User.find();
 
-      res.json({ usersDetails: usersData });
+      res.status(200).json({ usersDetails: usersData });
     } catch (err) {
-      res.json({ message: err });
+      res.status(400).json({ message: err });
     }
   },
 
@@ -21,9 +21,9 @@ const admincontroller = {
     try {
       const theatreData = await Theatre.find();
 
-      res.json({ theatreDetails: theatreData });
+      res.status(200).json({ theatreDetails: theatreData });
     } catch (err) {
-      res.json({ message: err });
+      res.status(400).json({ message: err });
     }
   },
 
@@ -35,14 +35,14 @@ const admincontroller = {
         { _id: approvalStatus.id },
         { $set: { approvalStatus: approvalStatus.status } }
       ).then(() => {
-        res.json({
+        res.status(200).json({
           status: 200,
           message: "Theatre Status Changed",
           approvalStatus: approvalStatus.status,
         });
       });
     } catch (err) {
-      res.json({ status: 400, message: "error occured:" + err });
+      res.status(400).json({ status: 400, message: "error occured:" + err });
     }
   },
 
@@ -53,14 +53,14 @@ const admincontroller = {
         { _id: approvalStatus.id },
         { $set: { blockedStatus: approvalStatus.status } }
       ).then(() => {
-        res.json({
+        res.status(200).json({
           status: 200,
           message: "User Status Changed",
           blockedStatus: approvalStatus.status,
         });
       });
     } catch (err) {
-      res.json({ status: 400, message: "error occured:" + err });
+      res.status(400).json({ status: 400, message: "error occured:" + err });
     }
   },
 
@@ -73,7 +73,7 @@ const admincontroller = {
       const existingLocations = await Location.findOne({});
       if (existingLocations?.location.length) {
         if (existingLocations?.location.includes(locationWord)) {
-          res.json({
+          res.status(400).json({
             status: 400,
             message: "Location already exists",
           });
@@ -97,14 +97,14 @@ const admincontroller = {
           { $addToSet: { location: locationWord } }, // Use $addToSet to avoid duplicates
           { upsert: true, new: true } // Create a new document if it doesn't exist
         );
-        res.status(201).json({
-          status: 201,
+        res.status(200).json({
+          status: 200,
           message: "Location added successfully!",
           response,
         });
       }
     } catch (error) {
-      res.json({ status: 500, message: "addLocation backend error!", error });
+      res.status(400).json({ status: 500, message: "addLocation backend error!", error });
     }
   },
 
@@ -122,7 +122,7 @@ const admincontroller = {
         response,
       });
     } catch (error) {
-      res.json({
+      res.status(400).json({
         status: 500,
         message: "addBanner backend error!"+error,
         
@@ -133,9 +133,9 @@ const admincontroller = {
   fetchBanner: async (req: Request, res: Response) => {
     try {
       const bannerData = await Banner.find();
-      res.json({bannerData });
+      res.status(200).json({bannerData });
     } catch (err) {
-      res.json({
+      res.status(400).json({
         status: 500,
         message: "fetchBanner backend error!"+err,
         
@@ -147,9 +147,9 @@ const admincontroller = {
     try {
       const bannerId = req.query.bannerId;
       const bannerDeleteResponse = await Banner.deleteOne({ _id: bannerId });
-      res.json({ status: 200, message: "Banner deleted", bannerDeleteResponse });
+      res.status(200).json({ status: 200, message: "Banner deleted", bannerDeleteResponse });
     } catch (err) {
-      res.json({ status: 500, message: `deleteBanner backend error:${err}`});
+      res.status(400).json({ status: 500, message: `deleteBanner backend error:${err}`});
     }
   },
   bannerStateChange: async (req: Request, res: Response) => {
@@ -157,15 +157,15 @@ const admincontroller = {
       const bannerState=req.body.state
       const response= await Banner.updateOne({_id:req.body.id},{$set:{bannerState:bannerState}}).then((response)=>{
         if(response.modifiedCount>0){
-        res.json({ status: 200, message: "Banner state changed",bannerState: bannerState});
+        res.status(200).json({ status: 200, message: "Banner state changed",bannerState: bannerState});
         }else{
-          res.json({ status: 400, message: "Banner state not changed"});
+          res.status(400).json({ status: 400, message: "Banner state not changed"});
         }
       });
      
       
     } catch (error) {
-      res.json({ status: 500, message: `bannerStateChange backend error:${error}`});
+      res.status(400).json({ status: 500, message: `bannerStateChange backend error:${error}`});
     }
   },
   fetchLocation: async (req: Request, res: Response) => {

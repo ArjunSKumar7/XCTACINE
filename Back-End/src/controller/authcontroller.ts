@@ -8,7 +8,6 @@ import { generateJWT, verifyjwt } from "../authService/JwtAuth";
 const userRole = process.env.USER_ROLE as string;
 const adminRole = process.env.ADMIN_ROLE as string;
 const theatreRole = process.env.THEATER_ROLE as string;
-console.log(userRole);
 const authController = {
   userLogin: async (req: Request, res: Response) => {
     try {

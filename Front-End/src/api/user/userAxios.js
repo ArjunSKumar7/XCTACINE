@@ -1,8 +1,8 @@
 import axios from "axios";
 
-// const BaseUrl = "http://localhost:3000/api";
+const BaseUrl = "http://localhost:3000/api";
 
-const BaseUrl = "https://xctacine.online/api";
+// const BaseUrl = "https://xctacine.online/api";
 
 const user_baseURL = axios.create({
   baseURL: BaseUrl,
@@ -29,11 +29,15 @@ user_baseURL.interceptors.request.use(
   }
 );
 
-// user_baseURL.interceptors.response.use(
-//   (response)=>{
-//     console.log("response in resposnse interceptor", response);
-//     return response;
-//   }
-// )
+user_baseURL.interceptors.response.use(
+  (response)=>{
+    console.log("response in resposnse interceptor", response);
+    return response;
+  },(error)=>{
+    console.log("response in error interceptor", error);
+    return Promise.reject(error);
+  }
+  
+)
 
 export default user_baseURL;
